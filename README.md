@@ -12,7 +12,7 @@ Everything runs in your browser. Your catalog is a folder of plain CSV files tha
 
 ## Getting started
 
-1. **Get the app.** Download [`dist/slaughter-cataloger-3.html`](dist/slaughter-cataloger-3.html). It is one self-contained file and works offline. Alternatively, clone the repository and open `index.html`.
+1. **Get the app.** Open it at **[kevinislaughter.github.io/slaughter-cataloger](https://kevinislaughter.github.io/slaughter-cataloger/)**. The page only delivers the app: your catalog stays on your computer. Or download [`dist/slaughter-cataloger-3.html`](dist/slaughter-cataloger-3.html), one self-contained file that works offline, or clone the repository and open `index.html`.
 2. **Open it in Chrome or Edge** (desktop). See [browsers](#browsers) for the others.
 3. **Start a new library** (pick an empty folder), or **Open library folder** to pick a folder of 3.0 CSV files.
 4. Work through the four stages: **Library → Issues → Contents → Compiler**. The **Guide** at the bottom left of the app explains each one.
