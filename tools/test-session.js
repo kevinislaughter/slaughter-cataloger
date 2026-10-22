@@ -140,6 +140,10 @@ const clickSave = async page => {
   await page.waitForFunction(() => !SC.session.ui.busy && (SC.session.ui.message !== window.__before[0] || SC.session.ui.download !== window.__before[1]));
 };
 const message = page => ev(page, () => (SC.session.ui.message || {}).text || '');
+// What a page reopened after a crash found: printed with a failed check (the first GitHub run lost every
+// crash check while they pass locally, so the log must say whether the library was refused or empty).
+const crashState = page => ev(page, async () => ({ access: SC.session.ui.access, message: ((SC.session.ui.message || {}).text || '').slice(0, 120), titles: SC.session.store.state.titles.size,
+  locks: navigator.locks ? (await navigator.locks.query()).held.map(l => l.name) : 'no Web Locks' }));
 const openFolder = async page => { await page.click('text=Open library folder'); await page.waitForSelector('table.shelf tbody tr'); await settled(page); };
 const counts = page => ev(page, () => { const st = SC.session.store.state; return { titles: st.titles.size, issues: st.issues.size, contents: st.contents.size }; });
 const diskRows = (page, name) => ev(page, async n => { const t = await window.__SC_TEST_FS__.get(n); return t == null ? null : SC.csv.parse(t).rows.length - 1; }, name);
@@ -265,7 +269,7 @@ async function partA(browser) {
   await ev(page, async n => { const st = SC.session.store.state; await SC.storage.writeFiles(window.__SC_TEST_FS__.root, [{ name: n, text: SC.records.writeFile(st, n), baseline: st.files.get(n).hash }]); }, T);
   await page.reload(); await ready(page); await page.waitForFunction(() => !SC.session.ui.busy);
   expect(/All changes saved/.test(await saveState(page)), 'restarted after the write: the file counts as saved');
-  expect((await titleOf(page)).generalNotes === 'written then crashed', 'and the change is there');
+  expect(((await titleOf(page)) || {}).generalNotes === 'written then crashed', 'and the change is there');
   await ctx.close();
 
   // ── B-05: downloads are not saves ─────────────────────────────────────
@@ -291,7 +295,7 @@ async function partA(browser) {
   expect(page.dialogs.some(d => /unsaved changes/.test(d)), 'closing still warns about unsaved changes');
   expect(await ev(page, () => SC.session.ui.mode) === 'files', 'and declining keeps the library open');
   await page.reload(); await ready(page);
-  expect(/1 file changed/.test(await saveState(page)) && (await titleOf(page)).generalNotes === 'download me', 'after a reload the change is still there and unsaved');
+  expect(/1 file changed/.test(await saveState(page)) && ((await titleOf(page)) || {}).generalNotes === 'download me', 'after a reload the change is still there and unsaved');
   const dl2 = page.waitForEvent('download');
   await clickSave(page); await dl2;
   await editTitle(page, { generalNotes: 'download me, then more' });
@@ -319,7 +323,15 @@ async function partA(browser) {
     await ready(again);
     await again.waitForFunction(() => !SC.session.ui.busy);
     const got = (await titleOf(again) || {}).generalNotes;
-    if (wait >= 50) expect(got === 'crash ' + wait, 'crash ' + wait + ' ms after a change: the change is restored');
+    if (wait >= 50) {
+      let seen = '';
+      if (got !== 'crash ' + wait) {
+        const first = await crashState(again);
+        await again.waitForTimeout(5000); await again.reload(); await ready(again);
+        seen = { first, after5s: await crashState(again), restoredAfter5s: ((await titleOf(again)) || {}).generalNotes === 'crash ' + wait };
+      }
+      expect(got === 'crash ' + wait, 'crash ' + wait + ' ms after a change: the change is restored', seen);
+    }
     else log.push('  info crash at once after a change: ' + (got === 'crash ' + wait ? 'restored' : 'not restored (the change was still being written)'));
     if (wait === 1000) expect(/1 file changed/.test(await saveState(again)), 'and shows as unsaved');
     await ctx.close();
@@ -373,7 +385,7 @@ async function partA(browser) {
   const bSnapshot = await ev(page, async () => JSON.stringify((await window.__SC_TEST_FS__.tree()).files));
   await page.reload(); await ready(page); await page.waitForFunction(() => !SC.session.ui.busy);
   expect(new RegExp('holds the library ' + B_SLUG + ', not ' + A_SLUG).test(await message(page)), 'restoring says the folder holds another library');
-  expect((await titleOf(page)).generalNotes === 'unsaved change in A' && (await counts(page)).titles === SC_count(LIB_A[T]), 'the working copy is untouched');
+  expect(((await titleOf(page)) || {}).generalNotes === 'unsaved change in A' && (await counts(page)).titles === SC_count(LIB_A[T]), 'the working copy is untouched');
   await ev(page, () => SC.session.save());
   expect(await ev(page, async () => JSON.stringify((await window.__SC_TEST_FS__.tree()).files)) === bSnapshot, 'Save writes nothing into the other library\'s folder');
   // Put the right library back and point to it: the unsaved change is kept and saves.
@@ -455,7 +467,7 @@ async function partA(browser) {
   page = await newPage(ctx, fileURL);
   await ready(page);
   const lib = await ev(page, () => ({ slug: SC.session.store.state.library.slug, titles: Array.from(SC.session.store.state.titles.values()).map(t => t.titleID), files: Array.from(SC.session.store.state.files.keys()) }));
-  expect(lib.slug === A_SLUG && lib.titles.every(t => t === A_TID) && lib.files.every(f => f.indexOf(A_SLUG) !== -1), 'the restored copy is the library last stored, not a mixture (' + JSON.stringify(lib) + ')');
+  expect(lib.slug === A_SLUG && lib.titles.every(t => t === A_TID) && lib.files.every(f => f.indexOf(A_SLUG) !== -1), 'the restored copy is the library last stored, not a mixture (' + JSON.stringify(lib) + ')', await crashState(page));
   expect(/could not be restored/.test(await message(page)) || await ev(page, () => SC.session.ui.report.some(r => /could not be restored/.test(r.msg))), 'and says the later changes could not be restored');
   await ctx.close();
 
@@ -558,7 +570,7 @@ async function partA(browser) {
   { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
   page = await newPage(ctx, fileURL);
   await ready(page);
-  expect((await titleOf(page)).generalNotes === 'later change, stored', 'after a crash the stored change is back');
+  expect(((await titleOf(page)) || {}).generalNotes === 'later change, stored', 'after a crash the stored change is back', await crashState(page));
   expect(/could not be restored/.test(await message(page)) && await ev(page, () => SC.session.ui.report.some(r => /failed to store them/.test(r.msg))), 'and the restore says one change could not be brought back');
   await ctx.close();
 
@@ -572,7 +584,7 @@ async function partA(browser) {
   { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
   page = await newPage(ctx, fileURL);
   await ready(page);
-  expect(await ev(page, () => SC.session.ui.access) === 'owner' && (await titleOf(page)).generalNotes === 'before the crash', 'the reopened tab gets the library, with the change');
+  expect(await ev(page, () => SC.session.ui.access) === 'owner' && ((await titleOf(page)) || {}).generalNotes === 'before the crash', 'the reopened tab gets the library, with the change');
   await ctx.close();
 
   // ── Independent check, round 3 ────────────────────────────────────────

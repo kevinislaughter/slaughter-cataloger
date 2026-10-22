@@ -27,6 +27,14 @@ jobs:
         # though its output goes through tee (the default shell has no pipefail).
         shell: bash
         run: sh run-tests.sh 2>&1 | tee run-tests.log
+      - name: Name the failed checks
+        # Each failed check, with the lines that explain it, as one error on the run's page (and in the
+        # API's check-run annotations, which can be read without signing in).
+        if: failure()
+        shell: bash
+        run: |
+          msg=$(grep -n -A3 -E '^ *FAIL|^FAILED|^[A-Za-z]*Error' run-tests.log | head -60 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          echo "::error title=Failed checks::${msg}"
       - name: Keep the log
         if: always()
         uses: actions/upload-artifact@v4
