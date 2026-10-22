@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slaughter Cataloger — Issues :: Beta 2.6</title>
+<style>
+  :root{
+    --paper:#ffffff;
+    --ink:#111111;
+    --ink-soft:#4a4a4a;
+    --line:#c9c9c9;
+    --line-strong:#8a8a8a;
+    --panel:#f3f3f1;
+    --panel-dark:#e7e7e4;
+    --warn-bg:#eaeaea;
+    --warn-ink:#111111;
+    --entry:#a3410a; /* typed/entered data — set to var(--ink) to revert to pure grayscale */
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Courier New", Courier, monospace;
+    font-size:14px;
+    line-height:1.45;
+    padding:32px 20px 80px;
+  }
+
+  .wrap{max-width:1200px; margin:0 auto;}
+
+  /* ---------- Header ---------- */
+  header{margin-bottom:18px;}
+  .stamp{
+    display:flex; align-items:baseline; justify-content:space-between;
+    flex-wrap:wrap; gap:4px 20px;
+    padding-bottom:6px;
+  }
+  h1{
+    font-family:Georgia, "Times New Roman", serif;
+    font-weight:700; font-size:13px; letter-spacing:2.5px;
+    text-transform:uppercase; margin:0;
+  }
+  .tagline{font-size:11px; color:var(--ink-soft); letter-spacing:.5px;}
+  .ruler{
+    height:8px; margin-top:6px;
+    background-image:repeating-linear-gradient(90deg, var(--line-strong) 0px, var(--line-strong) 1px, transparent 1px, transparent 8px);
+    background-position:left bottom; background-size:100% 8px; background-repeat:repeat-x;
+    opacity:.6;
+  }
+
+  /* ---------- Card (form) ---------- */
+  .card{
+    position:relative; background:var(--paper);
+    border:1px solid var(--ink);
+    padding:26px 24px 20px; margin-bottom:22px;
+  }
+  .card::before{
+    content:""; position:absolute; top:14px; left:14px;
+    width:10px; height:10px; border-radius:50%;
+    border:1px solid var(--line-strong); background:var(--paper);
+    box-shadow: 22px 0 0 -1px var(--paper), 22px 0 0 -0.5px var(--line-strong);
+  }
+
+  .card-title{
+    font-family:Georgia, serif; font-size:11px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px 40px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .edit-flag{
+    display:none;
+    font-size:10px; letter-spacing:1px; text-transform:uppercase;
+    background:var(--ink); color:var(--paper); padding:2px 8px;
+  }
+  .edit-flag.show{display:inline-block;}
+  .inhand-toggle{
+    font-family:inherit; font-size:10px; letter-spacing:1px; text-transform:uppercase;
+    padding:4px 10px; border:1px solid var(--ink); background:var(--ink); color:var(--paper); cursor:pointer;
+  }
+  .inhand-toggle.inactive{background:var(--paper); color:var(--ink-soft); border-color:var(--line-strong); border-style:dashed;}
+  .header-toggle{
+    font-family:inherit; font-size:10px; letter-spacing:1px; text-transform:uppercase;
+    padding:4px 10px; border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); cursor:pointer;
+  }
+  .header-toggle.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .sub-input-inline{
+    font-family:inherit; font-size:11px; text-transform:none; letter-spacing:normal;
+    border:none; border-bottom:1px solid var(--line-strong); padding:4px 2px; outline:none;
+    background:transparent; min-width:260px; flex:1;
+  }
+
+
+  .form-tier{margin-bottom:20px;}
+  .tier-label{
+    font-family:Georgia, serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:10px; padding:5px 8px;
+    background:#fdf0e8;
+    border-bottom:1px solid var(--line);
+  }
+  .tier-hint{text-transform:none; letter-spacing:0; font-style:italic; color:#999; font-size:10px;}
+  .grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:14px 16px;}
+  .field{display:flex; flex-direction:column; gap:4px;}
+  .field.span-2{grid-column:span 2;}
+  .field.span-3{grid-column:span 3;}
+  .field.span-4{grid-column:span 4;}
+
+  .label-row{display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap;}
+  label{font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-soft);}
+  label .opt{text-transform:none; letter-spacing:0; font-style:italic; color:#999;}
+
+  .toggle-group{display:flex; gap:4px; flex-shrink:0; flex-wrap:wrap;}
+  .spec-toggle, .na-toggle, .supp-toggle, .unit-btn, .special-toggle-btn, .calendar-btn, .monthmode-btn{
+    font-family:inherit; font-size:9px; letter-spacing:.5px;
+    padding:1px 6px; border:1px solid var(--line-strong);
+    background:var(--paper); color:#aaa; cursor:pointer; text-transform:uppercase;
+    line-height:1.5; min-width:20px; text-align:center;
+  }
+  .spec-toggle:hover, .na-toggle:hover, .supp-toggle:hover, .unit-btn:hover, .special-toggle-btn:hover, .calendar-btn:hover, .monthmode-btn:hover{border-color:var(--ink); color:var(--ink-soft);}
+  .spec-toggle.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .na-toggle.active{background:var(--ink-soft); color:var(--paper); border-color:var(--ink-soft);}
+  .supp-toggle.active{background:#666; color:#fff; border-color:#666;}
+  .unit-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .special-toggle-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .calendar-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .monthmode-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  input[type="text"], input[type="number"], textarea{
+    font-family:inherit; font-size:14px; color:var(--entry); font-weight:700; background:var(--paper);
+    border:none; border-bottom:1px solid var(--line-strong); padding:6px 2px; outline:none; width:100%;
+  }
+  input[type="text"]::placeholder, input[type="number"]::placeholder, textarea::placeholder{
+    color:#999; font-weight:400;
+  }
+  input[type="text"].unaddressed, textarea.unaddressed{border-bottom-color:#e8a87c; border-bottom-width:2px;}
+  input[type="text"].guessed, textarea.guessed{border-bottom-style:dashed; border-bottom-color:var(--ink);}
+  input[type="text"]:disabled, textarea:disabled{opacity:.35; font-style:italic;}
+  input[type="text"]:focus, input[type="number"]:focus, textarea:focus{border-bottom:2px solid var(--ink); padding-bottom:5px;}
+  textarea{resize:vertical; min-height:40px;}
+  .sub-input{margin-top:4px; display:none;}
+  .year-end-input{margin-top:4px; font-size:11px !important;}
+
+  .months{display:flex; flex-wrap:wrap; gap:3px;}
+  .months.na-disabled{opacity:.35; pointer-events:none;}
+  .month-btn{
+    font-family:inherit; font-size:10px; letter-spacing:0; padding:4px 6px;
+    border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); cursor:pointer;
+  }
+  .month-btn:hover{border-color:var(--ink);}
+  .month-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .months-summary{font-size:11px; color:var(--ink-soft); margin-top:2px; min-height:14px;}
+
+
+
+  /* ---------- Auto-advance panel ---------- */
+  .autoadv{
+    margin-top:18px; padding:12px 14px;
+    background:var(--panel); border:1px solid var(--line);
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .autoadv-title{font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap;}
+  .autoadv label{display:flex; align-items:center; gap:5px; font-size:11px; text-transform:none; letter-spacing:0; color:var(--ink); cursor:pointer;}
+  .autoadv input[type="checkbox"]{accent-color:#111;}
+
+  .actions-row{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    margin-top:18px; padding-top:16px; border-top:1px dashed var(--line);
+  }
+
+  .msg{font-size:12px; padding:6px 10px; background:var(--warn-bg); color:var(--warn-ink); border:1px solid var(--line-strong); display:none;}
+  .msg.show{display:inline-block;}
+
+  button{font-family:inherit; cursor:pointer;}
+  .btn{font-size:12px; letter-spacing:1px; text-transform:uppercase; padding:9px 18px; border:1px solid var(--ink); background:var(--paper); color:var(--ink);}
+  .btn:hover{background:var(--panel-dark);}
+  .btn.primary{background:var(--ink); color:var(--paper); font-weight:bold; padding:11px 30px;}
+  .btn.primary:hover{background:#333;}
+  .btn.ghost{border-color:var(--line-strong); color:var(--ink-soft);}
+  .btn.small{padding:5px 10px; font-size:10.5px;}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+  .modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:1000;}
+  .modal-box{background:var(--paper); border:1px solid var(--ink); max-width:440px; width:90%; padding:24px;}
+  .modal-box h3{font-family:Georgia,serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;}
+  .modal-box p{font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:18px;}
+  .modal-actions{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;}
+
+  .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+
+  /* ---------- Autosave strip ---------- */
+  .autosave-strip{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    font-size:11px; color:var(--ink-soft);
+    padding:8px 12px; border:1px solid var(--line); background:var(--panel);
+    margin-bottom:18px;
+  }
+  .autosave-strip label{display:flex; align-items:center; gap:5px; cursor:pointer;}
+  .autosave-strip input[type="checkbox"]{accent-color:#111;}
+  #autosave-status{font-style:italic;}
+
+  /* ---------- Table ---------- */
+  .table-head{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;}
+  .table-head h2{font-family:Georgia, serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; margin:0;}
+  .count{font-size:11px; color:var(--ink-soft);}
+
+  .table-scroll{overflow-x:auto; overflow-y:auto; max-height:280px; border:1px solid var(--ink);}
+  .table-scroll thead th{position:sticky; top:0; background:var(--panel); z-index:1;}
+  table{border-collapse:collapse; width:100%; font-size:12px;}
+  table.full-view{min-width:1550px;}
+  @media (max-width:760px){ table.full-view{min-width:1200px;} }
+  thead th{
+    text-align:left; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft);
+    background:var(--panel); border-bottom:1px solid var(--ink); border-right:1px solid var(--line);
+    padding:8px 8px; white-space:nowrap; position:sticky; top:0; user-select:none;
+  }
+  thead th:last-child{border-right:none;}
+  thead th.sortable{cursor:pointer;}
+  thead th.sortable:hover{color:var(--ink);}
+  thead th .arrow{font-size:9px; margin-left:3px; opacity:.6;}
+  tbody td{padding:7px 8px; border-bottom:1px solid var(--line); border-right:1px solid var(--line); vertical-align:top;}
+  tbody td:last-child{border-right:none;}
+  tbody tr:nth-child(odd){background:#fafafa;}
+  tbody tr:hover{background:var(--panel-dark);}
+  tbody tr.flash{animation:flash 1.4s ease-out;}
+  tbody tr.editing-row{background:var(--panel-dark); outline:1px dashed var(--ink); outline-offset:-1px;}
+  @keyframes flash{0%{background:#dcdcdc;} 100%{background:transparent;}}
+  .col-notes{max-width:200px; white-space:pre-wrap;}
+  .spec-yes{font-weight:bold;}
+  .spec-no{color:#bbb;}
+  .spec-fields-cell, .na-fields-cell{font-size:10.5px; color:var(--ink-soft); max-width:120px; white-space:normal;}
+  .special-badge, .supp-badge{
+    display:inline-block; font-size:9.5px; letter-spacing:.5px; text-transform:uppercase;
+    background:var(--ink); color:var(--paper); padding:2px 6px;
+  }
+  .supp-badge{background:#666;}
+  .row-actions{display:flex; gap:5px; white-space:nowrap;}
+  .row-btn{border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); font-size:10px; padding:3px 7px;}
+  .row-btn:hover{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .row-btn.editing{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  .empty-state{padding:34px 10px; text-align:center; color:var(--ink-soft); font-size:12.5px; border:1px dashed var(--line-strong); background:var(--panel);}
+
+  footer{margin-top:40px; font-size:10.5px; color:#999; text-align:center; letter-spacing:.5px;}
+
+  input[type="file"]{display:none;}
+
+  @media (max-width:760px){
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .field.span-2{grid-column:span 2;}
+    .field.span-3, .field.span-4{grid-column:span 2;}
+  }
+  @media (max-width:460px){
+    .grid{grid-template-columns:1fr;}
+    .field.span-2, .field.span-3, .field.span-4{grid-column:span 1;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="stamp">
+      <h1>Slaughter Cataloger <span style="font-size:9px; letter-spacing:3px; font-weight:400; color:var(--ink-soft); vertical-align:middle;">:: Beta 2.6</span></h1>
+      <div class="tagline">Issues &nbsp;·&nbsp; Slaughter Cataloger suite</div>
+    </div>
+  </header>
+
+  <div class="card">
+    <p class="card-title">
+      New Issue Record <span class="edit-flag" id="edit-flag">Editing row</span>
+      <span id="card-live-info" style="font-family:monospace; font-size:10px; letter-spacing:1px; color:var(--entry); font-weight:700; text-transform:none; margin-left:12px;"></span>
+      <span style="flex:1"></span>
+      
+      <button type="button" id="speculative-toggle" class="header-toggle" title="Part of the cover/masthead is missing or illegible, information was left off, or the printed information is known to be factually incorrect. Auto-turned-on when you mark any field with &quot;?&quot;. Resets after each Record.">Speculative</button>
+      <button type="button" id="examined-toggle" class="inhand-toggle" title="Examined: you have personally inspected this issue. Add a note about the examined copy below. Toggle to Reported if the record is based on a secondary source — a dealer listing, WorldCat, a citation, or a photo. Sticky across records.">Examined</button>
+      <input type="text" id="f-examined-source" class="sub-input-inline" placeholder="e.g. The examined copy contains 32 consecutively numbered pages...">
+    </p>
+
+    <div class="form-tier">
+      <div class="tier-label">Data Source <span class="tier-hint">— load a Titles CSV to begin; select a title for this issue</span></div>
+      <div class="grid">
+        <div class="field span-2">
+          <div class="label-row"><label title="Import a Titles CSV exported from the Slaughter Cataloger Titles app. Required before entering issues.">Titles CSV <span class="opt">required</span></label></div>
+          <input type="file" id="f-load-titles" accept=".csv" style="display:none;">
+          <div style="display:flex; gap:8px; margin-top:2px;">
+            <button class="btn small" id="load-titles-btn" type="button">Load CSV</button>
+            <button class="btn small ghost" id="clear-titles-btn" type="button" style="display:none;">Clear CSV</button>
+          </div>
+          <div id="titles-status" style="font-size:11px; color:var(--ink-soft); margin-top:2px;"></div>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-title-selector" title="Select a title from the loaded Titles CSV. Inherits title-level defaults. Stored value is TitleID.">Select Title</label></div>
+          <select id="f-title-selector" disabled style="font-family:inherit; font-size:13px; color:var(--ink); background:var(--paper); border:1px solid var(--line-strong); padding:6px 8px; width:100%;">
+            <option value="">— Load a Titles CSV first —</option>
+          </select>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label title="TitleID of the selected title. Read-only.">TitleID</label></div>
+          <div id="title-id-display" style="font-family:monospace; font-size:12px; letter-spacing:2px; color:var(--ink-soft); padding:6px 2px; border-bottom:1px solid var(--line); min-height:28px;">—</div>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label title="Permanent issue identifier. Generated on first Record. Never changes unless deliberately migrated.">IssueID</label></div>
+          <div id="issue-id-display" style="font-family:monospace; font-size:12px; letter-spacing:2px; color:var(--entry); font-weight:700; padding:6px 2px; border-bottom:1px solid var(--line); min-height:28px;">Generated on Record</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="locked-message" class="autosave-strip" style="border-color:var(--entry); margin-bottom:16px;">
+      Load a compatible Slaughter Cataloger schema 2.0 Titles CSV before entering issues.
+    </div>
+
+    <div id="form-body">
+    <div class="form-tier">
+      <div class="tier-label">Title Level <span class="tier-hint">— inherited from selected title; override per-issue if needed</span></div>
+      <div class="grid">
+        <div class="field span-2">
+          <div class="label-row"><label for="f-title" title="The full title of the periodical as it appears on the masthead or cover.">Title</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="title">?</button><button type="button" class="na-toggle" data-field="title">N/A</button></div></div>
+          <input type="text" id="f-title" placeholder="e.g. The Saturday Review">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-subtitle" title="A secondary title or descriptive phrase that appears with the title — e.g. 'A Weekly Journal of Politics, Literature and Art.' Often changes between runs.">Subtitle <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="subtitle">?</button><button type="button" class="na-toggle" data-field="subtitle">N/A</button></div></div>
+          <input type="text" id="f-subtitle" placeholder="e.g. A Weekly Journal of Politics, Literature and Art">
+        </div>
+
+        <div class="field span-2">
+          <div class="label-row"><label for="f-former-title" title="What this periodical was called before it adopted its current title. Separate multiple former titles with semicolons.">Former Title(s) <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="formerTitle">?</button><button type="button" class="na-toggle" data-field="formerTitle">N/A</button></div></div>
+          <input type="text" id="f-former-title" placeholder="e.g. The Literary Digest">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-later-title" title="What this periodical was called after the run you are cataloging. Useful for linking a title's history.">Later Title(s) <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="laterTitle">?</button><button type="button" class="na-toggle" data-field="laterTitle">N/A</button></div></div>
+          <input type="text" id="f-later-title" placeholder="e.g. The New Review">
+        </div>
+
+        <div class="field span-2">
+          <div class="label-row"><label for="f-publisher" title="The organization or person responsible for publishing the periodical. Use the form as it appears on the issue.">Publisher</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="publisher">?</button><button type="button" class="na-toggle" data-field="publisher">N/A</button></div></div>
+          <input type="text" id="f-publisher" list="publisher-datalist" placeholder="e.g. Hearst Publications">
+          <datalist id="publisher-datalist"></datalist>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-editors" title="The editor(s) listed on the masthead for the run as a whole. Issue-specific editors or guest editors belong in Contributors.">Editor(s)</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="editors">?</button><button type="button" class="na-toggle" data-field="editors">N/A</button></div></div>
+          <input type="text" id="f-editors" placeholder="Separate multiple with semicolons">
+        </div>
+
+        <div class="field">
+          <div class="label-row"><label for="f-issn" title="International Standard Serial Number — the unique 8-digit identifier assigned to a periodical title (not to individual issues). Format: XXXX-XXXX.">ISSN</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="issn">?</button><button type="button" class="na-toggle" data-field="issn">N/A</button></div></div>
+          <input type="text" id="f-issn" placeholder="e.g. 1234-5678">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-language" title="The primary language of the publication. Sticky — stays set across records until you change it.">Language <span class="opt">sticky</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="language">?</button><button type="button" class="na-toggle" data-field="language">N/A</button></div></div>
+          <input type="text" id="f-language" value="English">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-series" title="A named series this title belongs to — e.g. 'New Series' or 'Colonial Edition.' Not the same as a volume sequence; use this when the publisher explicitly groups titles under a series name.">Series</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="series">?</button><button type="button" class="na-toggle" data-field="series">N/A</button></div></div>
+          <input type="text" id="f-series" list="series-datalist" placeholder="e.g. New Series or Colonial Edition">
+          <datalist id="series-datalist"></datalist>
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-series-number" title="The number of this title within the named series — e.g. NS-14. Distinct from Volume or Issue numbering.">Series No.</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="seriesNumber">?</button><button type="button" class="na-toggle" data-field="seriesNumber">N/A</button></div></div>
+          <input type="text" id="f-series-number" placeholder="e.g. Vol. 12 Ser. 2">
+        </div>
+
+        <div class="field">
+          <div class="label-row"><label for="f-city" title="The city of publication as stated on the issue. If it changed over the run, record the city for each affected issue.">City</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="city">?</button><button type="button" class="na-toggle" data-field="city">N/A</button></div></div>
+          <input type="text" id="f-city" list="city-datalist">
+          <datalist id="city-datalist"></datalist>
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-state" title="State or province of publication. Particularly useful for US small-press material where city alone may be ambiguous.">State/Province</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="state">?</button><button type="button" class="na-toggle" data-field="state">N/A</button></div></div>
+          <input type="text" id="f-state" list="state-datalist">
+          <datalist id="state-datalist"></datalist>
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-country" title="Country of publication. Sticky — stays set across records until you change it.">Country</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="country">?</button><button type="button" class="na-toggle" data-field="country">N/A</button></div></div>
+          <input type="text" id="f-country" list="country-datalist" value="USA">
+          <datalist id="country-datalist"></datalist>
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-frequency" title="How often the periodical was issued — e.g. monthly, quarterly, irregular. Helps identify gaps in a run.">Frequency</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="frequency">?</button><button type="button" class="na-toggle" data-field="frequency">N/A</button></div></div>
+          <input type="text" id="f-frequency" list="frequency-datalist" placeholder="e.g. monthly, quarterly, irregular">
+          <datalist id="frequency-datalist">
+            <option value="daily"><option value="weekly"><option value="fortnightly">
+            <option value="monthly"><option value="bimonthly"><option value="quarterly">
+            <option value="three times a year"><option value="semiannual"><option value="annual">
+            <option value="irregular">
+          </datalist>
+        </div>
+        <div class="field span-2"></div>
+      </div>
+    </div>
+
+    <div class="form-tier">
+      <div class="tier-label">Issue Level <span class="tier-hint">— facts about this specific numbered issue, true of every copy</span></div>
+      <div class="grid">
+        <div class="field">
+          <div class="label-row"><label for="f-volume" title="The volume number, if the periodical uses volume groupings. Often corresponds to a year or a bound set.">Volume</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="volume">?</button><button type="button" class="na-toggle" data-field="volume">N/A</button></div></div>
+          <input type="text" id="f-volume">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-issue" title="The issue or number within the current volume — e.g. a journal that resets numbering each volume would use this field.">Issue / No.</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="issue">?</button><button type="button" class="na-toggle" data-field="issue">N/A</button><button type="button" class="supp-toggle" id="supplement-toggle" title="Marks this as a supplement or appendix to the current Volume/Number rather than a standalone numbered issue. Reveals a label field (e.g. &quot;Appendix II&quot;). Turns off after recording.">Supp</button></div></div>
+          <input type="text" id="f-issue">
+          <input type="text" id="f-supplement-label" class="sub-input" placeholder="e.g. Appendix II">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-number" title="The whole number — a running count of issues across all volumes from the very first issue. Many periodicals print both a volume-relative number and a cumulative whole number.">Whole No.</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="number">?</button><button type="button" class="na-toggle" data-field="number">N/A</button><button type="button" class="special-toggle-btn" id="special-toggle" title="Marks this as a special or themed issue — add a designation below (e.g. Special Poetry Issue, Double Issue). Volume, Issue, and Whole No. remain fully editable. Turns off after recording.">Special</button></div></div>
+          <input type="text" id="f-number">
+          <input type="text" id="f-special-label" class="sub-input" placeholder="Special Issue">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-year" title="The year of publication in the calendar system used. Use CE for the standard Gregorian calendar; toggle to Alt. for non-standard epochs or dating systems and add a note.">Year</label><div class="toggle-group"><button type="button" class="calendar-btn active" data-calendar="ce" title="Common Era / standard calendar">CE</button><button type="button" class="calendar-btn" data-calendar="alt" title="Non-traditional epoch or calendar — some periodicals date issues from a different starting point, and a &quot;year&quot; may not run Jan–Dec.">Alt.</button><button type="button" class="spec-toggle" data-field="year">?</button><button type="button" class="na-toggle" data-field="year">N/A</button></div></div>
+          <input type="text" id="f-year" inputmode="numeric" placeholder="e.g. 1898">
+          <input type="text" id="f-year-end" class="year-end-input" inputmode="numeric" placeholder="End year, if issue spans (e.g. 1990)" title="For issues covering a year boundary, e.g. Dec. 1989 – Jan. 1990: put 1989 in Year and 1990 here.">
+          <input type="text" id="f-calendar-note" class="sub-input" placeholder="e.g. Year 37 of the Republic, Hebrew calendar, fiscal year">
+        </div>
+
+        <div class="field span-2">
+          <div class="label-row"><label>Month(s)</label><div class="toggle-group"><button type="button" class="monthmode-btn active" data-monthmode="months" title="Standard Jan–Dec dating">Months</button><button type="button" class="monthmode-btn" data-monthmode="season" title="Some journals date issues by season instead of month (e.g. &quot;Spring 1990&quot;). Stays as set across records.">Season</button><button type="button" class="spec-toggle" data-field="months">?</button><button type="button" class="na-toggle" data-field="months">N/A</button></div></div>
+          <div class="months" id="months-wrap"></div>
+          <div class="months season-wrap" id="season-wrap" style="display:none;"></div>
+          <div class="months-summary" id="months-summary"></div>
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-day" title="Day of publication, for daily or weekly periodicals — e.g. 14, Tuesday, or Christmas. Not used for monthly or coarser frequencies.">Day <span class="opt">for daily/weekly</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="day">?</button><button type="button" class="na-toggle" data-field="day">N/A</button></div></div>
+          <input type="text" id="f-day" placeholder="e.g. 14, Tuesday, Christmas">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-date-printed" title="The date exactly as it appears on the issue — transcribed verbatim. Use this alongside the structured Month/Year fields when the printed form is unusual, archaic, or uses a non-standard calendar.">Date as Printed</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="datePrinted">?</button><button type="button" class="na-toggle" data-field="datePrinted">N/A</button></div></div>
+          <input type="text" id="f-date-printed" placeholder="e.g. March-April, 1989 / Midsummer Number / Christmas 1922">
+        </div>
+
+        <div class="field">
+          <div class="label-row"><label for="f-price" title="The cover price as printed on the issue. A bibliographic fact about the issue, not what you paid.">Price <span class="opt">as printed · sticky</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="price">?</button><button type="button" class="na-toggle" data-field="price">N/A</button></div></div>
+          <input type="text" id="f-price" placeholder="e.g. as printed on the cover" inputmode="decimal">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-pages" title="Total page count of the issue. Sticky — stays set across records, since many periodicals have a consistent page count per run.">Pages <span class="opt">sticky</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="pages">?</button><button type="button" class="na-toggle" data-field="pages">N/A</button></div></div>
+          <input type="text" id="f-pages" inputmode="numeric" placeholder="e.g. 8">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-size" title="Physical dimensions of the issue — width × height. Sticky. Use the in/cm toggle to set units.">Size <span class="opt">sticky</span></label><div class="toggle-group"><button type="button" class="unit-btn active" data-unit="in">in</button><button type="button" class="unit-btn" data-unit="cm">cm</button><button type="button" class="spec-toggle" data-field="size">?</button><button type="button" class="na-toggle" data-field="size">N/A</button></div></div>
+          <input type="text" id="f-size" placeholder="e.g. 8.5 x 11">
+        </div>
+
+        <div class="field span-2">
+          <div class="label-row"><label for="f-contributors" title="People credited on this specific issue but not the regular masthead — guest editors, featured authors, illustrators, etc. Separate with semicolons.">Contributors <span class="opt">issue-specific</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="contributors">?</button><button type="button" class="na-toggle" data-field="contributors">N/A</button></div></div>
+          <input type="text" id="f-contributors" placeholder="e.g. guest editor, featured authors, illustrators">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-edition" title="Distinguishes simultaneous editions of the same issue — e.g. City edition vs. National edition. Included in the duplicate check so both editions can be cataloged separately.">Edition <span class="opt">if multiple editions of same issue</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="edition">?</button><button type="button" class="na-toggle" data-field="edition">N/A</button></div></div>
+          <input type="text" id="f-edition" placeholder="e.g. City edition, National edition, Early edition">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-printer" title="The printer or printing house for this specific issue. Often differs from the publisher and may change across a run.">Printer <span class="opt">sticky</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="printer">?</button><button type="button" class="na-toggle" data-field="printer">N/A</button></div></div>
+          <input type="text" id="f-printer" placeholder="e.g. Example Printing Company">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-printer-location" title="City or address of the printer, as printed on the issue. May differ from the publisher's city.">Printer Location <span class="opt">sticky</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="printerLocation">?</button><button type="button" class="na-toggle" data-field="printerLocation">N/A</button></div></div>
+          <input type="text" id="f-printer-location" placeholder="e.g. Croydon">
+        </div>
+
+        <div class="field span-4">
+          <div class="label-row">
+            <label for="f-shortname" title="A compact reference label for this issue, used for barcode labels and quick identification. Auto-filled from Title + Vol/No — type anything to override." >Short Name <span class="opt">auto-filled from Title + Vol/No — override freely</span></label>
+            <div class="toggle-group"><button type="button" class="spec-toggle" data-field="shortname">?</button><button type="button" class="na-toggle" data-field="shortname">N/A</button></div>
+          </div>
+          <input type="text" id="f-shortname" placeholder="e.g. Saturday Review V2N1">
+        </div>
+
+        <div class="field span-4">
+          <div class="label-row"><label for="f-notes" title="Notes about the issue as a published work — theme, editorial changes, printing anomalies common to every copy, historical context. Not for notes about your specific copy.">Notes on Issue <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="notes">?</button><button type="button" class="na-toggle" data-field="notes">N/A</button></div></div>
+          <textarea id="f-notes" rows="2" placeholder="e.g. theme of issue, editorial changes, printing anomalies shared by every copy, historical context"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="autoadv">
+      <span class="autoadv-title">Auto-advance after recording:</span>
+      <label><input type="checkbox" id="auto-volume"> Volume</label>
+      <label><input type="checkbox" id="auto-issue" checked> Issue/No.</label>
+      <label><input type="checkbox" id="auto-number" checked> Whole No.</label>
+      <label><input type="checkbox" id="auto-months" checked> Month(s)</label>
+      <label><input type="checkbox" id="auto-year"> Year <span style="color:#999;">(only if months don't roll into a new year)</span></label>
+    </div>
+
+    </div><!-- end form-body -->
+
+    <div class="actions-row">
+      <div id="dupe-msg" class="msg">⚠ That combination is already recorded. Adjust before recording.</div>
+      <div style="flex:1"></div>
+      <div class="toolbar">
+        <button class="btn ghost" id="cancel-edit-btn" style="display:none;">Cancel edit</button>
+        <button class="btn ghost" id="clear-form-btn">Clear form</button>
+        <button class="btn primary" id="record-btn">Record</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="autosave-strip" id="undo-strip" style="display:none;">
+    <span id="undo-msg"></span>
+    <button class="btn small ghost" id="undo-delete-btn">Undo</button>
+  </div>
+
+  <div class="autosave-strip" id="restore-banner" style="display:none; border-color:var(--ink);">
+    <span id="restore-msg" style="font-weight:bold;"></span>
+    <button class="btn small" id="restore-yes-btn">Restore</button>
+    <button class="btn small ghost" id="restore-no-btn">Discard</button>
+  </div>
+
+  <div class="autosave-strip">
+    <label><input type="checkbox" id="autosave-toggle" checked> Autosave a CSV snapshot every 15 min</label>
+    <button class="btn small ghost" id="autosave-now-btn">Autosave now</button>
+    <span id="autosave-status">No autosave yet.</span>
+  </div>
+
+  <div class="table-head">
+    <h2>Compiled Issues</h2>
+    <span class="count" id="entry-count">0 issues cataloged</span>
+  </div>
+
+  <div class="toolbar" style="margin-bottom:12px;">
+    <button class="btn small" id="export-btn">Export .csv</button>
+    <button class="btn small" id="copy-btn">Copy to clipboard</button>
+    <button class="btn small ghost" id="import-btn">Import .csv</button>
+    <button class="btn small ghost" id="sort-reset-btn">Recorded order</button>
+    <button class="btn small ghost" id="table-view-toggle">Show full view</button>
+    <button class="btn small ghost" id="clear-all-btn">Clear all entries</button>
+    <input type="file" id="import-file" accept=".csv,text/csv">
+    <span class="count" id="copy-status"></span>
+  </div>
+
+  <div id="table-container">
+    <div class="empty-state">No issues recorded yet. Fill out the form above and hit Record.</div>
+  </div>
+
+  <footer>Data stays in this browser on this computer. Export CSV regularly for permanent storage. &nbsp;·&nbsp; <a href="slaughter-01titles-beta2.6.html" style="color:inherit; text-decoration:none; border-bottom:1px solid var(--line-strong);">Titles</a> &nbsp;·&nbsp; <a href="slaughter-03contents-beta2.6.html" style="color:inherit; text-decoration:none; border-bottom:1px solid var(--line-strong);">Contents</a> &nbsp;·&nbsp; <a href="slaughter-04compiler-beta2.6.html" style="color:inherit; text-decoration:none; border-bottom:1px solid var(--line-strong);">Compiler</a> &nbsp;·&nbsp; <a href="slaughter-cataloger-beta2.6.html" style="color:inherit; text-decoration:none; border-bottom:1px solid var(--line-strong);">Documentation</a></footer>
+</div>
+
+<script>
+(function(){
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var TOGGLE_FIELD_KEYS = ["title","subtitle","formerTitle","laterTitle","publisher","editors","issn","language","series","seriesNumber","city","state","country","frequency","shortname","contributors","printer","printerLocation","edition","volume","issue","number","months","day","datePrinted","year","price","pages","size","notes"];
+  var TOGGLE_FIELD_LABELS = {
+    title:"Title", subtitle:"Subtitle", formerTitle:"Former Title(s)", laterTitle:"Later Title(s)",
+    publisher:"Publisher", editors:"Editor(s)", issn:"ISSN", language:"Language",
+    series:"Series", seriesNumber:"Series No.", city:"City", state:"State/Province", country:"Country", frequency:"Frequency",
+    shortname:"Short Name", contributors:"Contributors", printer:"Printer", printerLocation:"Printer Location", edition:"Edition",
+    volume:"Volume", issue:"Issue / No.", number:"Whole No.", months:"Month(s)", day:"Day", datePrinted:"Date as Printed", year:"Year",
+    price:"Price", pages:"Pages", size:"Size", notes:"Notes on Issue"
+  };
+  var STICKY_ON_CLEAR = {pages:true, size:true, price:true, country:true, language:true, printer:true, printerLocation:true};
+
+  // ---------- IssueID generation ----------
+  var WEAK_WORDS = ['THE','A','AN','AND','OF','FOR','IN','ON','AT','TO','BY'];
+  var KEY_ALPHABET = '23456789ABCDEFGHJKMNPQRSTUVWYZ';
+
+  function generateTitleStem(title){
+    var words = title.toUpperCase().replace(/[^A-Z0-9 ]/g, '').split(/\s+/).filter(Boolean);
+    // Remove weak words unless they're all we have
+    var significant = words.filter(function(w){ return WEAK_WORDS.indexOf(w) === -1; });
+    if(significant.length === 0) significant = words;
+    if(significant.length === 0) return 'XXXXXXX';
+
+    var stem = '';
+    if(significant.length === 1){
+      stem = significant[0].substring(0, 7);
+    } else if(significant.length === 2){
+      stem = significant[0].substring(0, 3) + significant[1].substring(0, 4);
+    } else if(significant.length === 3){
+      stem = significant[0].substring(0, 3) + significant[1].substring(0, 2) + significant[2].substring(0, 2);
+    } else {
+      stem = significant[0].substring(0, 2) + significant[1].substring(0, 2) + significant[2].substring(0, 2) + significant[3].substring(0, 1);
+    }
+    while(stem.length < 7) stem += 'X';
+    return stem.substring(0, 7);
+  }
+
+  function generateTitleCode(title){
+    return generateTitleStem(title) + 'X';
+  }
+
+  function generateKeyToken(){
+    var token = 'K';
+    for(var i = 0; i < 6; i++){
+      token += KEY_ALPHABET.charAt(Math.floor(Math.random() * KEY_ALPHABET.length));
+    }
+    return token;
+  }
+
+  function buildTitleID(){
+    return selectedTitleID || '';
+  }
+
+  // Validate IssueID format
+
+  // Check for duplicate key token among existing entries
+  function isTokenUnique(issueID){
+    return !entries.some(function(e){ return e.issueID === issueID; });
+  }
+
+  function buildIssueID(titleID){
+    return titleID + '-' + generateKeyToken();
+  }
+
+  function generateUniqueIssueID(titleID){
+    if(!titleID) return '';
+    var id;
+    var attempts = 0;
+    do {
+      id = buildIssueID(titleID);
+      attempts++;
+    } while(!isTokenUnique(id) && attempts < 100);
+    return id;
+  }
+
+  // Track current IssueID for editing
+  var currentEditIssueID = null;
+
+  var entries = [];
+  var selectedMonths = [];
+  var specFields = {};   // resets after each Record ("?")
+  var naFields = {};     // sticky across records ("N/A")
+  var editingIndex = null;
+  var sortState = {key:null, dir:1};
+  var specialIssueOn = false;   // NOT sticky
+  var supplementOn = false;     // NOT sticky
+  var sizeUnit = 'in';          // sticky
+  var yearCalendar = 'ce';      // sticky ('ce' or 'alt')
+
+  // ---------- Field refs ----------
+  var f = {
+    title: document.getElementById('f-title'),
+    subtitle: document.getElementById('f-subtitle'),
+    formerTitle: document.getElementById('f-former-title'),
+    laterTitle: document.getElementById('f-later-title'),
+    shortname: document.getElementById('f-shortname'),
+    contributors: document.getElementById('f-contributors'),
+    printer: document.getElementById('f-printer'),
+    printerLocation: document.getElementById('f-printer-location'),
+    issn: document.getElementById('f-issn'),
+    publisher: document.getElementById('f-publisher'),
+    editors: document.getElementById('f-editors'),
+    series: document.getElementById('f-series'),
+    seriesNumber: document.getElementById('f-series-number'),
+    volume: document.getElementById('f-volume'),
+    issue: document.getElementById('f-issue'),
+    number: document.getElementById('f-number'),
+    year: document.getElementById('f-year'),
+    city: document.getElementById('f-city'),
+    state: document.getElementById('f-state'),
+    country: document.getElementById('f-country'),
+    language: document.getElementById('f-language'),
+    price: document.getElementById('f-price'),
+    pages: document.getElementById('f-pages'),
+    size: document.getElementById('f-size'),
+    notes: document.getElementById('f-notes'),
+    specialLabel: document.getElementById('f-special-label'),
+    supplementLabel: document.getElementById('f-supplement-label'),
+    calendarNote: document.getElementById('f-calendar-note'),
+    yearEnd: document.getElementById('f-year-end'),
+    datePrinted: document.getElementById('f-date-printed'),
+    day: document.getElementById('f-day'),
+    edition: document.getElementById('f-edition'),
+    frequency: document.getElementById('f-frequency'),
+    examinedSource: document.getElementById('f-examined-source')
+  };
+
+  // ---------- IssueID: live TitleID display + auto-suggest ----------
+
+  // ---------- Titles CSV + Title selector ----------
+  var loadedTitles = [];
+  var selectedTitleID = '';
+  var selectedTitle = null;
+  var titlesLoaded = false;
+  var titleLibrarySlug = '';
+  var titleLibraryName = '';
+  var titleSelector = document.getElementById('f-title-selector');
+  var formBody = document.getElementById('form-body');
+  var lockedMessage = document.getElementById('locked-message');
+
+  function lockForm(){
+    formBody.style.display = 'none';
+    lockedMessage.style.display = '';
+    document.getElementById('record-btn').disabled = true;
+    titleSelector.disabled = true;
+  }
+  function unlockForm(){
+    formBody.style.display = '';
+    lockedMessage.style.display = 'none';
+    document.getElementById('record-btn').disabled = false;
+    titleSelector.disabled = false;
+  }
+
+  function updateCardLiveInfo(){
+    var sn = f.shortname ? f.shortname.value.trim() : '';
+    var tid = selectedTitleID;
+    var parts = [];
+    if(sn) parts.push(sn);
+    if(tid) parts.push(tid);
+    document.getElementById('card-live-info').textContent = parts.join(' \u00b7 ');
+  }
+
+  // Load Titles CSV — button triggers hidden file input
+  document.getElementById('load-titles-btn').addEventListener('click', function(){
+    document.getElementById('f-load-titles').click();
+  });
+
+  // Clear Titles CSV
+  document.getElementById('clear-titles-btn').addEventListener('click', function(){
+    if(!confirm('Clear the loaded Titles CSV? This will lock the form until a new CSV is loaded.')) return;
+    loadedTitles = [];
+    selectedTitleID = '';
+    selectedTitle = null;
+    titlesLoaded = false;
+    titleLibrarySlug = '';
+    titleLibraryName = '';
+    titleSelector.innerHTML = '<option value="">— Load a Titles CSV first —</option>';
+    document.getElementById('titles-status').textContent = '';
+    document.getElementById('title-id-display').textContent = '—';
+    document.getElementById('clear-titles-btn').style.display = 'none';
+    lockForm();
+  });
+
+  document.getElementById('f-load-titles').addEventListener('change', function(evt){
+    var file = evt.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var rows = parseCSV(e.target.result);
+        if(rows.length < 2){ document.getElementById('titles-status').textContent = 'CSV appears empty.'; return; }
+        var headers = rows[0];
+        function val(r, name){ var i = headers.indexOf(name); return i >= 0 && r[i] ? r[i].trim() : ''; }
+        var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+        if(toolIdx >= 0 && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Titles'){
+          alert('This does not appear to be a compatible Slaughter Cataloger schema 2.0 Titles CSV.'); return;
+        }
+        loadedTitles = [];
+        rows.slice(1).forEach(function(r){
+          if(r.length === 1 && r[0] === '') return;
+          loadedTitles.push({
+            titleID: val(r,'TitleID'), titleCode: val(r,'Title Code'),
+            firstYear: val(r,'First Year of Publication (CE)'),
+            canonicalTitle: val(r,'Canonical Title'),
+            subtitle: val(r,'Subtitle'),
+            formerTitles: val(r,'Former Title(s)'), laterTitles: val(r,'Later Title(s)'),
+            publisher: val(r,'Publisher'), editors: val(r,'Editor(s)'),
+            city: val(r,'City'), state: val(r,'State / Province'),
+            country: val(r,'Country'), language: val(r,'Language'),
+            frequency: val(r,'Frequency'), issn: val(r,'ISSN'),
+            librarySlug: val(r,'Title Library Slug'), libraryName: val(r,'Title Library Name')
+          });
+        });
+        if(loadedTitles.length === 0){ document.getElementById('titles-status').textContent = 'No titles found.'; return; }
+        titleLibrarySlug = loadedTitles[0].librarySlug || '';
+        titleLibraryName = loadedTitles[0].libraryName || '';
+        titleSelector.innerHTML = '<option value="">— Select a title —</option>';
+        loadedTitles.forEach(function(t){
+          var opt = document.createElement('option');
+          opt.value = t.titleID;
+          opt.textContent = t.canonicalTitle + ' — ' + t.titleID;
+          titleSelector.appendChild(opt);
+        });
+        titlesLoaded = true; unlockForm();
+        document.getElementById('clear-titles-btn').style.display = '';
+        document.getElementById('titles-status').textContent = loadedTitles.length + ' title(s) loaded from ' + (titleLibrarySlug || 'Titles CSV') + '.';
+      }catch(err){ alert('Could not parse Titles CSV.'); }
+      evt.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // Title selector change — inherit fields
+  titleSelector.addEventListener('change', function(){
+    selectedTitleID = titleSelector.value;
+    selectedTitle = null;
+    loadedTitles.forEach(function(t){ if(t.titleID === selectedTitleID) selectedTitle = t; });
+    document.getElementById('title-id-display').textContent = selectedTitleID || '—';
+    if(selectedTitle){
+      f.title.value = selectedTitle.canonicalTitle || '';
+      f.subtitle.value = selectedTitle.subtitle || '';
+      f.formerTitle.value = selectedTitle.formerTitles || '';
+      f.laterTitle.value = selectedTitle.laterTitles || '';
+      f.publisher.value = selectedTitle.publisher || '';
+      f.editors.value = selectedTitle.editors || '';
+      f.issn.value = selectedTitle.issn || '';
+      f.language.value = selectedTitle.language || 'English';
+      f.city.value = selectedTitle.city || '';
+      f.state.value = selectedTitle.state || '';
+      f.country.value = selectedTitle.country || '';
+      f.frequency.value = selectedTitle.frequency || '';
+      shortNameManual = false;
+      f.shortname.value = buildShortName();
+      updateCardLiveInfo();
+      updateUnaddressed();
+    }
+  });
+
+  lockForm(); // Start locked
+
+  var dupeMsg = document.getElementById('dupe-msg');
+  var recordBtn = document.getElementById('record-btn');
+  var cancelEditBtn = document.getElementById('cancel-edit-btn');
+  var editFlag = document.getElementById('edit-flag');
+
+  // ---------- Short Name auto-fill ----------
+  var shortNameManual = false; // true once user has typed in the field directly
+
+  function buildShortName(){
+    var title = f.title.value.trim();
+    var vol   = f.volume.value.trim();
+    var iss   = f.issue.value.trim();
+    var num   = f.number.value.trim();
+    if(!title) return '';
+    var parts = [title];
+    if(vol)  parts.push('V' + vol);
+    if(iss)  parts.push('I' + iss);
+    if(num)  parts.push('N' + num);
+    return parts.join(' ');
+  }
+
+  function maybeAutoFillShortName(){
+    if(shortNameManual) return;
+    var generated = buildShortName();
+    if(generated) f.shortname.value = generated;
+  }
+
+  f.shortname.addEventListener('input', function(){
+    shortNameManual = (f.shortname.value !== buildShortName());
+    updateCardLiveInfo();
+  });
+
+  // Wire auto-fill to the fields that feed it
+  [f.title, f.volume, f.issue, f.number, f.year].forEach(function(el){
+    el.addEventListener('input', function(){
+      maybeAutoFillShortName();
+      updateCardLiveInfo();
+    });
+  });
+
+  // ---------- Speculative toggle (NOT sticky — resets after each Record) ----------
+  var speculativeOn = false;
+  var speculativeManual = false; // true if user clicked the header toggle directly
+  var speculativeToggleBtn = document.getElementById('speculative-toggle');
+  function setSpeculative(on){
+    speculativeOn = on;
+    speculativeToggleBtn.classList.toggle('active', on);
+  }
+  function updateSpeculativeFromFields(){
+    // If manually set by user, don't override; otherwise follow field-level flags
+    if(speculativeManual) return;
+    var anySpec = TOGGLE_FIELD_KEYS.some(function(k){ return !!specFields[k]; });
+    setSpeculative(anySpec);
+  }
+  speculativeToggleBtn.addEventListener('click', function(){
+    speculativeManual = true; // user took manual control
+    setSpeculative(!speculativeOn);
+  });
+
+  // ---------- Examined/Reported toggle (sticky across records) ----------
+  var examinedOn = true;
+  var examinedToggleBtn = document.getElementById('examined-toggle');
+  var examinedSourceInput = document.getElementById('f-examined-source');
+  function setExamined(on){
+    examinedOn = on;
+    examinedToggleBtn.textContent = on ? 'Examined' : 'Reported';
+    examinedToggleBtn.classList.toggle('inactive', !on);
+    examinedSourceInput.style.display = '';
+    examinedSourceInput.placeholder = on
+      ? 'e.g. The examined copy contains 32 consecutively numbered pages...'
+      : 'e.g. eBay listing, WorldCat, cited in [bibliography], photo from J. Smith';
+  }
+  examinedToggleBtn.addEventListener('click', function(){ setExamined(!examinedOn); });
+
+  // ---------- Month / Season buttons ----------
+  var SEASONS = ["Spring","Summer","Fall","Winter"];
+  var monthsWrap = document.getElementById('months-wrap');
+  var seasonWrap = document.getElementById('season-wrap');
+  var selectedSeasons = [];
+  var monthMode = 'months'; // sticky ('months' or 'season')
+
+  MONTHS.forEach(function(m, idx){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'month-btn';
+    b.textContent = m;
+    b.dataset.idx = idx;
+    b.addEventListener('click', function(){
+      var i = selectedMonths.indexOf(idx);
+      if(i === -1){ selectedMonths.push(idx); } else { selectedMonths.splice(i,1); }
+      selectedMonths.sort(function(a,b){return a-b;});
+      renderMonthButtons();
+    });
+    monthsWrap.appendChild(b);
+  });
+
+  SEASONS.forEach(function(s, idx){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'month-btn';
+    b.textContent = s;
+    b.dataset.idx = idx;
+    b.addEventListener('click', function(){
+      var i = selectedSeasons.indexOf(idx);
+      if(i === -1){ selectedSeasons.push(idx); } else { selectedSeasons.splice(i,1); }
+      selectedSeasons.sort(function(a,b){return a-b;});
+      renderSeasonButtons();
+    });
+    seasonWrap.appendChild(b);
+  });
+
+  // Detect a circularly contiguous run (e.g. [11,0] = Dec–Jan). Returns {start,len} or null.
+  function circularRun(idxArr, cycle){
+    if(idxArr.length === 0 || idxArr.length === cycle) return null;
+    var inSet = {};
+    idxArr.forEach(function(i){ inSet[i] = true; });
+    // find gaps in circular arrangement
+    var gapStarts = [];
+    for(var i=0;i<cycle;i++){
+      if(inSet[i] && !inSet[(i+1)%cycle]) gapStarts.push(i);
+    }
+    if(gapStarts.length !== 1) return null; // exactly one gap = one contiguous run
+    var runEnd = gapStarts[0];
+    var runStart = runEnd;
+    while(inSet[(runStart - 1 + cycle) % cycle]) runStart = (runStart - 1 + cycle) % cycle;
+    return {start: runStart, len: idxArr.length, end: runEnd};
+  }
+
+  function periodLabel(idxArr, names){
+    if(idxArr.length === 0) return '';
+    if(idxArr.length === 1) return names[idxArr[0]];
+    var run = circularRun(idxArr, names.length);
+    if(run) return names[run.start] + '–' + names[run.end];
+    return idxArr.map(function(i){return names[i];}).join(', ');
+  }
+
+  function parsePeriodLabel(label, names){
+    if(!label) return [];
+    if(label.indexOf('–') !== -1 || label.indexOf('-') !== -1){
+      var parts = label.split(/–|-/).map(function(s){return s.trim();});
+      var startIdx = names.indexOf(parts[0]);
+      var endIdx = names.indexOf(parts[1]);
+      if(startIdx !== -1 && endIdx !== -1){
+        var out = [];
+        var i = startIdx;
+        while(true){
+          out.push(i);
+          if(i === endIdx) break;
+          i = (i + 1) % names.length; // wraps: Dec–Jan works
+          if(out.length > names.length) break; // safety
+        }
+        return out.sort(function(a,b){return a-b;});
+      }
+    }
+    return label.split(',').map(function(s){return names.indexOf(s.trim());}).filter(function(i){return i!==-1;});
+  }
+
+  function monthsLabel(idxArr){ return periodLabel(idxArr, MONTHS); }
+  function parseMonthsLabel(label){ return parsePeriodLabel(label, MONTHS); }
+  function seasonsLabel(idxArr){ return periodLabel(idxArr, SEASONS); }
+  function parseSeasonsLabel(label){ return parsePeriodLabel(label, SEASONS); }
+  function dateLabel(e){ return e.monthMode === 'season' ? seasonsLabel(e.seasons || []) : monthsLabel(e.months || []); }
+
+  function renderMonthButtons(){
+    Array.prototype.forEach.call(monthsWrap.children, function(btn){
+      var idx = parseInt(btn.dataset.idx, 10);
+      btn.classList.toggle('active', selectedMonths.indexOf(idx) !== -1);
+    });
+    updateDateSummary();
+  }
+
+  function renderSeasonButtons(){
+    Array.prototype.forEach.call(seasonWrap.children, function(btn){
+      var idx = parseInt(btn.dataset.idx, 10);
+      btn.classList.toggle('active', selectedSeasons.indexOf(idx) !== -1);
+    });
+    updateDateSummary();
+  }
+
+  function updateDateSummary(){
+    var label = monthMode === 'season' ? seasonsLabel(selectedSeasons) : monthsLabel(selectedMonths);
+    document.getElementById('months-summary').textContent = label;
+  }
+
+  function setMonthMode(mode){
+    monthMode = mode;
+    Array.prototype.forEach.call(document.querySelectorAll('.monthmode-btn'), function(b){
+      b.classList.toggle('active', b.dataset.monthmode === mode);
+    });
+    monthsWrap.style.display = (mode === 'season') ? 'none' : '';
+    seasonWrap.style.display = (mode === 'season') ? '' : 'none';
+    updateDateSummary();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.monthmode-btn'), function(btn){
+    btn.addEventListener('click', function(){ setMonthMode(btn.dataset.monthmode); });
+  });
+
+  // ---------- "?" and "N/A" toggles ----------
+  // Store original placeholders so we can restore them when N/A is toggled off
+  var originalPlaceholders = {};
+  TOGGLE_FIELD_KEYS.forEach(function(key){
+    if(f[key]) originalPlaceholders[key] = f[key].placeholder || '';
+  });
+
+  function setFieldDisabled(key, disabled){
+    if(key === 'months'){ monthsWrap.classList.toggle('na-disabled', disabled); seasonWrap.classList.toggle('na-disabled', disabled); return; }
+    if(f[key]){
+      f[key].disabled = disabled;
+      if(disabled){
+        f[key].classList.remove('unaddressed');
+        f[key].placeholder = '[N/A]';
+      } else {
+        f[key].placeholder = originalPlaceholders[key] || '';
+      }
+    }
+  }
+
+  TOGGLE_FIELD_KEYS.forEach(function(key){ specFields[key] = false; naFields[key] = false; });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.spec-toggle'), function(btn){
+    var key = btn.dataset.field;
+    btn.title = 'Mark as speculative';
+    btn.addEventListener('click', function(){
+      specFields[key] = !specFields[key];
+      btn.classList.toggle('active', specFields[key]);
+      // If field was N/A, clear that state and re-enable the field
+      if(specFields[key] && naFields[key]){
+        naFields[key] = false;
+        setFieldDisabled(key, false);
+        var naBtn = document.querySelector('.na-toggle[data-field="' + key + '"]');
+        if(naBtn) naBtn.classList.remove('active');
+      }
+      updateGuessedStyles();
+      updateUnaddressed();
+      updateSpeculativeFromFields();
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){
+    var key = btn.dataset.field;
+    btn.addEventListener('click', function(){
+      naFields[key] = !naFields[key];
+      btn.classList.toggle('active', naFields[key]);
+      if(naFields[key]){
+        if(key === 'months'){
+          selectedMonths = []; selectedSeasons = [];
+          renderMonthButtons(); renderSeasonButtons();
+        }
+        else if(f[key]) f[key].value = '';
+        // N/A activated: clear ? for this field
+        if(specFields[key]){
+          specFields[key] = false;
+          var specBtn = document.querySelector('.spec-toggle[data-field="' + key + '"]');
+          if(specBtn) specBtn.classList.remove('active');
+          updateGuessedStyles();
+        }
+      }
+      setFieldDisabled(key, naFields[key]);
+      updateUnaddressed();
+      updateSpeculativeFromFields();
+    });
+  });
+
+  function updateGuessedStyles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      if(key === 'months') return;
+      if(f[key]) f[key].classList.toggle('guessed', !!specFields[key]);
+    });
+  }
+
+  // Unaddressed: field has no value, no ?, no N/A — shown as light orange underline
+  function updateUnaddressed(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      if(key === 'months') return;
+      var el = f[key];
+      if(!el || el.disabled) return;
+      var blank = (el.tagName === 'INPUT' ? el.value.trim() === '' : el.value.trim() === '');
+      var touched = !!specFields[key] || !!naFields[key];
+      el.classList.toggle('unaddressed', blank && !touched);
+    });
+  }
+
+  function getUnaddressedFields(){
+    var result = [];
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      var touched = !!specFields[key] || !!naFields[key];
+      if(touched) return;
+      if(key === 'months'){
+        if(selectedMonths.length === 0 && selectedSeasons.length === 0) result.push(TOGGLE_FIELD_LABELS[key]);
+        return;
+      }
+      var el = f[key];
+      if(!el || el.disabled) return;
+      if(el.value.trim() === '') result.push(TOGGLE_FIELD_LABELS[key]);
+    });
+    return result;
+  }
+
+  function resetSpecToggles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){ specFields[key] = false; });
+    Array.prototype.forEach.call(document.querySelectorAll('.spec-toggle'), function(btn){ btn.classList.remove('active'); });
+    updateGuessedStyles();
+  }
+
+  function resetNaToggles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){ naFields[key] = false; setFieldDisabled(key, false); });
+    Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){ btn.classList.remove('active'); });
+  }
+
+  function activeLabels(map){
+    return TOGGLE_FIELD_KEYS.filter(function(k){ return map[k]; }).map(function(k){ return TOGGLE_FIELD_LABELS[k]; });
+  }
+
+
+  // ---------- Size unit toggle (sticky) ----------
+  Array.prototype.forEach.call(document.querySelectorAll('.unit-btn'), function(btn){
+    btn.addEventListener('click', function(){
+      sizeUnit = btn.dataset.unit;
+      Array.prototype.forEach.call(document.querySelectorAll('.unit-btn'), function(b){
+        b.classList.toggle('active', b.dataset.unit === sizeUnit);
+      });
+    });
+  });
+
+  // ---------- Special Issue mode (not sticky) ----------
+  var specialToggleBtn = document.getElementById('special-toggle');
+  function setSpecialMode(on, preserveValue){
+    specialIssueOn = on;
+    specialToggleBtn.classList.toggle('active', on);
+    f.specialLabel.style.display = on ? '' : 'none';
+    if(on && !f.specialLabel.value.trim()) f.specialLabel.value = 'Special Issue';
+    if(!on && !preserveValue) f.specialLabel.value = ''; // clear stale designation
+    // Volume, Issue, and Whole No. remain fully editable — Special is a designation, not a numbering override
+  }
+  specialToggleBtn.addEventListener('click', function(){ setSpecialMode(!specialIssueOn); });
+
+  // ---------- Supplement mode (not sticky) ----------
+  var supplementToggleBtn = document.getElementById('supplement-toggle');
+  function setSupplementMode(on){
+    supplementOn = on;
+    // Issue / No. remains fully editable — supplement is a designation, not a numbering override
+    supplementToggleBtn.classList.toggle('active', on);
+    f.supplementLabel.style.display = on ? '' : 'none';
+    if(!on) f.supplementLabel.value = '';
+  }
+  supplementToggleBtn.addEventListener('click', function(){ setSupplementMode(!supplementOn); });
+
+
+  // ---------- Year calendar toggle (sticky) ----------
+  function setYearCalendar(mode){
+    yearCalendar = mode;
+    Array.prototype.forEach.call(document.querySelectorAll('.calendar-btn'), function(b){
+      b.classList.toggle('active', b.dataset.calendar === mode);
+    });
+    f.calendarNote.style.display = (mode === 'alt') ? '' : 'none';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.calendar-btn'), function(btn){
+    btn.addEventListener('click', function(){ setYearCalendar(btn.dataset.calendar); });
+  });
+
+
+  // ---------- Duplicate check ----------
+  function dupeKey(title, series, vol, iss, num, datePrinted, edition, designation){
+    return [title, series, vol, iss, num, datePrinted, edition, (designation||'')]
+      .map(function(s){ return (s||'').trim().toLowerCase(); }).join('|');
+  }
+  function entryKey(e){
+    // Special is now just an annotation; use same key as normal, with designation appended
+    if(e.supplement) return 'SUPP|' + dupeKey(e.title, e.series, e.volume, e.issue, e.number, e.datePrinted, e.edition, e.supplementLabel||'');
+    return dupeKey(e.title, e.series, e.volume, e.issue, e.number, e.datePrinted, e.edition, e.issueDesignation||e.specialLabel||''  );
+  }
+  function currentFormKey(){
+    var title = f.title.value, series = f.series.value, ed = f.edition.value, dp = f.datePrinted.value;
+    // specialIssueOn: designation is additive — fall through to normal key
+    var vol = f.volume.value, iss = f.issue.value, num = f.number.value;
+    if(supplementOn) return 'SUPP|' + dupeKey(title, series, vol, f.issue.value, num, dp, ed, f.supplementLabel.value);
+    if(!title && !vol && !iss && !num) return null;
+    return dupeKey(title, series, vol, iss, num, dp, ed, specialIssueOn ? f.specialLabel.value.trim() : '');
+  }
+  function isDuplicate(excludeIdx){
+    var key = currentFormKey();
+    if(key === null) return false;
+    return entries.some(function(e, i){ return i !== excludeIdx && entryKey(e) === key; });
+  }
+
+  // ---------- Auto-advance helpers ----------
+  var ROMAN_RE = /^(?=[MDCLXVI])M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i;
+  var ROMAN_VALUES = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+
+  function isRomanNumeral(s){ return !!s && ROMAN_RE.test(s); }
+
+  function romanToInt(s){
+    var map = {I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+    var up = s.toUpperCase();
+    var total = 0;
+    for(var i=0;i<up.length;i++){
+      var cur = map[up[i]], next = map[up[i+1]];
+      total += (next > cur) ? -cur : cur;
+    }
+    return total;
+  }
+
+  function intToRoman(num){
+    var res = '';
+    for(var i=0;i<ROMAN_VALUES.length;i++){
+      while(num >= ROMAN_VALUES[i][0]){ res += ROMAN_VALUES[i][1]; num -= ROMAN_VALUES[i][0]; }
+    }
+    return res;
+  }
+
+  // Parse a potentially compound value like "5/6" or "5-6" and return the last number's context
+  function parseCompound(s){
+    // Match "prefix N sep N" or just "prefix N"
+    var m = s.match(/^(.*?)(\d+)\s*[\/\-]\s*(\d+)(\D*)$/);
+    if(m) return {isCompound:true, prefix:m[1], first:parseInt(m[2],10), last:parseInt(m[3],10), suffix:m[4], width:Math.max(m[2].length,m[3].length)};
+    return null;
+  }
+
+  function incrementString(s){
+    if(!s) return s;
+    // Double issue: "5/6" or "5-6" -> advance past the last value
+    var c = parseCompound(s);
+    if(c){
+      var next = c.last + 1;
+      var w = String(c.last).length;
+      var nd = String(next); while(nd.length < w) nd = '0' + nd;
+      return c.prefix + nd + c.suffix;
+    }
+
+    // Arabic digits (e.g. "No. 07" -> "No. 08")
+    var m = s.match(/^(.*?)(\d+)(\D*)$/);
+    if(m){
+      var prefix = m[1], digits = m[2], suffix = m[3];
+      var width = digits.length;
+      var num = parseInt(digits, 10) + 1;
+      var newDigits = String(num);
+      while(newDigits.length < width) newDigits = '0' + newDigits;
+      return prefix + newDigits + suffix;
+    }
+
+    // Roman numerals (e.g. "Vol. IV" -> "Vol. V", "no. iv" -> "no. v")
+    var rm = s.match(/(^|[\s.,;:()\/-])([IVXLCDMivxlcdm]+)([\s.,;:()\/-]*)$/);
+    if(rm && isRomanNumeral(rm[2])){
+      var candidate = rm[2];
+      var value = romanToInt(candidate);
+      var newRoman = intToRoman(value + 1);
+      if(candidate === candidate.toLowerCase()) newRoman = newRoman.toLowerCase();
+      var prefixLen = s.length - rm[0].length;
+      return s.slice(0, prefixLen) + rm[1] + newRoman + rm[3];
+    }
+
+    return s;
+  }
+
+  function advancePeriod(selected, cycleLength){
+    if(selected.length === 0) return {values:[], wrapped:false, spans:false};
+    var run = circularRun(selected, cycleLength);
+    if(run){
+      // contiguous (possibly wrapping) run: shift forward by its own length
+      var newStart = (run.start + run.len) % cycleLength;
+      var values = [];
+      for(var i=0;i<run.len;i++) values.push((newStart + i) % cycleLength);
+      // year bump: the new run's start passed index 0 relative to the old run's start
+      var wrapped = (newStart < run.start);
+      // spans: does the NEW run itself cross the year boundary?
+      var spans = (newStart + run.len) > cycleLength;
+      return {values: values.sort(function(a,b){return a-b;}), wrapped: wrapped, spans: spans};
+    }
+    // non-contiguous fallback: old min/max shift
+    var minI = Math.min.apply(null, selected), maxI = Math.max.apply(null, selected);
+    var span = maxI - minI + 1;
+    var shifted = selected.map(function(i){ return i + span; });
+    var wrapped2 = shifted.some(function(i){ return i >= cycleLength; });
+    if(wrapped2){ shifted = shifted.map(function(i){ return i >= cycleLength ? i - cycleLength : i; }); }
+    return {values:shifted, wrapped:wrapped2, spans:false};
+  }
+
+  function applyAutoAdvance(){
+    var advVolume = document.getElementById('auto-volume').checked;
+    var advIssue = document.getElementById('auto-issue').checked;
+    var advNumber = document.getElementById('auto-number').checked;
+    var advMonths = document.getElementById('auto-months').checked;
+    var advYear = document.getElementById('auto-year').checked;
+
+    if(advVolume && !naFields.volume) f.volume.value = incrementString(f.volume.value);
+    if(advIssue && !naFields.issue) f.issue.value = incrementString(f.issue.value);
+    if(advNumber && !naFields.number) f.number.value = incrementString(f.number.value);
+
+    var yearWrapped = false;
+    var newSpans = false;
+    if(advMonths && !naFields.months){
+      if(monthMode === 'season' && selectedSeasons.length){
+        var sResult = advancePeriod(selectedSeasons, 4);
+        selectedSeasons = sResult.values;
+        renderSeasonButtons();
+        yearWrapped = sResult.wrapped;
+        newSpans = sResult.spans;
+      } else if(monthMode === 'months' && selectedMonths.length){
+        var mResult = advancePeriod(selectedMonths, 12);
+        selectedMonths = mResult.values;
+        renderMonthButtons();
+        yearWrapped = mResult.wrapped;
+        newSpans = mResult.spans;
+      }
+    }
+    if(!naFields.year){
+      // if the previous issue spanned years (End Year filled), the base year moves to that end year
+      if(f.yearEnd.value.trim() && yearWrapped){
+        f.year.value = f.yearEnd.value.trim();
+      } else if(yearWrapped){
+        f.year.value = incrementString(f.year.value || '') || f.year.value;
+      } else if(advYear){
+        f.year.value = incrementString(f.year.value);
+      }
+      // manage End Year for the NEW selection
+      if(newSpans && f.year.value){
+        f.yearEnd.value = incrementString(f.year.value) || '';
+      } else {
+        f.yearEnd.value = '';
+      }
+    }
+  }
+
+  // ---------- Record / Update ----------
+  recordBtn.addEventListener('click', function(){
+    if(isDuplicate(editingIndex)){
+      dupeMsg.classList.add('show');
+      return;
+    }
+    dupeMsg.classList.remove('show');
+
+    if(!f.title.value.trim() && !naFields.title){
+      f.title.focus();
+      return;
+    }
+
+    // Check for unaddressed fields and prompt if any remain
+    var unaddressed = getUnaddressedFields();
+    if(unaddressed.length > 0){
+      var msg = 'The following field' + (unaddressed.length === 1 ? ' has' : 's have') + ' not been addressed:\n\n' +
+        unaddressed.join(', ') + '\n\n' +
+        'Press OK to record anyway, or Cancel to go back and review.';
+      if(!confirm(msg)) return;
+    }
+
+    // Validate title selection
+    if(!selectedTitleID && !currentEditIssueID){
+      alert('Select a title from the loaded Titles CSV before recording.');
+      titleSelector.focus();
+      return;
+    }
+
+    // Generate or preserve IssueID
+    var titleID = selectedTitleID || '';
+    var issueID = currentEditIssueID || '';
+    if(!issueID){
+      issueID = generateUniqueIssueID(titleID);
+    }
+
+    var entry = {
+      scatTool: 'Issues',
+      schemaVersion: '2.0',
+      librarySlug: titleLibrarySlug,
+      libraryName: titleLibraryName,
+      issueID: issueID,
+      titleID: titleID,
+      titleCode: selectedTitle ? selectedTitle.titleCode : '',
+      firstYear: selectedTitle ? selectedTitle.firstYear : '',
+      title: f.title.value.trim(),
+      subtitle: f.subtitle.value.trim(),
+      formerTitle: f.formerTitle.value.trim(),
+      laterTitle: f.laterTitle.value.trim(),
+      shortname: f.shortname.value.trim(),
+      issn: f.issn.value.trim(),
+      publisher: f.publisher.value.trim(),
+      editors: f.editors.value.trim(),
+      contributors: f.contributors.value.trim(),
+      printer: f.printer.value.trim(),
+      printerLocation: f.printerLocation.value.trim(),
+      series: f.series.value.trim(),
+      seriesNumber: f.seriesNumber.value.trim(),
+      volume: f.volume.value.trim(),
+      issue: f.issue.value.trim(),
+      number: f.number.value.trim(),
+      specialIssue: specialIssueOn,
+      issueDesignation: specialIssueOn ? f.specialLabel.value.trim() : '',
+      supplement: supplementOn,
+      supplementLabel: supplementOn ? f.supplementLabel.value.trim() : '',
+      months: selectedMonths.slice(),
+      seasons: selectedSeasons.slice(),
+      monthMode: monthMode,
+      year: f.year.value.trim(),
+      yearEnd: f.yearEnd.value.trim(),
+      datePrinted: f.datePrinted.value.trim(),
+      day: f.day.value.trim(),
+      edition: f.edition.value.trim(),
+      frequency: f.frequency.value.trim(),
+      examined: examinedOn,
+      examinedSource: f.examinedSource.value.trim(),
+      city: f.city.value.trim(),
+      state: f.state.value.trim(),
+      country: f.country.value.trim(),
+      language: f.language.value.trim(),
+      price: f.price.value.trim(),
+      pages: f.pages.value.trim(),
+      size: f.size.value.trim(),
+      sizeUnit: sizeUnit,
+      notes: f.notes.value.trim(),
+      speculative: speculativeOn,
+      specFields: activeLabels(specFields),
+      naFields: activeLabels(naFields),
+      yearCalendar: yearCalendar,
+      calendarNote: yearCalendar === 'alt' ? f.calendarNote.value.trim() : '',
+    };
+
+    if(editingIndex !== null){
+      entries[editingIndex] = entry;
+      exitEditMode();
+      renderTable(false);
+    } else {
+      entries.push(entry);
+      renderTable(true);
+      applyAutoAdvance();
+    }
+    saveSession();
+
+    currentEditIssueID = null;
+    document.getElementById('issue-id-display').textContent = 'Generated on Record';
+    updateCardLiveInfo();
+    setSpeculative(false);
+    speculativeManual = false;
+    resetSpecToggles();
+    setSpecialMode(false);
+    setSupplementMode(false);
+    // Clear issue-specific non-sticky fields
+    ['contributors','edition','day','datePrinted','notes'].forEach(function(k){ if(f[k]) f[k].value = ''; });
+    shortNameManual = false;
+    f.shortname.value = buildShortName();
+    refreshDatalists();
+    updateUnaddressed();
+    // naFields, pages, size, sizeUnit, yearCalendar, printer, printerLocation intentionally left as-is: sticky
+  });
+
+  function enterEditMode(idx){
+    editingIndex = idx;
+    var e = entries[idx];
+    shortNameManual = true; // preserve the recorded Short Name; don't auto-overwrite
+
+    setSpecialMode(!!e.specialIssue, true);
+    setSupplementMode(!!e.supplement);
+    setYearCalendar(e.yearCalendar === 'alt' ? 'alt' : 'ce');
+    f.calendarNote.value = e.calendarNote || '';
+
+    f.title.value = e.title;
+    f.subtitle.value = e.subtitle;
+    f.formerTitle.value = e.formerTitle || '';
+    f.laterTitle.value = e.laterTitle || '';
+    f.shortname.value = e.shortname || '';
+    f.issn.value = e.issn || '';
+    f.publisher.value = e.publisher;
+    f.editors.value = e.editors;
+    f.contributors.value = e.contributors || '';
+    f.printer.value = e.printer || '';
+    f.printerLocation.value = e.printerLocation || '';
+    f.series.value = e.series || '';
+    f.seriesNumber.value = e.seriesNumber || '';
+    f.volume.value = e.volume;
+    f.issue.value = e.issue;
+    f.number.value = e.number || '';
+    if(e.specialIssue) f.specialLabel.value = e.issueDesignation || e.specialLabel || 'Special Issue';
+    if(e.supplement) f.supplementLabel.value = e.supplementLabel || '';
+    f.year.value = e.year;
+    f.yearEnd.value = e.yearEnd || '';
+    f.datePrinted.value = e.datePrinted || '';
+    f.day.value = e.day || '';
+    f.edition.value = e.edition || '';
+    f.frequency.value = e.frequency || '';
+    setExamined(e.examined !== false);
+    f.examinedSource.value = e.examinedSource || '';
+    examinedSourceInput.style.display = '';
+    f.city.value = e.city;
+    f.state.value = e.state || '';
+    f.country.value = e.country || '';
+    f.language.value = e.language || '';
+    f.price.value = e.price || '';
+    f.pages.value = e.pages || '';
+    f.size.value = e.size || '';
+    sizeUnit = e.sizeUnit || 'in';
+    Array.prototype.forEach.call(document.querySelectorAll('.unit-btn'), function(b){ b.classList.toggle('active', b.dataset.unit === sizeUnit); });
+    f.notes.value = e.notes;
+    setSpeculative(!!e.speculative);
+    setMonthMode(e.monthMode === 'season' ? 'season' : 'months');
+    selectedMonths = (e.months || []).slice();
+    selectedSeasons = (e.seasons || []).slice();
+    renderMonthButtons();
+    renderSeasonButtons();
+
+    resetSpecToggles();
+    var labelsToKeys = {};
+    TOGGLE_FIELD_KEYS.forEach(function(k){ labelsToKeys[TOGGLE_FIELD_LABELS[k]] = k; });
+    (e.specFields || []).forEach(function(lbl){
+      var k = labelsToKeys[lbl];
+      if(k){ specFields[k] = true; var btn = document.querySelector('.spec-toggle[data-field="' + k + '"]'); if(btn) btn.classList.add('active'); }
+    });
+    updateGuessedStyles();
+
+    TOGGLE_FIELD_KEYS.forEach(function(k){ naFields[k] = false; setFieldDisabled(k, false); });
+    Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){ btn.classList.remove('active'); });
+    (e.naFields || []).forEach(function(lbl){
+      var k = labelsToKeys[lbl];
+      if(k){ naFields[k] = true; setFieldDisabled(k, true); var btn = document.querySelector('.na-toggle[data-field="' + k + '"]'); if(btn) btn.classList.add('active'); }
+    });
+
+    updateGuessedStyles();
+    updateUnaddressed();
+    recordBtn.textContent = 'Update Record';
+    cancelEditBtn.style.display = '';
+    editFlag.classList.add('show');
+    dupeMsg.classList.remove('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function exitEditMode(){
+    editingIndex = null;
+    currentEditIssueID = null;
+    recordBtn.textContent = 'Record';
+    cancelEditBtn.style.display = 'none';
+    editFlag.classList.remove('show');
+  }
+
+  cancelEditBtn.addEventListener('click', function(){
+    exitEditMode();
+    dupeMsg.classList.remove('show');
+    document.getElementById('clear-form-btn').click();
+  });
+
+  document.getElementById('clear-form-btn').addEventListener('click', function(){
+    Object.keys(f).forEach(function(k){
+      if(STICKY_ON_CLEAR[k]) return;
+      if(f[k].type === 'checkbox'){ f[k].checked = false; }
+      else { f[k].value = ''; }
+    });
+    selectedMonths = [];
+    selectedSeasons = [];
+    renderMonthButtons();
+    renderSeasonButtons();
+    setMonthMode('months');
+    resetSpecToggles();
+    resetNaToggles();
+    setSpecialMode(false);
+    setSupplementMode(false);
+    setYearCalendar('ce');
+    setSpeculative(false);
+    speculativeManual = false;
+    currentEditIssueID = null;
+    document.getElementById('issue-id-display').textContent = 'Generated on Record';
+    updateCardLiveInfo();
+    updateTitleIDDisplay();
+    shortNameManual = false;
+    dupeMsg.classList.remove('show');
+    exitEditMode();
+    updateUnaddressed();
+  });
+
+  // ---------- City / Publisher quick-pick ----------
+  function refreshDatalists(){
+    function fill(datalistId, values){
+      var dl = document.getElementById(datalistId);
+      var uniq = Array.from(new Set(values.filter(Boolean))).sort();
+      dl.innerHTML = '';
+      uniq.forEach(function(v){
+        var opt = document.createElement('option');
+        opt.value = v;
+        dl.appendChild(opt);
+      });
+    }
+    fill('city-datalist', entries.map(function(e){ return e.city; }));
+    fill('series-datalist', entries.map(function(e){ return e.series; }));
+    fill('state-datalist', entries.map(function(e){ return e.state; }));
+    fill('country-datalist', entries.map(function(e){ return e.country; }));
+    fill('publisher-datalist', entries.map(function(e){ return e.publisher; }));
+  }
+
+  // ---------- Sorting ----------
+  function parseLeadingNumber(s){
+    if(!s) return null;
+    var m = String(s).match(/-?\d+(\.\d+)?/);
+    return m ? parseFloat(m[0]) : null;
+  }
+
+  var SORT_ACCESSORS = {
+    title: function(e){ return (e.title||'').toLowerCase(); },
+    publisher: function(e){ return (e.publisher||'').toLowerCase(); },
+    editors: function(e){ return (e.editors||'').toLowerCase(); },
+    series: function(e){ return (e.series||'').toLowerCase(); },
+    seriesNumber: function(e){ return e.seriesNumber||''; },
+    city: function(e){ return (e.city||'').toLowerCase(); },
+    state: function(e){ return (e.state||'').toLowerCase(); },
+    country: function(e){ return (e.country||'').toLowerCase(); },
+    language: function(e){ return (e.language||'').toLowerCase(); },
+    formerTitle: function(e){ return (e.formerTitle||'').toLowerCase(); },
+    laterTitle: function(e){ return (e.laterTitle||'').toLowerCase(); },
+    contributors: function(e){ return (e.contributors||'').toLowerCase(); },
+    shortname: function(e){ return (e.shortname||'').toLowerCase(); },
+    issn: function(e){ return e.issn||''; },
+    volume: function(e){ return e.volume||''; },
+    issue: function(e){ return e.issue||''; },
+    number: function(e){ return e.number||''; },
+    year: function(e){ return e.year||''; },
+    price: function(e){ return e.price||''; },
+    pages: function(e){ return e.pages||''; },
+    entryOrder: function(e, idx){ return idx; },
+    issueID: function(e){ return (e.issueID||'').toLowerCase(); },
+    printer: function(e){ return (e.printer||'').toLowerCase(); },
+    printerLocation: function(e){ return (e.printerLocation||'').toLowerCase(); },
+    edition: function(e){ return (e.edition||'').toLowerCase(); },
+    frequency: function(e){ return (e.frequency||'').toLowerCase(); }
+  };
+  var NUMERIC_SORT_KEYS = {volume:1, issue:1, number:1, year:1, price:1, pages:1, seriesNumber:1};
+
+  function compareBy(key, a, b, ia, ib){
+    var va = SORT_ACCESSORS[key] ? SORT_ACCESSORS[key](a, ia) : '', vb = SORT_ACCESSORS[key] ? SORT_ACCESSORS[key](b, ib) : '';
+    if(NUMERIC_SORT_KEYS[key]){
+      var na = parseLeadingNumber(va), nb = parseLeadingNumber(vb);
+      if(na !== null && nb !== null && na !== nb) return na - nb;
+      if(na !== null && nb === null) return -1;
+      if(na === null && nb !== null) return 1;
+    }
+    if(va < vb) return -1;
+    if(va > vb) return 1;
+    return 0;
+  }
+
+  function getDisplayOrder(){
+    var idxs = entries.map(function(_, i){ return i; });
+    if(sortState.key){
+      idxs.sort(function(ia, ib){ return compareBy(sortState.key, entries[ia], entries[ib], ia, ib) * sortState.dir; });
+    }
+    return idxs;
+  }
+
+  document.getElementById('sort-reset-btn').addEventListener('click', function(){
+    sortState = {key:null, dir:1};
+    renderTable(false);
+  });
+
+  var tableViewToggleBtn = document.getElementById('table-view-toggle');
+  tableViewToggleBtn.addEventListener('click', function(){
+    tableViewFull = !tableViewFull;
+    tableViewToggleBtn.textContent = tableViewFull ? 'Show compact view' : 'Show full view';
+    renderTable(false);
+  });
+
+  // ---------- Table rendering ----------
+  var tableContainer = document.getElementById('table-container');
+  var entryCount = document.getElementById('entry-count');
+
+  var COLUMNS = [
+    {key:'entryOrder', label:'#', sortable:true},
+    {key:'issueID', label:'IssueID', sortable:true},
+    {key:'title', label:'Title', sortable:true},
+    {key:'subtitle', label:'Subtitle', sortable:false},
+    {key:'formerTitle', label:'Former Title', sortable:true},
+    {key:'laterTitle', label:'Later Title', sortable:true},
+    {key:'publisher', label:'Publisher', sortable:true},
+    {key:'editors', label:'Editor(s)', sortable:true},
+    {key:'contributors', label:'Contributors', sortable:false},
+    {key:'printer', label:'Printer', sortable:true},
+    {key:'printerLocation', label:'Printer Location', sortable:true},
+    {key:'edition', label:'Edition', sortable:true},
+    {key:'frequency', label:'Frequency', sortable:true},
+    {key:'issn', label:'ISSN', sortable:false},
+    {key:'language', label:'Language', sortable:true},
+    {key:'series', label:'Series', sortable:true},
+    {key:'seriesNumber', label:'Series No.', sortable:true},
+    {key:'city', label:'City', sortable:true},
+    {key:'state', label:'State/Prov.', sortable:true},
+    {key:'country', label:'Country', sortable:true},
+    {key:'shortname', label:'Short Name', sortable:true},
+    {key:'volume', label:'Vol', sortable:true},
+    {key:'issue', label:'Issue / No.', sortable:true},
+    {key:'number', label:'Whole No.', sortable:true},
+    {key:'months', label:'Month(s)', sortable:false},
+    {key:'day', label:'Day', sortable:false},
+    {key:'datePrinted', label:'Date as Printed', sortable:false},
+    {key:'year', label:'Year', sortable:true},
+    {key:'price', label:'Price', sortable:true},
+    {key:'pages', label:'Pages', sortable:true},
+    {key:'size', label:'Size', sortable:false},
+    {key:'speculative', label:'Spec.', sortable:false},
+    {key:'specFields', label:'Spec. Fields', sortable:false},
+    {key:'naFields', label:'N/A Fields', sortable:false},
+    {key:'notes', label:'Notes on Issue', sortable:false},
+    {key:'examined', label:'Basis', sortable:false},
+    {key:'yearCalendar', label:'Calendar', sortable:false},
+    {key:'actions', label:'', sortable:false}
+  ];
+    var COMPACT_KEYS = {entryOrder:1, shortname:1, months:1, year:1, actions:1};
+  var tableViewFull = false; // default: compact view
+
+  function renderTable(flashLastAdded){
+    entryCount.textContent = entries.length + (entries.length === 1 ? ' issue cataloged' : ' issues cataloged');
+
+    if(entries.length === 0){
+      tableContainer.innerHTML = '<div class="empty-state">No issues recorded yet. Fill out the form above and hit Record.</div>';
+      return;
+    }
+
+    var order = getDisplayOrder();
+    var activeColumns = tableViewFull ? COLUMNS : COLUMNS.filter(function(c){ return COMPACT_KEYS[c.key]; });
+
+    var headHtml = '<tr>' + activeColumns.map(function(col){
+      if(!col.sortable) return '<th>' + col.label + '</th>';
+      var arrow = '';
+      if(sortState.key === col.key) arrow = '<span class="arrow">' + (sortState.dir === 1 ? '▲' : '▼') + '</span>';
+      return '<th class="sortable" data-key="' + col.key + '">' + col.label + arrow + '</th>';
+    }).join('') + '</tr>';
+
+    var bodyHtml = '';
+    order.forEach(function(realIdx){
+      var e = entries[realIdx];
+      var isEditing = (realIdx === editingIndex);
+      var rowClasses = [];
+      if(flashLastAdded && realIdx === entries.length - 1 && editingIndex === null) rowClasses.push('flash');
+      if(isEditing) rowClasses.push('editing-row');
+
+      var numberCell = esc(e.number);
+      var issueCell = e.supplement
+        ? (e.issue ? esc(e.issue) + ' ' : '') + '<span class="supp-badge">SUPPLEMENT' + (e.supplementLabel ? ': ' + esc(e.supplementLabel) : '') + '</span>'
+        : esc(e.issue);
+      var sizeCell = e.size ? esc(e.size) + ' ' + esc(e.sizeUnit || 'in') : '';
+
+      var cells = {
+        entryOrder: '<td style="color:var(--ink-soft);font-size:10px;text-align:right;padding-right:10px;">' + (realIdx + 1) + '</td>',
+        title: '<td>' + esc(e.title) + (e.issueDesignation ? ' <span class="special-badge">' + esc(e.issueDesignation) + '</span>' : '') + '</td>',
+        subtitle: '<td>' + esc(e.subtitle) + '</td>',
+        formerTitle: '<td>' + esc(e.formerTitle) + '</td>',
+        laterTitle: '<td>' + esc(e.laterTitle) + '</td>',
+        publisher: '<td>' + esc(e.publisher) + '</td>',
+        editors: '<td>' + esc(e.editors) + '</td>',
+        contributors: '<td>' + esc(e.contributors) + '</td>',
+        printer: '<td>' + esc(e.printer||'') + '</td>',
+        printerLocation: '<td>' + esc(e.printerLocation||'') + '</td>',
+        edition: '<td>' + esc(e.edition) + '</td>',
+        frequency: '<td>' + esc(e.frequency) + '</td>',
+        issn: '<td>' + esc(e.issn) + '</td>',
+        language: '<td>' + esc(e.language) + '</td>',
+        series: '<td>' + esc(e.series) + '</td>',
+        seriesNumber: '<td>' + esc(e.seriesNumber) + '</td>',
+        city: '<td>' + esc(e.city) + '</td>',
+        state: '<td>' + esc(e.state) + '</td>',
+        country: '<td>' + esc(e.country) + '</td>',
+        shortname: '<td>' + esc(e.shortname) + '</td>',
+        volume: '<td>' + esc(e.volume) + '</td>',
+        issue: '<td>' + issueCell + '</td>',
+        number: '<td>' + numberCell + '</td>',
+        months: '<td>' + esc(dateLabel(e)) + '</td>',
+        day: '<td>' + esc(e.day||'') + '</td>',
+        datePrinted: '<td class="na-fields-cell">' + esc(e.datePrinted || '—') + '</td>',
+        year: '<td>' + esc(e.yearEnd ? (e.year + '–' + e.yearEnd) : e.year) + '</td>',
+        price: '<td>' + esc(e.price) + '</td>',
+        pages: '<td>' + esc(e.pages) + '</td>',
+        size: '<td>' + sizeCell + '</td>',
+        speculative: '<td class="' + (e.speculative ? 'spec-yes' : 'spec-no') + '">' + (e.speculative ? 'Yes' : '—') + '</td>',
+        specFields: '<td class="spec-fields-cell">' + esc((e.specFields||[]).join(', ') || '—') + '</td>',
+        naFields: '<td class="na-fields-cell">' + esc((e.naFields||[]).join(', ') || '—') + '</td>',
+        examined: '<td>' + (e.examined === false ? '<span class="supp-badge">REPORTED' + (e.examinedSource ? ': ' + esc(e.examinedSource) : '') + '</span>' : '—') + '</td>',
+        yearCalendar: '<td class="na-fields-cell">' + (e.yearCalendar === 'alt' ? '<span class="supp-badge">NON-CE</span>' + (e.calendarNote ? ' ' + esc(e.calendarNote) : '') : '—') + '</td>',
+        notes: '<td class="col-notes">' + esc(e.notes) + '</td>',
+        actions: '<td class="row-actions">' +
+          '<button class="row-btn' + (isEditing ? ' editing' : '') + '" data-act="edit" data-idx="' + realIdx + '">' + (isEditing ? 'editing…' : 'edit') + '</button>' +
+          '<button class="row-btn" data-act="delete" data-idx="' + realIdx + '">delete</button>' +
+        '</td>'
+      };
+            bodyHtml += '<tr' + (rowClasses.length ? ' class="' + rowClasses.join(' ') + '"' : '') + '>' +
+        activeColumns.map(function(col){ return cells[col.key]; }).join('') +
+      '</tr>';
+    });
+
+    tableContainer.innerHTML = '<div class="table-scroll"><table' + (tableViewFull ? ' class="full-view"' : '') + '><thead>' + headHtml + '</thead><tbody>' + bodyHtml + '</tbody></table></div>';
+
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('th.sortable'), function(th){
+      th.addEventListener('click', function(){
+        var key = th.dataset.key;
+        if(sortState.key === key){ sortState.dir *= -1; } else { sortState.key = key; sortState.dir = 1; }
+        renderTable(false);
+      });
+    });
+
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('[data-act="delete"]'), function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.dataset.idx, 10);
+        if(idx === editingIndex) exitEditMode();
+        var deleted = entries.splice(idx, 1)[0];
+        renderTable(false);
+        saveSession();
+        offerUndo(deleted, idx);
+      });
+    });
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('[data-act="edit"]'), function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.dataset.idx, 10);
+        if(editingIndex === idx){ exitEditMode(); renderTable(false); return; }
+        enterEditMode(idx);
+        renderTable(false);
+      });
+    });
+  }
+
+  function esc(s){
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+  }
+
+  // ---------- CSV ----------
+  var HEADERS = ['Slaughter Cataloger Tool','Schema Version','Title Library Slug','Title Library Name','Entry Order','IssueID','TitleID','Title Code','First Year of Publication (CE)','Title','Subtitle','Former Title(s)','Later Title(s)','Publisher','Editor(s)','Contributors','Printer','Printer Location','ISSN','Language','Frequency','Series','Series Number','City','State','Country','Short Name','Edition','Volume','Issue','Whole No.','Special Issue','Issue Designation','Month(s)','Date Type','Day','Date as Printed','Year','End Year','Year Calendar','Calendar Note','Price','Pages','Size','Size Unit','Supplement','Supplement Label','Notes on Issue','Evidence Basis','Evidence Note','Speculative','Speculative Fields','N/A Fields'];
+
+  function csvField(val){
+    val = val == null ? '' : String(val);
+    if(/^[=+\-@]/.test(val)) val = "'" + val;
+    return '"' + val.replace(/"/g, '""') + '"';
+  }
+
+  function buildCsv(){
+    var order = getDisplayOrder();
+    var rows = [HEADERS.map(csvField).join(',')];
+    order.forEach(function(realIdx){
+      var e = entries[realIdx];
+      rows.push([
+        e.scatTool||'Issues', e.schemaVersion||'2.0', e.librarySlug||'', e.libraryName||'',
+        realIdx + 1,
+        e.issueID||'', e.titleID||'', e.titleCode||'', e.firstYear||'',
+        e.title, e.subtitle, e.formerTitle, e.laterTitle,
+        e.publisher, e.editors, e.contributors, e.printer||'', e.printerLocation||'', e.issn, e.language, e.frequency,
+        e.series, e.seriesNumber, e.city, e.state, e.country, e.shortname, e.edition,
+        e.volume, e.issue, e.number, e.specialIssue ? 'Yes' : 'No', e.issueDesignation||'',
+        dateLabel(e), e.monthMode === 'season' ? 'Season' : 'Months', e.day, e.datePrinted,
+        e.year, e.yearEnd, e.yearCalendar === 'alt' ? 'Non-CE' : 'CE', e.calendarNote,
+        e.price, e.pages, e.size, e.size ? (e.sizeUnit || 'in') : '',
+        e.supplement ? 'Yes' : 'No', e.supplementLabel,
+        e.notes, e.examined === false ? 'Reported' : 'Examined', e.examinedSource,
+        e.speculative ? 'Yes' : 'No',
+        (e.specFields||[]).join('; '), (e.naFields||[]).join('; ')
+            ].map(csvField).join(','));
+    });
+    return rows.join('\r\n');
+  }
+
+  function downloadCsv(filename){
+    var csv = buildCsv();
+    var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('export-btn').addEventListener('click', function(){ (function(){
+      var slug = titleLibrarySlug || 'LIBRARY';
+      var tid = selectedTitleID || 'NOTITLE';
+      downloadCsv('SCAT_' + slug + '_' + tid + '_ISSUES.csv');
+    })(); markExported(); });
+
+  var copyStatus = document.getElementById('copy-status');
+  document.getElementById('copy-btn').addEventListener('click', function(){
+    var csv = buildCsv();
+    function done(ok){
+      copyStatus.textContent = ok ? 'Copied to clipboard ✓' : 'Copy failed — select and copy manually.';
+      setTimeout(function(){ copyStatus.textContent = ''; }, 2500);
+      if(ok) markExported();
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(csv).then(function(){done(true);}).catch(function(){done(false);});
+    } else {
+      try{
+        var ta = document.createElement('textarea');
+        ta.value = csv; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        done(true);
+      }catch(err){ done(false); }
+    }
+  });
+
+  // ---------- CSV import (header-name based, so column order/additions don't break it) ----------
+  // ---------- Import modal (Replace / Append / Cancel) ----------
+  function showImportModal(doImport){
+    var modal = document.getElementById('import-modal');
+    document.getElementById('import-modal-msg').textContent =
+      'You have ' + entries.length + ' existing entr' + (entries.length === 1 ? 'y' : 'ies') + '. How should the imported file be handled?';
+    modal.style.display = 'flex';
+    function cleanup(){
+      modal.style.display = 'none';
+      replaceBtn.onclick = null; appendBtn.onclick = null; cancelBtn.onclick = null;
+    }
+    var replaceBtn = document.getElementById('import-replace-btn');
+    var appendBtn = document.getElementById('import-append-btn');
+    var cancelBtn = document.getElementById('import-cancel-btn');
+    replaceBtn.onclick = function(){ cleanup(); doImport(true); };
+    appendBtn.onclick = function(){ cleanup(); doImport(false); };
+    cancelBtn.onclick = function(){ cleanup(); copyStatus.textContent = 'Import cancelled.'; setTimeout(function(){ copyStatus.textContent = ''; }, 3000); };
+  }
+
+  document.getElementById('import-btn').addEventListener('click', function(){
+    document.getElementById('import-file').click();
+  });
+
+  document.getElementById('import-file').addEventListener('change', function(evt){
+    var file = evt.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var rows = parseCSV(reader.result);
+        if(rows.length < 2) return;
+        var headers = rows[0];
+        var colIndex = {};
+        headers.forEach(function(h, i){ colIndex[h.trim()] = i; });
+        function val(r, name){
+          var idx = colIndex[name];
+          return (idx !== undefined && r[idx] !== undefined) ? r[idx] : '';
+        }
+        // Validate schema
+        var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+        if(toolIdx >= 0 && rows[1] && rows[1][toolIdx]){
+          var toolVal = rows[1][toolIdx].trim();
+          if(toolVal !== 'Issues'){
+            alert('This does not appear to be a compatible Slaughter Cataloger schema 2.0 Issues CSV.');
+            return;
+          }
+        }
+
+        var body = rows.slice(1).filter(function(r){ return !(r.length === 1 && r[0] === ''); });
+        var statusExtra = '';
+        var doImport = function(replace){
+          if(replace) entries = [];
+          var existingKeys = {};
+          entries.forEach(function(e){ existingKeys[entryKey(e)] = true; });
+          var imported = 0, dupes = 0;
+          body.forEach(function(r){
+          var newEntry = {
+            scatTool: 'Issues',
+            schemaVersion: val(r,'Schema Version') || '2.0',
+            librarySlug: val(r,'Title Library Slug'),
+            libraryName: val(r,'Title Library Name'),
+            issueID: val(r,'IssueID'),
+            titleID: val(r,'TitleID'),
+            titleCode: val(r,'Title Code'),
+            firstYear: val(r,'First Year of Publication (CE)'),
+            title: val(r,'Title'),
+            subtitle: val(r,'Subtitle'),
+            formerTitle: val(r,'Former Title(s)'),
+            laterTitle: val(r,'Later Title(s)'),
+            shortname: val(r,'Short Name'),
+            issn: val(r,'ISSN'),
+            publisher: val(r,'Publisher'),
+            editors: val(r,'Editor(s)'),
+            contributors: val(r,'Contributors'),
+            printer: val(r,'Printer'),
+            printerLocation: val(r,'Printer Location'),
+            series: val(r,'Series'),
+            seriesNumber: val(r,'Series Number'),
+            volume: val(r,'Volume'),
+            issue: val(r,'Issue'),
+            number: val(r,'Whole No.') || val(r,'Number'),
+            specialIssue: /^y/i.test(val(r,'Special Issue')),
+            issueDesignation: val(r,'Issue Designation'),
+            monthMode: /^season/i.test(val(r,'Date Type')) ? 'season' : 'months',
+            months: /^season/i.test(val(r,'Date Type')) ? [] : parseMonthsLabel(val(r,'Month(s)')),
+            seasons: /^season/i.test(val(r,'Date Type')) ? parseSeasonsLabel(val(r,'Month(s)')) : [],
+            datePrinted: val(r,'Date as Printed'),
+            day: val(r,'Day'),
+            edition: val(r,'Edition'),
+            frequency: val(r,'Frequency'),
+            examined: !/^report/i.test(val(r,'Evidence Basis') || val(r,'Basis of Record')), // fallback for old CSVs
+            examinedSource: val(r,'Evidence Note') || val(r,'Examined Source'),
+            year: val(r,'Year'),
+            yearEnd: val(r,'End Year'),
+            yearCalendar: /^non/i.test(val(r,'Year Calendar')) ? 'alt' : 'ce',
+            calendarNote: val(r,'Calendar Note'),
+            city: val(r,'City'),
+            state: val(r,'State'),
+            country: val(r,'Country'),
+            language: val(r,'Language'),
+            price: val(r,'Price'),
+            pages: val(r,'Pages'),
+            size: val(r,'Size'),
+            sizeUnit: val(r,'Size Unit') || 'in',
+            supplement: /^y/i.test(val(r,'Supplement')),
+            supplementLabel: val(r,'Supplement Label'),
+            notes: val(r,'Notes on Issue'),
+                        speculative: /^y/i.test(val(r,'Speculative')),
+            specFields: (val(r,'Speculative Fields') || '').split(';').map(function(s){return s.trim();}).filter(Boolean),
+            naFields: (val(r,'N/A Fields') || '').split(';').map(function(s){return s.trim();}).filter(Boolean),
+            _importOrder: parseInt(val(r,'Entry Order'), 10) || 999999
+          };
+          if(existingKeys[entryKey(newEntry)]) dupes++;
+          entries.push(newEntry);
+          imported++;
+          });
+          entries.sort(function(a, b){ return (a._importOrder||0) - (b._importOrder||0); });
+          entries.forEach(function(e){ delete e._importOrder; });
+          refreshDatalists();
+          renderTable(false);
+          copyStatus.textContent = imported + ' row(s) imported.' + (dupes > 0 ? ' ' + dupes + ' possible duplicate' + (dupes === 1 ? '' : 's') + ' detected.' : '') + statusExtra;
+          saveSession();
+          setTimeout(function(){ copyStatus.textContent = ''; }, 5000);
+        };
+        if(entries.length === 0){
+          doImport(false);
+        } else {
+          showImportModal(doImport);
+        }
+      }catch(err){
+        copyStatus.textContent = 'Import failed — check the file format.';
+      }
+      evt.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  function parseCSV(text){
+    var rows = [], row = [], field = '', inQuotes = false;
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    for(var i=0;i<text.length;i++){
+      var c = text[i];
+      if(inQuotes){
+        if(c === '"'){
+          if(text[i+1] === '"'){ field += '"'; i++; } else { inQuotes = false; }
+        } else { field += c; }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ','){ row.push(field); field = ''; }
+        else if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+        else { field += c; }
+      }
+    }
+    row.push(field);
+    rows.push(row);
+    return rows;
+  }
+
+  document.getElementById('clear-all-btn').addEventListener('click', function(){
+    if(entries.length === 0) return;
+    if(confirm('Remove all ' + entries.length + ' recorded issue(s)? This cannot be undone.')){
+      entries = [];
+      exitEditMode();
+      renderTable(false);
+      saveSession();
+    }
+  });
+
+  // ---------- Undo delete ----------
+  var undoTimer = null;
+  function offerUndo(entry, idx){
+    if(undoTimer) clearTimeout(undoTimer);
+    var strip = document.getElementById('undo-strip');
+    document.getElementById('undo-msg').textContent = 'Deleted: ' + (entry.shortname || entry.title || 'entry') + '.';
+    strip.style.display = '';
+    function dismiss(){ strip.style.display = 'none'; if(undoTimer){ clearTimeout(undoTimer); undoTimer = null; } }
+    document.getElementById('undo-delete-btn').onclick = function(){
+      entries.splice(Math.min(idx, entries.length), 0, entry);
+      renderTable(false);
+      saveSession();
+      dismiss();
+    };
+    undoTimer = setTimeout(dismiss, 6000);
+  }
+
+  // ---------- Autosave ----------
+  var lastAutosaveSnapshot = null;
+  var autosaveStatus = document.getElementById('autosave-status');
+  var autosaveToggle = document.getElementById('autosave-toggle');
+
+  function snapshotString(){ return JSON.stringify(entries); }
+
+  function timestampForFilename(){
+    var d = new Date();
+    function pad(n){ return String(n).padStart(2,'0'); }
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes());
+  }
+
+  function doAutosave(force){
+    if(entries.length === 0) return;
+    var current = snapshotString();
+    if(!force && current === lastAutosaveSnapshot) return;
+    var slug2 = titleLibrarySlug || 'LIBRARY';
+    var tid2 = selectedTitleID || 'NOTITLE';
+    downloadCsv('SCAT_' + slug2 + '_' + tid2 + '_ISSUES_BACKUP_' + timestampForFilename() + '.csv');
+    lastAutosaveSnapshot = current;
+    markExported();
+    autosaveStatus.textContent = 'Last autosave: ' + new Date().toLocaleTimeString();
+  }
+
+  document.getElementById('autosave-now-btn').addEventListener('click', function(){ doAutosave(true); });
+  setInterval(function(){ if(autosaveToggle.checked) doAutosave(false); }, 15 * 60 * 1000);
+
+  // ---------- Session persistence (localStorage) ----------
+  var SESSION_KEY = 'slaughterCataloger.beta2_6.session';
+  var dirtySinceExport = false;
+
+  function saveSession(){
+    dirtySinceExport = entries.length > 0;
+    try{
+      if(entries.length === 0){ localStorage.removeItem(SESSION_KEY); }
+      else { localStorage.setItem(SESSION_KEY, JSON.stringify(entries)); }
+    }catch(err){ /* localStorage unavailable (private mode, sandboxed preview) — CSV autosave still covers you */ }
+  }
+
+  function markExported(){ dirtySinceExport = false; }
+
+  (function offerRestore(){
+    try{
+      var saved = localStorage.getItem(SESSION_KEY);
+      if(!saved) return;
+      var parsed = JSON.parse(saved);
+      if(!Array.isArray(parsed) || parsed.length === 0) return;
+      var banner = document.getElementById('restore-banner');
+      document.getElementById('restore-msg').textContent = 'Found ' + parsed.length + ' entr' + (parsed.length === 1 ? 'y' : 'ies') + ' from a previous session.';
+      banner.style.display = '';
+      document.getElementById('restore-yes-btn').addEventListener('click', function(){
+        entries = parsed.concat(entries);
+        refreshDatalists();
+        renderTable(false);
+        banner.style.display = 'none';
+        dirtySinceExport = true;
+      });
+      document.getElementById('restore-no-btn').addEventListener('click', function(){
+        try{ localStorage.removeItem(SESSION_KEY); }catch(err){}
+        banner.style.display = 'none';
+      });
+    }catch(err){ /* no localStorage — skip silently */ }
+  })();
+
+  window.addEventListener('beforeunload', function(evt){
+    if(entries.length > 0 && dirtySinceExport){
+      evt.preventDefault();
+      evt.returnValue = ''; // triggers the browser's standard "unsaved changes" prompt
+    }
+  });
+
+  // Live unaddressed tracking — wire input events to all toggled fields
+  TOGGLE_FIELD_KEYS.forEach(function(key){
+    if(key === 'months') return;
+    if(f[key]) f[key].addEventListener('input', updateUnaddressed);
+  });
+
+  renderMonthButtons();
+  updateGuessedStyles();
+  updateUnaddressed();
+  renderTable(false);
+})();
+</script>
+  <div class="modal-overlay" id="import-modal" style="display:none;">
+    <div class="modal-box">
+      <h3>Import CSV</h3>
+      <p id="import-modal-msg">You have existing entries. How should the imported file be handled?</p>
+      <div class="modal-actions">
+        <button class="btn ghost" id="import-cancel-btn">Cancel</button>
+        <button class="btn ghost" id="import-append-btn">Append</button>
+        <button class="btn primary" id="import-replace-btn">Replace</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

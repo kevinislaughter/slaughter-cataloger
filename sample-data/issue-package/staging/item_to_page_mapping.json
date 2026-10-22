@@ -1,0 +1,503 @@
+{
+  "file_kind": "ITEM_TO_PAGE_MAPPING_PAGES001-008",
+  "package_id": "example-gazette-v4n1-1875-sidecar-p001-p008",
+  "source_pages_processed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "mapped_items": [
+    {
+      "local_item_key": "gazette-v4n1-item-0001",
+      "source_sequence": 1,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        1,
+        2
+      ],
+      "segment_ids": [
+        "p001-s0001-01",
+        "p002-s0001-02"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 1,
+          "page_char_start": 345,
+          "page_char_end": 724
+        },
+        {
+          "source_page": 2,
+          "page_char_start": 77,
+          "page_char_end": 303
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0002",
+      "source_sequence": 2,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        1
+      ],
+      "segment_ids": [
+        "p001-s0002-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 1,
+          "page_char_start": 724,
+          "page_char_end": 889
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0003",
+      "source_sequence": 3,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        1,
+        2
+      ],
+      "segment_ids": [
+        "p001-s0003-01",
+        "p001-s0003-02",
+        "p002-s0003-03"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 1,
+          "page_char_start": 894,
+          "page_char_end": 1038
+        },
+        {
+          "source_page": 1,
+          "page_char_start": 1226,
+          "page_char_end": 1270
+        },
+        {
+          "source_page": 2,
+          "page_char_start": 303,
+          "page_char_end": 338
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0004",
+      "source_sequence": 4,
+      "parent_local_item_key": "gazette-v4n1-item-0003",
+      "pdf_pages": [
+        1
+      ],
+      "segment_ids": [
+        "p001-s0004-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 1,
+          "page_char_start": 1038,
+          "page_char_end": 1226
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0005",
+      "source_sequence": 5,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        1
+      ],
+      "segment_ids": [
+        "p001-s0005-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 1,
+          "page_char_start": 1275,
+          "page_char_end": 1336
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0006",
+      "source_sequence": 6,
+      "parent_local_item_key": "gazette-v4n1-item-0003",
+      "pdf_pages": [
+        2
+      ],
+      "segment_ids": [
+        "p002-s0006-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 2,
+          "page_char_start": 338,
+          "page_char_end": 460
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0007",
+      "source_sequence": 7,
+      "parent_local_item_key": "gazette-v4n1-item-0003",
+      "pdf_pages": [
+        2
+      ],
+      "segment_ids": [
+        "p002-s0007-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 2,
+          "page_char_start": 460,
+          "page_char_end": 568
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0008",
+      "source_sequence": 8,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        2,
+        6
+      ],
+      "segment_ids": [
+        "p002-s0008-01",
+        "p006-s0008-02"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 2,
+          "page_char_start": 573,
+          "page_char_end": 783
+        },
+        {
+          "source_page": 6,
+          "page_char_start": 300,
+          "page_char_end": 494
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0009",
+      "source_sequence": 9,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        3
+      ],
+      "segment_ids": [
+        "p003-s0009-01",
+        "p003-s0009-02"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 3,
+          "page_char_start": 77,
+          "page_char_end": 231
+        },
+        {
+          "source_page": 3,
+          "page_char_start": 353,
+          "page_char_end": 586
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0010",
+      "source_sequence": 10,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        4
+      ],
+      "segment_ids": [
+        "p004-s0010-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 4,
+          "page_char_start": 77,
+          "page_char_end": 171
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0011",
+      "source_sequence": 11,
+      "parent_local_item_key": "gazette-v4n1-item-0010",
+      "pdf_pages": [
+        4
+      ],
+      "segment_ids": [
+        "p004-s0011-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 4,
+          "page_char_start": 171,
+          "page_char_end": 385
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0012",
+      "source_sequence": 12,
+      "parent_local_item_key": "gazette-v4n1-item-0010",
+      "pdf_pages": [
+        4
+      ],
+      "segment_ids": [
+        "p004-s0012-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 4,
+          "page_char_start": 385,
+          "page_char_end": 482
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0013",
+      "source_sequence": 13,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        5
+      ],
+      "segment_ids": [
+        "p005-s0013-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 5,
+          "page_char_start": 77,
+          "page_char_end": 361
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0014",
+      "source_sequence": 14,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        5
+      ],
+      "segment_ids": [
+        "p005-s0014-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 5,
+          "page_char_start": 366,
+          "page_char_end": 563
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0015",
+      "source_sequence": 15,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        6
+      ],
+      "segment_ids": [
+        "p006-s0015-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 6,
+          "page_char_start": 77,
+          "page_char_end": 166
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0016",
+      "source_sequence": 16,
+      "parent_local_item_key": "gazette-v4n1-item-0015",
+      "pdf_pages": [
+        6
+      ],
+      "segment_ids": [
+        "p006-s0016-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 6,
+          "page_char_start": 166,
+          "page_char_end": 227
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0017",
+      "source_sequence": 17,
+      "parent_local_item_key": "gazette-v4n1-item-0015",
+      "pdf_pages": [
+        6
+      ],
+      "segment_ids": [
+        "p006-s0017-01"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 6,
+          "page_char_start": 227,
+          "page_char_end": 295
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    },
+    {
+      "local_item_key": "gazette-v4n1-item-0018",
+      "source_sequence": 18,
+      "parent_local_item_key": null,
+      "pdf_pages": [
+        7
+      ],
+      "segment_ids": [
+        "p007-s0018-01",
+        "p007-s0018-02",
+        "p007-s0018-03",
+        "p007-s0018-04"
+      ],
+      "segment_page_char_ranges": [
+        {
+          "source_page": 7,
+          "page_char_start": 77,
+          "page_char_end": 107
+        },
+        {
+          "source_page": 7,
+          "page_char_start": 112,
+          "page_char_end": 160
+        },
+        {
+          "source_page": 7,
+          "page_char_start": 165,
+          "page_char_end": 225
+        },
+        {
+          "source_page": 7,
+          "page_char_start": 230,
+          "page_char_end": 277
+        }
+      ],
+      "item_complete_within_pilot": true,
+      "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT"
+    }
+  ],
+  "unassigned_page_spans": [
+    {
+      "source_page": 1,
+      "span_count": 5,
+      "span_ids": [
+        "p001-u01",
+        "p001-u02",
+        "p001-u03",
+        "p001-u04",
+        "p001-u05"
+      ]
+    },
+    {
+      "source_page": 2,
+      "span_count": 3,
+      "span_ids": [
+        "p002-u01",
+        "p002-u02",
+        "p002-u03"
+      ]
+    },
+    {
+      "source_page": 3,
+      "span_count": 3,
+      "span_ids": [
+        "p003-u01",
+        "p003-u02",
+        "p003-u03"
+      ]
+    },
+    {
+      "source_page": 4,
+      "span_count": 2,
+      "span_ids": [
+        "p004-u01",
+        "p004-u02"
+      ]
+    },
+    {
+      "source_page": 5,
+      "span_count": 3,
+      "span_ids": [
+        "p005-u01",
+        "p005-u02",
+        "p005-u03"
+      ]
+    },
+    {
+      "source_page": 6,
+      "span_count": 3,
+      "span_ids": [
+        "p006-u01",
+        "p006-u02",
+        "p006-u03"
+      ]
+    },
+    {
+      "source_page": 7,
+      "span_count": 5,
+      "span_ids": [
+        "p007-u01",
+        "p007-u02",
+        "p007-u03",
+        "p007-u04",
+        "p007-u05"
+      ]
+    },
+    {
+      "source_page": 8,
+      "span_count": 1,
+      "span_ids": [
+        "p008-u01"
+      ]
+    }
+  ],
+  "not_segmented_contents_sequences": []
+}

@@ -1,0 +1,455 @@
+{
+ "gazette": {
+  "counts": {
+   "title": 1,
+   "issue": 309,
+   "item": 0,
+   "name": 0
+  },
+  "first": {
+   "title": [
+    "EXAGAZEX-1872"
+   ],
+   "issue": [
+    "EXAGAZEX-1872-K7V47UA",
+    "EXAGAZEX-1872-K7ABK8C",
+    "EXAGAZEX-1872-KMJERBB",
+    "EXAGAZEX-1872-KFAZZB4",
+    "EXAGAZEX-1872-KUHFRQ5"
+   ],
+   "item": [],
+   "name": []
+  }
+ },
+ "public": {
+  "counts": {
+   "title": 1,
+   "issue": 21,
+   "item": 401,
+   "name": 4
+  },
+  "first": {
+   "title": [
+    "EXAGAZEX-1872"
+   ],
+   "issue": [
+    "EXAGAZEX-1872-KMCND24",
+    "EXAGAZEX-1872-KFTDNM8",
+    "EXAGAZEX-1872-KKEMNNA",
+    "EXAGAZEX-1872-KV8C3GZ",
+    "EXAGAZEX-1872-K4EP8GW"
+   ],
+   "item": [
+    "EXAGAZEX-1872-C8AT2UM",
+    "EXAGAZEX-1872-C3EDE4S",
+    "EXAGAZEX-1872-C2F66GB",
+    "EXAGAZEX-1872-CN44WNE",
+    "EXAGAZEX-1872-CJ79G3V"
+   ],
+   "name": [
+    "k:public",
+    "k:jqpublic",
+    "k:jnoqpublic",
+    "k:johnqpublic"
+   ]
+  }
+ },
+ "J.Q. Public": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 88,
+   "name": 1
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-C7N73TF",
+    "EXAGAZEX-1872-CQPBBCW",
+    "EXAGAZEX-1872-CWUFC7M",
+    "EXAGAZEX-1872-CNY6GNR",
+    "EXAGAZEX-1872-CKW7TAJ"
+   ],
+   "name": [
+    "k:jqpublic"
+   ]
+  }
+ },
+ "credit:\"j q public\"": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 88,
+   "name": 1
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-C7N73TF",
+    "EXAGAZEX-1872-CQPBBCW",
+    "EXAGAZEX-1872-CWUFC7M",
+    "EXAGAZEX-1872-CNY6GNR",
+    "EXAGAZEX-1872-CKW7TAJ"
+   ],
+   "name": [
+    "k:jqpublic"
+   ]
+  }
+ },
+ "\"town talk\"": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 156,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-C8BUKZ4",
+    "EXAGAZEX-1872-CBVKQZY",
+    "EXAGAZEX-1872-CSNMC87",
+    "EXAGAZEX-1872-C448D8S",
+    "EXAGAZEX-1872-CSSR79D"
+   ],
+   "name": []
+  }
+ },
+ "town ta": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 156,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-C8BUKZ4",
+    "EXAGAZEX-1872-CBVKQZY",
+    "EXAGAZEX-1872-CSNMC87",
+    "EXAGAZEX-1872-C448D8S",
+    "EXAGAZEX-1872-CSSR79D"
+   ],
+   "name": []
+  }
+ },
+ "year:1872": {
+  "counts": {
+   "title": 1,
+   "issue": 35,
+   "item": 329,
+   "name": 23
+  },
+  "first": {
+   "title": [
+    "EXAGAZEX-1872"
+   ],
+   "issue": [
+    "EXAGAZEX-1872-K7V47UA",
+    "EXAGAZEX-1872-K7ABK8C",
+    "EXAGAZEX-1872-KMJERBB",
+    "EXAGAZEX-1872-KFAZZB4",
+    "EXAGAZEX-1872-KUHFRQ5"
+   ],
+   "item": [
+    "EXAGAZEX-1872-C8BUKZ4",
+    "EXAGAZEX-1872-CE2JCCP",
+    "EXAGAZEX-1872-CY6VPUZ",
+    "EXAGAZEX-1872-C7N73TF",
+    "EXAGAZEX-1872-CQPBBCW"
+   ],
+   "name": [
+    "k:fredbloggs",
+    "k:josbloggs",
+    "k:janedoe",
+    "k:mrsjanedoe",
+    "k:johndoe"
+   ]
+  }
+ },
+ "year:1990-1991 type:review": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 58,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "SAMREVIX-1990-C4JYMDE",
+    "SAMREVIX-1990-C4JZ648",
+    "SAMREVIX-1990-CGSZJ6V",
+    "SAMREVIX-1990-C9FJFJJ",
+    "SAMREVIX-1990-C2MR2E7"
+   ],
+   "name": []
+  }
+ },
+ "in:gazette type:poem": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 79,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-CABY3N4",
+    "EXAGAZEX-1872-CH3FJSY",
+    "EXAGAZEX-1872-CEEWE94",
+    "EXAGAZEX-1872-CW89GS4",
+    "EXAGAZEX-1872-CHGF5Y7"
+   ],
+   "name": []
+  }
+ },
+ "id:EXAGAZEX-1872-K": {
+  "counts": {
+   "title": 0,
+   "issue": 309,
+   "item": 0,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [
+    "EXAGAZEX-1872-K7V47UA",
+    "EXAGAZEX-1872-K7ABK8C",
+    "EXAGAZEX-1872-KMJERBB",
+    "EXAGAZEX-1872-KFAZZB4",
+    "EXAGAZEX-1872-KUHFRQ5"
+   ],
+   "item": [],
+   "name": []
+  }
+ },
+ "EXAGAZEX-1872-K7V47UA": {
+  "counts": {
+   "title": 0,
+   "issue": 1,
+   "item": 0,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [
+    "EXAGAZEX-1872-K7V47UA"
+   ],
+   "item": [],
+   "name": []
+  }
+ },
+ "smith -john": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 117,
+   "name": 5
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-C99EA7G",
+    "EXAGAZEX-1872-CM435V6",
+    "EXAGAZEX-1872-CH3FJSY",
+    "EXAGAZEX-1872-CU3265N",
+    "EXAGAZEX-1872-CUC3M58"
+   ],
+   "name": [
+    "k:jsmith",
+    "k:maryannsmith",
+    "k:wsmith",
+    "k:williamsmith",
+    "k:wmsmith"
+   ]
+  }
+ },
+ "pérez": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 77,
+   "name": 2
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "SAMREVIX-1990-C9FJFJJ",
+    "SAMREVIX-1990-CSEFHH6",
+    "SAMREVIX-1990-CEFFNCP",
+    "SAMREVIX-1990-CJZVH3H",
+    "SAMREVIX-1990-CUC8QZ5"
+   ],
+   "name": [
+    "k:jperez",
+    "k:juanperez"
+   ]
+  }
+ },
+ "vol 4 no 1": {
+  "counts": {
+   "title": 0,
+   "issue": 67,
+   "item": 0,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [
+    "SAMREVIX-1990-H863BM3",
+    "EXAGAZEX-1872-K7V47UA",
+    "EXAGAZEX-1872-K9RCE99",
+    "EXAGAZEX-1872-KRNYWA2",
+    "EXAGAZEX-1872-KQS72DW"
+   ],
+   "item": [],
+   "name": []
+  }
+ },
+ "note:dealers": {
+  "counts": {
+   "title": 0,
+   "issue": 151,
+   "item": 0,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [
+    "EXAGAZEX-1872-KRNYWA2",
+    "EXAGAZEX-1872-K8Z27JP",
+    "EXAGAZEX-1872-KAHZHK2",
+    "EXAGAZEX-1872-K3HQ8P5",
+    "EXAGAZEX-1872-KDE5RVP"
+   ],
+   "item": [],
+   "name": []
+  }
+ },
+ "title:county": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 40,
+   "name": 0
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "EXAGAZEX-1872-C4VAGZQ",
+    "EXAGAZEX-1872-CEH7T6W",
+    "EXAGAZEX-1872-CA8SMSM",
+    "EXAGAZEX-1872-CDFVQPF",
+    "EXAGAZEX-1872-C3S5R68"
+   ],
+   "name": []
+  }
+ },
+ "anytown": {
+  "counts": {
+   "title": 1,
+   "issue": 0,
+   "item": 8,
+   "name": 0
+  },
+  "first": {
+   "title": [
+    "EXAGAZEX-1872"
+   ],
+   "issue": [],
+   "item": [
+    "PLABULLX-1961-CP8VVQC",
+    "SAMREVIX-1990-C4JYMDE",
+    "SAMREVIX-1990-CT6YTEU",
+    "SAMREVIX-1990-CHV8N8C",
+    "SAMREVIX-1990-CDKCCAC"
+   ],
+   "name": []
+  }
+ },
+ "springfield": {
+  "counts": {
+   "title": 1,
+   "issue": 85,
+   "item": 19,
+   "name": 0
+  },
+  "first": {
+   "title": [
+    "PLABULLX-1961"
+   ],
+   "issue": [
+    "EXAGAZEX-1872-K9NHRQQ",
+    "EXAGAZEX-1872-KVWHVGY",
+    "EXAGAZEX-1872-KPACD36",
+    "EXAGAZEX-1872-KHYM7NQ",
+    "EXAGAZEX-1872-KENYDVE"
+   ],
+   "item": [
+    "EXAGAZEX-1872-CFSZJR8",
+    "EXAGAZEX-1872-C732FFD",
+    "EXAGAZEX-1872-C86NJET",
+    "EXAGAZEX-1872-CYJA6WH",
+    "EXAGAZEX-1872-CDJA4S5"
+   ],
+   "name": []
+  }
+ },
+ "in:\"sample review\" credit:kowalski": {
+  "counts": {
+   "title": 0,
+   "issue": 0,
+   "item": 75,
+   "name": 2
+  },
+  "first": {
+   "title": [],
+   "issue": [],
+   "item": [
+    "SAMREVIX-1990-CWBRBFN",
+    "SAMREVIX-1990-C29PUQY",
+    "SAMREVIX-1990-C4JYMDE",
+    "SAMREVIX-1990-CGSZJ6V",
+    "SAMREVIX-1990-C9FJFJJ"
+   ],
+   "name": [
+    "k:jkowalski",
+    "k:jankowalski"
+   ]
+  }
+ },
+ "-type:notice letter": {
+  "counts": {
+   "title": 1,
+   "issue": 0,
+   "item": 372,
+   "name": 0
+  },
+  "first": {
+   "title": [
+    "SAMREVIX-1990"
+   ],
+   "issue": [],
+   "item": [
+    "PLABULLX-1961-CFY9DJH",
+    "PLABULLX-1961-C6DCTEG",
+    "PLABULLX-1961-CRJVZHZ",
+    "PLABULLX-1961-CJAQVP2",
+    "PLABULLX-1961-CN99JDG"
+   ],
+   "name": []
+  }
+ }
+}

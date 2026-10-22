@@ -1,0 +1,230 @@
+{
+  "format_version": "1.0",
+  "rights_status": {
+    "value": "undetermined",
+    "statement": "UNKNOWN_OR_UNDETERMINED; this is not a copyright determination"
+  },
+  "decisions": [
+    {
+      "id": "d001",
+      "resource": {
+        "kind": "page_text"
+      },
+      "purpose": "public_web",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d002",
+      "resource": {
+        "kind": "page_text"
+      },
+      "purpose": "public_search",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d003",
+      "resource": {
+        "kind": "page_text"
+      },
+      "purpose": "public_download",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d004",
+      "resource": {
+        "kind": "page_text"
+      },
+      "purpose": "public_epub",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d005",
+      "resource": {
+        "kind": "item_text"
+      },
+      "purpose": "public_web",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d006",
+      "resource": {
+        "kind": "item_text"
+      },
+      "purpose": "public_search",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d007",
+      "resource": {
+        "kind": "item_text"
+      },
+      "purpose": "public_download",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d008",
+      "resource": {
+        "kind": "item_text"
+      },
+      "purpose": "public_epub",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.fulltext.status = PRIVATE"
+    },
+    {
+      "id": "d009",
+      "resource": {
+        "kind": "mentions"
+      },
+      "purpose": "public_web",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.deep_index.status = PRIVATE"
+    },
+    {
+      "id": "d010",
+      "resource": {
+        "kind": "mentions"
+      },
+      "purpose": "public_search",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.deep_index.status = PRIVATE"
+    },
+    {
+      "id": "d011",
+      "resource": {
+        "kind": "mentions"
+      },
+      "purpose": "public_download",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.deep_index.status = PRIVATE"
+    },
+    {
+      "id": "d012",
+      "resource": {
+        "kind": "mentions"
+      },
+      "purpose": "public_epub",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.deep_index.status = PRIVATE"
+    },
+    {
+      "id": "d013",
+      "resource": {
+        "kind": "source"
+      },
+      "purpose": "public_web",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.source_pdf.status = PRIVATE"
+    },
+    {
+      "id": "d014",
+      "resource": {
+        "kind": "source"
+      },
+      "purpose": "public_search",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.source_pdf.status = PRIVATE"
+    },
+    {
+      "id": "d015",
+      "resource": {
+        "kind": "source"
+      },
+      "purpose": "public_download",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.source_pdf.status = PRIVATE"
+    },
+    {
+      "id": "d016",
+      "resource": {
+        "kind": "source"
+      },
+      "purpose": "public_epub",
+      "value": "deny",
+      "by": "staging package",
+      "at": "2026-10-01",
+      "basis": "RIGHTS_AND_ACCESS.json: access_defaults.source_pdf.status = PRIVATE"
+    }
+  ],
+  "withheld": [],
+  "origin": {
+    "RIGHTS_AND_ACCESS.json": {
+      "file_kind": "PROVISIONAL_PRIVATE_ASSET_RIGHTS_POLICY__NOT_PUBLIC_AUTHORIZATION",
+      "access_defaults": {
+        "bibliographic_metadata": {
+          "status": "PRIVATE_STAGING",
+          "public_release_authorized": false
+        },
+        "fulltext": {
+          "status": "PRIVATE",
+          "public_release_authorized": false,
+          "includes": [
+            "fulltext.json",
+            "transcription.md",
+            "item_to_page_mapping.json"
+          ]
+        },
+        "cover": {
+          "status": "REVIEW_REQUIRED",
+          "public_release_authorized": false,
+          "file": "cover.jpg"
+        },
+        "deep_index": {
+          "status": "PRIVATE",
+          "public_release_authorized": false,
+          "file": "private_index/deep_index.json"
+        },
+        "source_pdf": {
+          "status": "PRIVATE",
+          "public_release_authorized": false,
+          "file": "source/example-gazette-v4n1.pdf"
+        }
+      },
+      "export_policy": "No public outputs authorized.",
+      "approvals": {
+        "catalog_merge": false,
+        "local_import": false,
+        "public_release": false,
+        "fulltext_public_release": false,
+        "cover_public_release": false,
+        "index_public_release": false
+      }
+    }
+  }
+}

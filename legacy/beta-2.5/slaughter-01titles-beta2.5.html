@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slaughter Cataloger — Titles :: Beta 2.5</title>
+<style>
+  :root{
+    --paper:#ffffff;
+    --ink:#111111;
+    --ink-soft:#4a4a4a;
+    --line:#c9c9c9;
+    --line-strong:#8a8a8a;
+    --panel:#f3f3f1;
+    --panel-dark:#e4e4e2;
+    --entry:#a3410a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--panel); color:var(--ink);
+    font-family:"Courier New", Courier, monospace;
+    font-size:14px; line-height:1.5;
+    max-width:960px; margin:0 auto; padding:20px 16px 60px;
+  }
+  header{margin-bottom:14px; padding-bottom:6px;}
+  .stamp{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 20px;}
+  h1{font-family:Georgia,"Times New Roman",serif; font-weight:700; font-size:13px; letter-spacing:2.5px; text-transform:uppercase; margin:0;}
+  h1 .beta{font-size:9px; letter-spacing:3px; font-weight:400; color:var(--ink-soft); vertical-align:middle;}
+  .tagline{font-size:11px; color:var(--ink-soft); letter-spacing:.5px;}
+
+  .card{position:relative; background:var(--paper); border:1px solid var(--ink); padding:26px 24px 20px; margin-bottom:22px;}
+  .card::before{content:''; position:absolute; top:0; left:0; right:0; height:3px; background:repeating-linear-gradient(90deg, var(--ink) 0px, var(--ink) 1px, transparent 1px, transparent 5px);}
+  .card-title{font-family:Georgia,serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:14px; display:flex; align-items:baseline; flex-wrap:wrap; gap:4px;}
+  .edit-flag{display:none; color:var(--entry); font-weight:bold; text-transform:none; letter-spacing:0; font-size:11px; margin-left:10px;}
+  .edit-flag.show{display:inline-block;}
+
+  .form-tier{margin-bottom:20px;}
+  .tier-label{font-family:Georgia,serif; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px; padding:5px 8px; background:#fdf0e8; border-bottom:1px solid var(--line);}
+  .tier-hint{text-transform:none; letter-spacing:0; font-style:italic; color:#999; font-size:10px;}
+
+  .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px 16px;}
+  .field{min-width:0;}
+  .field.span-2{grid-column:span 2;}
+  .field.span-3{grid-column:span 3;}
+  .field.span-4{grid-column:span 4;}
+
+  .label-row{display:flex; justify-content:space-between; align-items:baseline; font-family:Georgia,serif; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:3px; min-height:18px;}
+  .opt{font-size:8px; letter-spacing:1px; text-transform:none; font-style:italic; color:#999;}
+  .toggle-group{display:flex; gap:3px; margin-left:auto;}
+  .spec-toggle,.na-toggle{font-family:Georgia,serif; font-size:8px; letter-spacing:1px; padding:1px 5px; border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); cursor:pointer;}
+  .spec-toggle.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .na-toggle.active{background:var(--ink-soft); color:var(--paper); border-color:var(--ink-soft);}
+  .header-toggle{font-family:Georgia,serif; font-size:9px; letter-spacing:1px; padding:3px 8px; border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); cursor:pointer; text-transform:uppercase; margin-left:8px;}
+  .header-toggle.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  input[type="text"],textarea{font-family:inherit; font-size:14px; color:var(--entry); font-weight:700; background:var(--paper); border:none; border-bottom:1px solid var(--line-strong); padding:6px 2px; outline:none; width:100%;}
+  input[type="text"]::placeholder,textarea::placeholder{color:#999; font-weight:400;}
+  input[type="text"].unaddressed,textarea.unaddressed{border-bottom-color:#e8a87c; border-bottom-width:2px;}
+  input[type="text"].guessed,textarea.guessed{border-bottom-style:dashed; border-bottom-color:var(--ink);}
+  input[type="text"]:disabled,textarea:disabled{opacity:.35; font-style:italic;}
+  input[type="text"]:focus,textarea:focus{border-bottom:2px solid var(--ink); padding-bottom:5px;}
+  textarea{resize:vertical; min-height:40px;}
+
+  .btn{font-size:12px; letter-spacing:1px; text-transform:uppercase; padding:9px 18px; border:1px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer;}
+  .btn:hover{background:var(--panel-dark);}
+  .btn.primary{background:var(--ink); color:var(--paper); font-weight:bold; padding:11px 30px;}
+  .btn.primary:hover{background:#333;}
+  .btn.ghost{border-color:var(--line-strong); color:var(--ink-soft);}
+  .btn.small{padding:5px 10px; font-size:10.5px;}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+  .actions-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px;}
+
+  .table-scroll{overflow-x:auto; overflow-y:auto; max-height:320px; border:1px solid var(--ink);}
+  .table-scroll thead th{position:sticky; top:0; background:var(--panel); z-index:1;}
+  table{border-collapse:collapse; width:100%; font-size:12px;}
+  table.full-view{min-width:1400px;}
+  th,td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--line);}
+  th{background:var(--panel); border-bottom:1px solid var(--ink); border-right:1px solid var(--line); font-family:Georgia,serif; font-size:9px; text-transform:uppercase; letter-spacing:1px; white-space:nowrap; cursor:default;}
+  th.sortable{cursor:pointer;} th.sortable:hover{background:var(--panel-dark);}
+  tr:hover{background:#fafaf8;}
+  .row-btn{border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); font-size:10px; padding:3px 7px; cursor:pointer;}
+  .row-btn:hover{background:var(--panel-dark);}
+
+  .toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; padding:8px 0;}
+  .toolbar h2{font-family:Georgia,serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-right:auto;}
+  .count{font-size:11px; color:var(--ink-soft); margin-left:auto;}
+  .autosave-strip{font-size:11px; color:var(--ink-soft); padding:6px 12px; background:var(--panel); border:1px solid var(--line); margin-bottom:10px; display:flex; align-items:center; gap:10px;}
+  .modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:1000;}
+  .modal-box{background:var(--paper); border:1px solid var(--ink); max-width:440px; width:90%; padding:24px;}
+  .modal-box h3{font-family:Georgia,serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;}
+  .modal-box p{font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:18px;}
+  .modal-actions{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;}
+
+  footer{margin-top:20px; text-align:center; font-size:10.5px; color:var(--ink-soft); letter-spacing:.4px;}
+  footer a{color:inherit; text-decoration:none; border-bottom:1px solid var(--line-strong);}
+
+  @media (max-width:760px){.grid{grid-template-columns:repeat(2,1fr);} .field.span-2{grid-column:span 2;} .field.span-3,.field.span-4{grid-column:span 2;}}
+  @media (max-width:460px){.grid{grid-template-columns:1fr;} .field.span-2,.field.span-3,.field.span-4{grid-column:span 1;}}
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="stamp">
+      <h1>Slaughter Cataloger <span class="beta">:: Beta 2.5</span></h1>
+      <div class="tagline">Titles &nbsp;·&nbsp; Slaughter Cataloger suite</div>
+    </div>
+  </header>
+
+  <div class="card">
+    <p class="card-title">
+      New Title Record
+      <button type="button" id="speculative-toggle" class="header-toggle" title="Part of this entry is uncertain. Auto-follows field-level ? marks. Resets after each Record.">Speculative</button>
+      <span id="edit-flag" class="edit-flag">Editing row</span>
+      <span id="card-live-info" style="font-family:monospace; font-size:10px; letter-spacing:1px; color:var(--entry); font-weight:700; text-transform:none; margin-left:12px;"></span>
+      <span style="flex:1"></span>
+    </p>
+
+    <div class="form-tier">
+      <div class="tier-label">Title Library <span class="tier-hint">— defines the themed collection this title belongs to; sticky across all records</span></div>
+      <div class="grid">
+        <div class="field span-2">
+          <div class="label-row"><label for="f-library-slug" title="Machine-friendly identifier for your themed title library. Uppercase letters, numbers, and hyphens only. Example: EXAMPLE-LIBRARY">Title Library Slug <span class="opt">required · sticky</span></label></div>
+          <input type="text" id="f-library-slug" placeholder="e.g. EXAMPLE-LIBRARY" style="text-transform:uppercase; letter-spacing:2px; font-size:12px;">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-library-name" title="Human-readable name for the title library.">Title Library Name <span class="opt">required · sticky</span></label></div>
+          <input type="text" id="f-library-name" placeholder="e.g. Example Library">
+        </div>
+        <div class="field span-4">
+          <div class="label-row"><label for="f-library-note" title="Optional description or scope note for this title library.">Title Library Note <span class="opt">optional · sticky</span></label></div>
+          <input type="text" id="f-library-note" placeholder="e.g. Periodicals of one town and county">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-tier">
+      <div class="tier-label">Title Identity <span class="tier-hint">— the publication and its unique code</span></div>
+      <div class="grid">
+        <div class="field span-2">
+          <div class="label-row"><label for="f-canonical-title" title="The standard or most commonly used title. Required.">Canonical Title</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="canonicalTitle">?</button></div></div>
+          <input type="text" id="f-canonical-title" placeholder="e.g. The Example Gazette">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-title-code" title="8-character code: 7-char stem + 1-char discriminator (X default). Auto-suggested from Canonical Title; editable.">Title Code <span class="opt">auto-suggested</span></label></div>
+          <input type="text" id="f-title-code" maxlength="8" placeholder="e.g. EXAGAZEX" style="text-transform:uppercase; letter-spacing:2px; font-size:12px;">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-first-year" title="First known or inferred publication year in CE/Gregorian terms. Use X for unknown digits: 1896, 189X, 18XX, XXXX. Required.">First Year (CE)</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="firstYear">?</button></div></div>
+          <input type="text" id="f-first-year" maxlength="4" placeholder="e.g. 1896" style="letter-spacing:2px; font-size:12px;">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-first-year-note" title="Optional note explaining uncertainty in the first publication year.">First Year Note <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="firstYearNote">?</button><button type="button" class="na-toggle" data-field="firstYearNote">N/A</button></div></div>
+          <input type="text" id="f-first-year-note" placeholder="e.g. Inferred from first surviving issue">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label title="Computed: Title Code + First Year. Read-only.">TitleID</label></div>
+          <div id="title-id-display" style="font-family:monospace; font-size:12px; letter-spacing:2px; color:var(--entry); font-weight:700; padding:6px 2px; border-bottom:1px solid var(--line); min-height:28px;">—</div>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-original-title" title="The title as it appeared on the very first issue, if different from the Canonical Title.">Original / First Published Title <span class="opt">if different</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="originalTitle">?</button><button type="button" class="na-toggle" data-field="originalTitle">N/A</button></div></div>
+          <input type="text" id="f-original-title" placeholder="">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-subtitle" title="Secondary title or descriptive phrase.">Subtitle</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="subtitle">?</button><button type="button" class="na-toggle" data-field="subtitle">N/A</button></div></div>
+          <input type="text" id="f-subtitle" placeholder="e.g. A Weekly Journal of Politics, Literature and Art">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-tier">
+      <div class="tier-label">Title History <span class="tier-hint">— related titles and publication context</span></div>
+      <div class="grid">
+        <div class="field span-2">
+          <div class="label-row"><label for="f-former-titles" title="Previous titles of this publication. Separate multiple with semicolons.">Former Title(s)</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="formerTitles">?</button><button type="button" class="na-toggle" data-field="formerTitles">N/A</button></div></div>
+          <input type="text" id="f-former-titles" placeholder="">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-later-titles" title="Subsequent titles of this publication.">Later Title(s)</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="laterTitles">?</button><button type="button" class="na-toggle" data-field="laterTitles">N/A</button></div></div>
+          <input type="text" id="f-later-titles" placeholder="">
+        </div>
+        <div class="field span-4">
+          <div class="label-row"><label for="f-related-titles" title="Other publications related to this one — sister journals, continuations under different editorship, etc.">Related Title(s)</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="relatedTitles">?</button><button type="button" class="na-toggle" data-field="relatedTitles">N/A</button></div></div>
+          <input type="text" id="f-related-titles" placeholder="">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-tier">
+      <div class="tier-label">Publication Details <span class="tier-hint">— publisher, location, frequency</span></div>
+      <div class="grid">
+        <div class="field span-2">
+          <div class="label-row"><label for="f-publisher" title="Primary publisher for the title's run.">Publisher</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="publisher">?</button><button type="button" class="na-toggle" data-field="publisher">N/A</button></div></div>
+          <input type="text" id="f-publisher" placeholder="">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-editors" title="Primary editor(s) for the title's run.">Editor(s)</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="editors">?</button><button type="button" class="na-toggle" data-field="editors">N/A</button></div></div>
+          <input type="text" id="f-editors" placeholder="">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-city" title="Primary city of publication.">City</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="city">?</button><button type="button" class="na-toggle" data-field="city">N/A</button></div></div>
+          <input type="text" id="f-city" placeholder="">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-state" title="State or province of publication.">State / Province</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="state">?</button><button type="button" class="na-toggle" data-field="state">N/A</button></div></div>
+          <input type="text" id="f-state" placeholder="">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-country" title="Country of publication.">Country</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="country">?</button><button type="button" class="na-toggle" data-field="country">N/A</button></div></div>
+          <input type="text" id="f-country" placeholder="">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-language" title="Primary language of the publication.">Language</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="language">?</button><button type="button" class="na-toggle" data-field="language">N/A</button></div></div>
+          <input type="text" id="f-language" value="English" placeholder="">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-frequency" title="How often the periodical was issued.">Frequency</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="frequency">?</button><button type="button" class="na-toggle" data-field="frequency">N/A</button></div></div>
+          <input type="text" id="f-frequency" list="frequency-datalist" placeholder="e.g. monthly">
+          <datalist id="frequency-datalist"><option value="daily"><option value="weekly"><option value="fortnightly"><option value="monthly"><option value="bimonthly"><option value="quarterly"><option value="three times a year"><option value="semiannual"><option value="annual"><option value="irregular"></datalist>
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="f-issn" title="International Standard Serial Number (XXXX-XXXX).">ISSN</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="issn">?</button><button type="button" class="na-toggle" data-field="issn">N/A</button></div></div>
+          <input type="text" id="f-issn" placeholder="e.g. 1234-5678">
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-cataloging-status" title="Current cataloging progress for this title. Updates as you work through Issues and Contents.">Cataloging Status</label></div>
+          <select id="f-cataloging-status" style="font-family:inherit; font-size:13px; color:var(--ink); background:var(--paper); border:1px solid var(--line-strong); padding:6px 8px; width:100%;">
+            <option value="Not started">Not started</option>
+            <option value="Issues in progress">Issues in progress</option>
+            <option value="Issues complete">Issues complete</option>
+            <option value="Contents in progress">Contents in progress</option>
+            <option value="Contents complete">Contents complete</option>
+            <option value="Fully cataloged">Fully cataloged</option>
+          </select>
+        </div>
+        <div class="field span-2"></div>
+      </div>
+    </div>
+
+    <div class="form-tier">
+      <div class="tier-label">Extended Notes <span class="tier-hint">— optional scholarly context</span></div>
+      <div class="grid">
+        <div class="field span-4">
+          <div class="label-row"><label for="f-pub-history" title="Narrative history of the publication: founding, changes, cessation, revival.">Publication History Note</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="pubHistory">?</button><button type="button" class="na-toggle" data-field="pubHistory">N/A</button></div></div>
+          <textarea id="f-pub-history" rows="2" placeholder=""></textarea>
+        </div>
+        <div class="field span-4">
+          <div class="label-row"><label for="f-mission" title="The publication's stated mission, prospectus, or founding rationale — transcribed or summarized.">Mission Statement / Prospectus</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="mission">?</button><button type="button" class="na-toggle" data-field="mission">N/A</button></div></div>
+          <textarea id="f-mission" rows="2" placeholder=""></textarea>
+        </div>
+        <div class="field span-4">
+          <div class="label-row"><label for="f-editorial" title="Introductory or editorial statement from the first issue or a key issue.">Introduction / Editorial Statement</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="editorial">?</button><button type="button" class="na-toggle" data-field="editorial">N/A</button></div></div>
+          <textarea id="f-editorial" rows="2" placeholder=""></textarea>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-biblio-note" title="Bibliographic references or citations about this title.">Bibliographic Note</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="biblioNote">?</button><button type="button" class="na-toggle" data-field="biblioNote">N/A</button></div></div>
+          <textarea id="f-biblio-note" rows="2" placeholder=""></textarea>
+        </div>
+        <div class="field span-2">
+          <div class="label-row"><label for="f-general-notes" title="Any other notes about this title.">General Notes</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="generalNotes">?</button><button type="button" class="na-toggle" data-field="generalNotes">N/A</button></div></div>
+          <textarea id="f-general-notes" rows="2" placeholder=""></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <div id="dupe-msg" style="font-size:11px; color:var(--entry); display:none;">⚠ A title with that TitleID already exists.</div>
+      <div style="flex:1"></div>
+      <button class="btn ghost" id="cancel-edit-btn" style="display:none;">Cancel edit</button>
+      <button class="btn ghost" id="clear-form-btn">Clear form</button>
+      <button class="btn primary" id="record-btn">Record</button>
+    </div>
+  </div>
+
+  <div class="autosave-strip" id="undo-strip" style="display:none;">
+    <span id="undo-msg"></span>
+    <button class="btn small ghost" id="undo-delete-btn">Undo</button>
+  </div>
+
+  <div class="autosave-strip" id="restore-banner" style="display:none; border-color:var(--ink);">
+    <span>A previous session was found.</span>
+    <button class="btn small" id="restore-yes-btn">Restore</button>
+    <button class="btn small ghost" id="restore-no-btn">Discard</button>
+  </div>
+
+  <div class="toolbar">
+    <h2>Title Library</h2>
+    <button class="btn small ghost" id="export-btn">Export .csv</button>
+    <button class="btn small ghost" id="copy-btn">Copy to clipboard</button>
+    <button class="btn small ghost" id="import-btn">Import .csv</button>
+    <button class="btn small ghost" id="table-view-toggle">Show full view</button>
+    <button class="btn small ghost" id="clear-all-btn">Clear all entries</button>
+    <span class="count" id="entry-count"></span>
+  </div>
+  <div id="table-container"></div>
+  <div id="copy-status" style="font-size:11px; color:var(--ink-soft); margin-top:4px;"></div>
+
+  <div class="modal-overlay" id="import-modal" style="display:none;">
+    <div class="modal-box">
+      <h3>Import CSV</h3>
+      <p id="import-modal-msg"></p>
+      <div class="modal-actions">
+        <button class="btn ghost" id="import-cancel-btn">Cancel</button>
+        <button class="btn ghost" id="import-append-btn">Append</button>
+        <button class="btn primary" id="import-replace-btn">Replace</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="slaughter-02issues-beta2.5.html">Issues</a> &nbsp;·&nbsp;
+    <a href="slaughter-03contents-beta2.5.html">Contents</a> &nbsp;·&nbsp;
+    <a href="slaughter-04compiler-beta2.5.html">Compiler</a> &nbsp;·&nbsp;
+    <a href="slaughter-cataloger-beta2.5.html">Documentation</a>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ========== Field refs ==========
+  var f = {
+    librarySlug: document.getElementById('f-library-slug'),
+    libraryName: document.getElementById('f-library-name'),
+    libraryNote: document.getElementById('f-library-note'),
+    canonicalTitle: document.getElementById('f-canonical-title'),
+    titleCode: document.getElementById('f-title-code'),
+    firstYear: document.getElementById('f-first-year'),
+    firstYearNote: document.getElementById('f-first-year-note'),
+    originalTitle: document.getElementById('f-original-title'),
+    subtitle: document.getElementById('f-subtitle'),
+    formerTitles: document.getElementById('f-former-titles'),
+    laterTitles: document.getElementById('f-later-titles'),
+    relatedTitles: document.getElementById('f-related-titles'),
+    publisher: document.getElementById('f-publisher'),
+    editors: document.getElementById('f-editors'),
+    city: document.getElementById('f-city'),
+    state: document.getElementById('f-state'),
+    country: document.getElementById('f-country'),
+    language: document.getElementById('f-language'),
+    frequency: document.getElementById('f-frequency'),
+    issn: document.getElementById('f-issn'),
+    pubHistory: document.getElementById('f-pub-history'),
+    mission: document.getElementById('f-mission'),
+    editorial: document.getElementById('f-editorial'),
+    biblioNote: document.getElementById('f-biblio-note'),
+    generalNotes: document.getElementById('f-general-notes'),
+    catalogingStatus: document.getElementById('f-cataloging-status')
+  };
+
+  var dupeMsg = document.getElementById('dupe-msg');
+  var recordBtn = document.getElementById('record-btn');
+  var cancelEditBtn = document.getElementById('cancel-edit-btn');
+  var editFlag = document.getElementById('edit-flag');
+  var copyStatus = document.getElementById('copy-status');
+  var tableContainer = document.getElementById('table-container');
+  var entryCountEl = document.getElementById('entry-count');
+
+  // ========== Field-state system ==========
+  var TOGGLE_FIELD_KEYS = ["canonicalTitle","firstYear","firstYearNote","originalTitle","subtitle","formerTitles","laterTitles","relatedTitles","publisher","editors","city","state","country","language","frequency","issn","pubHistory","mission","editorial","biblioNote","generalNotes"];
+  var TOGGLE_FIELD_LABELS = {
+    canonicalTitle:"Canonical Title", firstYear:"First Year of Publication (CE)", firstYearNote:"First Year Note",
+    originalTitle:"Original / First Published Title", subtitle:"Subtitle",
+    formerTitles:"Former Title(s)", laterTitles:"Later Title(s)", relatedTitles:"Related Title(s)",
+    publisher:"Publisher", editors:"Editor(s)", city:"City", state:"State / Province", country:"Country",
+    language:"Language", frequency:"Frequency", issn:"ISSN",
+    pubHistory:"Publication History Note", mission:"Mission Statement / Prospectus",
+    editorial:"Introduction / Editorial Statement", biblioNote:"Bibliographic Note", generalNotes:"General Notes"
+  };
+  // Fields that cannot be N/A (only ? allowed)
+
+  var specFields = {};
+  var naFields = {};
+  TOGGLE_FIELD_KEYS.forEach(function(key){ specFields[key] = false; naFields[key] = false; });
+
+  var originalPlaceholders = {};
+  TOGGLE_FIELD_KEYS.forEach(function(key){
+    if(f[key]) originalPlaceholders[key] = f[key].placeholder || '';
+  });
+
+  function setFieldDisabled(key, disabled){
+    if(f[key]){
+      f[key].disabled = disabled;
+      if(disabled){ f[key].classList.remove('unaddressed'); f[key].placeholder = '[N/A]'; }
+      else { f[key].placeholder = originalPlaceholders[key] || ''; }
+    }
+  }
+  function updateGuessedStyles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){ if(f[key]) f[key].classList.toggle('guessed', !!specFields[key]); });
+  }
+  function updateUnaddressed(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      var el = f[key]; if(!el || el.disabled) return;
+      el.classList.toggle('unaddressed', el.value.trim() === '' && !specFields[key] && !naFields[key]);
+    });
+  }
+  function getUnaddressedFields(){
+    var result = [];
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      if(specFields[key] || naFields[key]) return;
+      var el = f[key]; if(!el || el.disabled) return;
+      if(el.value.trim() === '') result.push(TOGGLE_FIELD_LABELS[key]);
+    });
+    return result;
+  }
+  function resetSpecToggles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){ specFields[key] = false; });
+    Array.prototype.forEach.call(document.querySelectorAll('.spec-toggle'), function(btn){ btn.classList.remove('active'); });
+    updateGuessedStyles();
+  }
+  function resetNaToggles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){ naFields[key] = false; setFieldDisabled(key, false); });
+    Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){ btn.classList.remove('active'); });
+  }
+  function activeSpecFields(){
+    return TOGGLE_FIELD_KEYS.filter(function(k){ return !!specFields[k]; }).map(function(k){ return TOGGLE_FIELD_LABELS[k]; });
+  }
+  function activeNaFields(){
+    return TOGGLE_FIELD_KEYS.filter(function(k){ return !!naFields[k]; }).map(function(k){ return TOGGLE_FIELD_LABELS[k]; });
+  }
+
+  // Speculative header toggle with auto-follow
+  var speculativeOn = false, speculativeManual = false;
+  var speculativeToggleBtn = document.getElementById('speculative-toggle');
+  function setSpeculative(on){ speculativeOn = on; speculativeToggleBtn.classList.toggle('active', on); }
+  function updateSpeculativeFromFields(){
+    if(speculativeManual) return;
+    setSpeculative(TOGGLE_FIELD_KEYS.some(function(k){ return !!specFields[k]; }));
+  }
+  speculativeToggleBtn.addEventListener('click', function(){ speculativeManual = true; setSpeculative(!speculativeOn); });
+
+  // Wire ? toggles
+  Array.prototype.forEach.call(document.querySelectorAll('.spec-toggle'), function(btn){
+    var key = btn.dataset.field;
+    btn.addEventListener('click', function(){
+      specFields[key] = !specFields[key];
+      btn.classList.toggle('active', specFields[key]);
+      if(specFields[key] && naFields[key]){
+        naFields[key] = false; setFieldDisabled(key, false);
+        var naBtn = document.querySelector('.na-toggle[data-field="' + key + '"]');
+        if(naBtn) naBtn.classList.remove('active');
+      }
+      updateGuessedStyles(); updateUnaddressed(); updateSpeculativeFromFields();
+    });
+  });
+  // Wire N/A toggles
+  Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){
+    var key = btn.dataset.field;
+    btn.addEventListener('click', function(){
+      naFields[key] = !naFields[key];
+      btn.classList.toggle('active', naFields[key]);
+      if(naFields[key]){
+        if(f[key]) f[key].value = '';
+        if(specFields[key]){
+          specFields[key] = false;
+          var specBtn = document.querySelector('.spec-toggle[data-field="' + key + '"]');
+          if(specBtn) specBtn.classList.remove('active');
+          updateGuessedStyles();
+        }
+      }
+      setFieldDisabled(key, naFields[key]);
+      updateUnaddressed(); updateSpeculativeFromFields();
+    });
+  });
+  TOGGLE_FIELD_KEYS.forEach(function(key){ if(f[key]) f[key].addEventListener('input', updateUnaddressed); });
+
+  // ========== Title Code generation ==========
+  var WEAK_WORDS = ['THE','A','AN','AND','OF','FOR','IN','ON','AT','TO','BY'];
+  function generateTitleStem(title){
+    var words = title.toUpperCase().replace(/[^A-Z0-9 ]/g, '').split(/\s+/).filter(Boolean);
+    var sig = words.filter(function(w){ return WEAK_WORDS.indexOf(w) === -1; });
+    if(sig.length === 0) sig = words;
+    if(sig.length === 0) return 'XXXXXXX';
+    var stem = '';
+    if(sig.length === 1) stem = sig[0].substring(0, 7);
+    else if(sig.length === 2) stem = sig[0].substring(0, 3) + sig[1].substring(0, 4);
+    else if(sig.length === 3) stem = sig[0].substring(0, 3) + sig[1].substring(0, 2) + sig[2].substring(0, 2);
+    else stem = sig[0].substring(0, 2) + sig[1].substring(0, 2) + sig[2].substring(0, 2) + sig[3].substring(0, 1);
+    while(stem.length < 7) stem += 'X';
+    return stem.substring(0, 7);
+  }
+  function generateTitleCode(title){ return generateTitleStem(title) + 'X'; }
+
+  // TitleID = Title Code + First Year
+  function buildTitleID(){
+    var tc = f.titleCode.value.trim().toUpperCase();
+    var fy = f.firstYear.value.trim().toUpperCase();
+    if(tc.length === 8 && fy.length === 4) return tc + '-' + fy;
+    return '';
+  }
+  function updateTitleIDDisplay(){
+    var tid = buildTitleID();
+    document.getElementById('title-id-display').textContent = tid || '—';
+    updateCardLiveInfo();
+  }
+  function updateCardLiveInfo(){
+    var title = f.canonicalTitle.value.trim();
+    var tid = buildTitleID();
+    var parts = [];
+    if(title) parts.push(title);
+    if(tid) parts.push(tid);
+    document.getElementById('card-live-info').textContent = parts.join(' · ');
+  }
+
+  f.titleCode.addEventListener('input', updateTitleIDDisplay);
+  f.firstYear.addEventListener('input', updateTitleIDDisplay);
+
+  var titleCodeManual = false;
+  f.titleCode.addEventListener('input', function(){ titleCodeManual = true; });
+
+  // Auto-suggest Title Code from Canonical Title
+  f.canonicalTitle.addEventListener('input', function(){
+    if(!titleCodeManual && f.canonicalTitle.value.trim()){
+      f.titleCode.value = generateTitleCode(f.canonicalTitle.value.trim());
+      updateTitleIDDisplay();
+    }
+    updateCardLiveInfo();
+  });
+
+  // ========== Validation ==========
+  var SLUG_PATTERN = /^[A-Z0-9]+(?:-[A-Z0-9]+)*$/;
+  var TITLE_CODE_PATTERN = /^[A-Z0-9]{8}$/;
+  var FIRST_YEAR_PATTERN = /^(\d{4}|\d{3}X|\d{2}XX|XXXX)$/;
+
+  // ========== Sticky fields ==========
+  var STICKY_ON_CLEAR = {librarySlug:true, libraryName:true, libraryNote:true, language:true, country:true};
+
+  // ========== Data ==========
+  var entries = [];
+  var editingIndex = null;
+
+  // ========== Record ==========
+  recordBtn.addEventListener('click', function(){
+    // Validate required fields
+    var slug = f.librarySlug.value.trim().toUpperCase();
+    if(!slug || !SLUG_PATTERN.test(slug)){
+      alert('Title Library Slug is required and must be uppercase letters, numbers, and hyphens only (e.g. EXAMPLE-LIBRARY).');
+      f.librarySlug.focus(); return;
+    }
+    f.librarySlug.value = slug;
+
+    if(!f.libraryName.value.trim()){
+      f.libraryName.focus(); return;
+    }
+    if(!f.canonicalTitle.value.trim()){
+      f.canonicalTitle.focus(); return;
+    }
+
+    var tc = f.titleCode.value.trim().toUpperCase();
+    if(!tc || !TITLE_CODE_PATTERN.test(tc)){
+      alert('Title Code must be exactly 8 uppercase alphanumeric characters.');
+      f.titleCode.focus(); return;
+    }
+    f.titleCode.value = tc;
+
+    var fy = f.firstYear.value.trim().toUpperCase();
+    if(!fy || !FIRST_YEAR_PATTERN.test(fy)){
+      alert('First Year of Publication (CE) must be a 4-character code: YYYY, YYYX, YYXX, or XXXX.');
+      f.firstYear.focus(); return;
+    }
+    f.firstYear.value = fy;
+
+    var titleID = buildTitleID();
+
+    // Duplicate check
+    var isDupe = entries.some(function(e, i){
+      return e.titleID === titleID && i !== editingIndex;
+    });
+    if(isDupe){
+      dupeMsg.style.display = '';
+      setTimeout(function(){ dupeMsg.style.display = 'none'; }, 4000);
+      return;
+    }
+
+    // Unaddressed fields prompt
+    var unaddressed = getUnaddressedFields();
+    if(unaddressed.length > 0){
+      var msg = 'The following field' + (unaddressed.length === 1 ? ' has' : 's have') + ' not been addressed:\n\n' +
+        unaddressed.join(', ') + '\n\nPress OK to record anyway, or Cancel to go back and review.';
+      if(!confirm(msg)) return;
+    }
+
+    // First Year Speculative = determined by specFields.firstYear
+    var entry = {
+      scatTool: 'Titles',
+      schemaVersion: '2.0',
+      librarySlug: slug,
+      libraryName: f.libraryName.value.trim(),
+      libraryNote: f.libraryNote.value.trim(),
+      titleID: titleID,
+      titleCode: tc,
+      firstYear: fy,
+      firstYearNote: f.firstYearNote.value.trim(),
+      firstYearSpeculative: specFields.firstYear ? 'Yes' : 'No',
+      canonicalTitle: f.canonicalTitle.value.trim(),
+      originalTitle: f.originalTitle.value.trim(),
+      subtitle: f.subtitle.value.trim(),
+      formerTitles: f.formerTitles.value.trim(),
+      laterTitles: f.laterTitles.value.trim(),
+      relatedTitles: f.relatedTitles.value.trim(),
+      publisher: f.publisher.value.trim(),
+      editors: f.editors.value.trim(),
+      city: f.city.value.trim(),
+      state: f.state.value.trim(),
+      country: f.country.value.trim(),
+      language: f.language.value.trim(),
+      frequency: f.frequency.value.trim(),
+      issn: f.issn.value.trim(),
+      pubHistory: f.pubHistory.value.trim(),
+      mission: f.mission.value.trim(),
+      editorial: f.editorial.value.trim(),
+      biblioNote: f.biblioNote.value.trim(),
+      generalNotes: f.generalNotes.value.trim(),
+      catalogingStatus: f.catalogingStatus.value,
+      get expectedIssuesFilename(){ return 'SCAT_' + this.librarySlug + '_' + this.titleID + '_ISSUES.csv'; },
+      get expectedContentsFilename(){ return 'SCAT_' + this.librarySlug + '_' + this.titleID + '_CONTENTS.csv'; },
+      speculative: speculativeOn,
+      specFields: activeSpecFields(),
+      naFields: activeNaFields()
+    };
+
+    if(editingIndex !== null){
+      entries[editingIndex] = entry;
+      exitEditMode();
+    } else {
+      entries.push(entry);
+    }
+    renderTable(false); saveSession();
+
+    // Clear non-sticky fields
+    Object.keys(f).forEach(function(k){
+      if(STICKY_ON_CLEAR[k]) return;
+      if(f[k].tagName === 'TEXTAREA') f[k].value = '';
+      else f[k].value = '';
+    });
+    setSpeculative(false); speculativeManual = false; titleCodeManual = false;
+    resetSpecToggles(); resetNaToggles();
+    document.getElementById('title-id-display').textContent = '—';
+    document.getElementById('card-live-info').textContent = '';
+    updateUnaddressed();
+    f.canonicalTitle.focus();
+  });
+
+  // ========== Edit ==========
+  function enterEditMode(idx){
+    editingIndex = idx; var e = entries[idx];
+    f.librarySlug.value = e.librarySlug || '';
+    f.libraryName.value = e.libraryName || '';
+    f.libraryNote.value = e.libraryNote || '';
+    f.canonicalTitle.value = e.canonicalTitle || '';
+    f.titleCode.value = e.titleCode || '';
+    f.firstYear.value = e.firstYear || '';
+    f.firstYearNote.value = e.firstYearNote || '';
+    f.originalTitle.value = e.originalTitle || '';
+    f.subtitle.value = e.subtitle || '';
+    f.formerTitles.value = e.formerTitles || '';
+    f.laterTitles.value = e.laterTitles || '';
+    f.relatedTitles.value = e.relatedTitles || '';
+    f.publisher.value = e.publisher || '';
+    f.editors.value = e.editors || '';
+    f.city.value = e.city || '';
+    f.state.value = e.state || '';
+    f.country.value = e.country || '';
+    f.language.value = e.language || '';
+    f.frequency.value = e.frequency || '';
+    f.issn.value = e.issn || '';
+    f.pubHistory.value = e.pubHistory || '';
+    f.mission.value = e.mission || '';
+    f.editorial.value = e.editorial || '';
+    f.biblioNote.value = e.biblioNote || '';
+    f.generalNotes.value = e.generalNotes || '';
+    f.catalogingStatus.value = e.catalogingStatus || 'Not started';
+
+    resetSpecToggles(); resetNaToggles();
+    (e.specFields||[]).forEach(function(label){
+      TOGGLE_FIELD_KEYS.forEach(function(k){
+        if(TOGGLE_FIELD_LABELS[k] === label){ specFields[k] = true; var btn = document.querySelector('.spec-toggle[data-field="'+k+'"]'); if(btn) btn.classList.add('active'); }
+      });
+    });
+    (e.naFields||[]).forEach(function(label){
+      TOGGLE_FIELD_KEYS.forEach(function(k){
+        if(TOGGLE_FIELD_LABELS[k] === label){ naFields[k] = true; setFieldDisabled(k, true); var btn = document.querySelector('.na-toggle[data-field="'+k+'"]'); if(btn) btn.classList.add('active'); }
+      });
+    });
+    setSpeculative(!!e.speculative); speculativeManual = false; titleCodeManual = true;
+    updateGuessedStyles(); updateUnaddressed(); updateTitleIDDisplay();
+    recordBtn.textContent = 'Update Record';
+    cancelEditBtn.style.display = ''; editFlag.classList.add('show');
+  }
+  function exitEditMode(){
+    editingIndex = null; recordBtn.textContent = 'Record';
+    cancelEditBtn.style.display = 'none'; editFlag.classList.remove('show');
+  }
+  cancelEditBtn.addEventListener('click', function(){
+    exitEditMode(); document.getElementById('clear-form-btn').click();
+  });
+
+  // Clear form
+  document.getElementById('clear-form-btn').addEventListener('click', function(){
+    Object.keys(f).forEach(function(k){
+      if(STICKY_ON_CLEAR[k]) return;
+      if(f[k].tagName === 'TEXTAREA') f[k].value = '';
+      else f[k].value = '';
+    });
+    setSpeculative(false); speculativeManual = false; titleCodeManual = false;
+    resetSpecToggles(); resetNaToggles();
+    document.getElementById('title-id-display').textContent = '—';
+    document.getElementById('card-live-info').textContent = '';
+    dupeMsg.style.display = 'none';
+    updateUnaddressed(); exitEditMode();
+  });
+
+  // ========== Undo delete ==========
+  var undoTimer = null;
+  function offerUndo(entry, idx){
+    if(undoTimer) clearTimeout(undoTimer);
+    var strip = document.getElementById('undo-strip');
+    document.getElementById('undo-msg').textContent = 'Deleted: ' + (entry.canonicalTitle || 'entry') + '.';
+    strip.style.display = '';
+    function dismiss(){ strip.style.display = 'none'; if(undoTimer){ clearTimeout(undoTimer); undoTimer = null; } }
+    document.getElementById('undo-delete-btn').onclick = function(){
+      entries.splice(Math.min(idx, entries.length), 0, entry); renderTable(false); saveSession(); dismiss();
+    };
+    undoTimer = setTimeout(dismiss, 6000);
+  }
+
+  // ========== Table ==========
+  var COLUMNS = [
+    {key:'entryOrder',label:'#',sortable:true},
+    {key:'titleID',label:'TitleID',sortable:true},
+    {key:'canonicalTitle',label:'Canonical Title',sortable:true},
+    {key:'subtitle',label:'Subtitle',sortable:false},
+    {key:'firstYear',label:'First Year',sortable:true},
+    {key:'publisher',label:'Publisher',sortable:true},
+    {key:'city',label:'City',sortable:true},
+    {key:'country',label:'Country',sortable:true},
+    {key:'language',label:'Language',sortable:false},
+    {key:'frequency',label:'Frequency',sortable:true},
+    {key:'catalogingStatus',label:'Status',sortable:true},
+    {key:'editors',label:'Editor(s)',sortable:false},
+    {key:'issn',label:'ISSN',sortable:false},
+    {key:'formerTitles',label:'Former',sortable:false},
+    {key:'laterTitles',label:'Later',sortable:false},
+    {key:'notes',label:'Notes',sortable:false},
+    {key:'actions',label:'',sortable:false}
+  ];
+  var COMPACT_KEYS = {entryOrder:1, titleID:1, canonicalTitle:1, firstYear:1, catalogingStatus:1, actions:1};
+  var tableViewFull = false;
+  var SORT_ACCESSORS = {
+    entryOrder:function(e,idx){return idx;},
+    titleID:function(e){return (e.titleID||'').toLowerCase();},
+    canonicalTitle:function(e){return (e.canonicalTitle||'').toLowerCase();},
+    firstYear:function(e){return e.firstYear||'';},
+    publisher:function(e){return (e.publisher||'').toLowerCase();},
+    city:function(e){return (e.city||'').toLowerCase();},
+    country:function(e){return (e.country||'').toLowerCase();},
+    frequency:function(e){return (e.frequency||'').toLowerCase();},
+    catalogingStatus:function(e){return (e.catalogingStatus||'').toLowerCase();}
+  };
+  var sortState = {key:null, dir:1};
+  function compareBy(key, a, b, ia, ib){
+    var va = SORT_ACCESSORS[key] ? SORT_ACCESSORS[key](a,ia) : '';
+    var vb = SORT_ACCESSORS[key] ? SORT_ACCESSORS[key](b,ib) : '';
+    if(va < vb) return -1; if(va > vb) return 1; return 0;
+  }
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function renderTable(){
+    var activeColumns = tableViewFull ? COLUMNS : COLUMNS.filter(function(c){ return COMPACT_KEYS[c.key]; });
+    var idxs = entries.map(function(_,i){return i;});
+    if(sortState.key && SORT_ACCESSORS[sortState.key]){
+      idxs.sort(function(ia,ib){ return compareBy(sortState.key, entries[ia], entries[ib], ia, ib) * sortState.dir; });
+    }
+    var headHtml = '<tr>' + activeColumns.map(function(c){
+      var cls = c.sortable ? ' class="sortable"' : '';
+      var arrow = (sortState.key === c.key) ? (sortState.dir === 1 ? ' ▲' : ' ▼') : '';
+      return '<th' + cls + ' data-key="' + c.key + '">' + c.label + arrow + '</th>';
+    }).join('') + '</tr>';
+
+    var bodyHtml = '';
+    idxs.forEach(function(ri){
+      var e = entries[ri];
+      var cells = {
+        entryOrder:'<td>'+(ri+1)+'</td>',
+        titleID:'<td style="font-family:monospace;font-size:10px;letter-spacing:1px;">'+esc(e.titleID)+'</td>',
+        canonicalTitle:'<td>'+esc(e.canonicalTitle)+'</td>',
+        subtitle:'<td>'+esc(e.subtitle)+'</td>',
+        firstYear:'<td>'+esc(e.firstYear)+(e.firstYearSpeculative==='Yes'?' <span style="color:var(--ink-soft);font-size:10px;">[?]</span>':'')+'</td>',
+        publisher:'<td>'+esc(e.publisher)+'</td>',
+        city:'<td>'+esc(e.city)+'</td>',
+        country:'<td>'+esc(e.country)+'</td>',
+        language:'<td>'+esc(e.language)+'</td>',
+        frequency:'<td>'+esc(e.frequency)+'</td>',
+        catalogingStatus:'<td>'+esc(e.catalogingStatus||'')+'</td>',
+        editors:'<td>'+esc(e.editors)+'</td>',
+        issn:'<td>'+esc(e.issn)+'</td>',
+        formerTitles:'<td>'+esc(e.formerTitles)+'</td>',
+        laterTitles:'<td>'+esc(e.laterTitles)+'</td>',
+        notes:'<td>'+esc(e.generalNotes||e.pubHistory||'')+'</td>',
+        actions:'<td><button class="row-btn" data-act="edit" data-idx="'+ri+'">edit</button> <button class="row-btn" data-act="delete" data-idx="'+ri+'">×</button></td>'
+      };
+      bodyHtml += '<tr>' + activeColumns.map(function(c){return cells[c.key];}).join('') + '</tr>';
+    });
+    if(entries.length === 0) bodyHtml = '<tr><td colspan="'+activeColumns.length+'" style="text-align:center;color:var(--ink-soft);padding:20px;">No titles yet.</td></tr>';
+
+    tableContainer.innerHTML = '<div class="table-scroll"><table'+(tableViewFull?' class="full-view"':'')+'><thead>'+headHtml+'</thead><tbody>'+bodyHtml+'</tbody></table></div>';
+
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('th.sortable'), function(th){
+      th.addEventListener('click', function(){ var key = th.dataset.key; if(sortState.key===key) sortState.dir*=-1; else {sortState.key=key; sortState.dir=1;} renderTable(); });
+    });
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('[data-act="edit"]'), function(btn){
+      btn.addEventListener('click', function(){ var idx=parseInt(btn.dataset.idx,10); if(editingIndex===idx){exitEditMode();renderTable();return;} enterEditMode(idx); });
+    });
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('[data-act="delete"]'), function(btn){
+      btn.addEventListener('click', function(){ var idx=parseInt(btn.dataset.idx,10); if(idx===editingIndex)exitEditMode(); var d=entries.splice(idx,1)[0]; renderTable(); saveSession(); offerUndo(d,idx); });
+    });
+    entryCountEl.textContent = entries.length + ' title' + (entries.length===1?'':'s') + ' in library';
+  }
+
+  document.getElementById('table-view-toggle').addEventListener('click', function(){
+    tableViewFull = !tableViewFull;
+    this.textContent = tableViewFull ? 'Show compact view' : 'Show full view';
+    renderTable();
+  });
+
+  // ========== CSV ==========
+  var HEADERS = ['Slaughter Cataloger Tool','Schema Version','Title Library Slug','Title Library Name','Title Library Note','TitleID','Title Code','First Year of Publication (CE)','First Year Note','First Year Speculative','Canonical Title','Original / First Published Title','Subtitle','Former Title(s)','Later Title(s)','Related Title(s)','Publisher','Editor(s)','City','State / Province','Country','Language','Frequency','ISSN','Publication History Note','Mission Statement / Prospectus','Introduction / Editorial Statement','Bibliographic Note','Cataloging Status','Expected Issues Filename','Expected Contents Filename','General Notes','Speculative','Speculative Fields','N/A Fields','Entry Order'];
+
+  function csvSafe(v){
+    var s = String(v||'');
+    if(/^[=+\-@]/.test(s)) s = "'" + s;
+    return '"' + s.replace(/"/g,'""') + '"';
+  }
+
+  function buildCsv(){
+    var rows = [HEADERS.join(',')];
+    entries.forEach(function(e, i){
+      rows.push([
+        'Titles', '2.0', e.librarySlug, e.libraryName, e.libraryNote,
+        e.titleID, e.titleCode, e.firstYear, e.firstYearNote, e.firstYearSpeculative,
+        e.canonicalTitle, e.originalTitle, e.subtitle,
+        e.formerTitles, e.laterTitles, e.relatedTitles,
+        e.publisher, e.editors, e.city, e.state, e.country, e.language, e.frequency, e.issn,
+        e.pubHistory, e.mission, e.editorial, e.biblioNote, e.catalogingStatus||'Not started', 'SCAT_'+(e.librarySlug||'')+'_'+(e.titleID||'')+'_ISSUES.csv', 'SCAT_'+(e.librarySlug||'')+'_'+(e.titleID||'')+'_CONTENTS.csv', e.generalNotes,
+        e.speculative ? 'Yes' : 'No', (e.specFields||[]).join('; '), (e.naFields||[]).join('; '),
+        i + 1
+      ].map(csvSafe).join(','));
+    });
+    return rows.join('\n');
+  }
+
+  function parseCSV(text){
+    var rows=[],row=[],field='',inQ=false;
+    for(var i=0;i<text.length;i++){var c=text[i];if(inQ){if(c==='"'&&text[i+1]==='"'){field+='"';i++;}else if(c==='"')inQ=false;else field+=c;}else{if(c==='"')inQ=true;else if(c===','){row.push(field);field='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);field='';rows.push(row);row=[];}else field+=c;}}
+    row.push(field);if(row.length>1||row[0])rows.push(row);return rows;
+  }
+
+  // Export
+  document.getElementById('export-btn').addEventListener('click', function(){
+    if(entries.length === 0) return;
+    var slug = entries[0].librarySlug || 'LIBRARY';
+    var filename = 'SCAT_' + slug + '_TITLES.csv';
+    var blob = new Blob([buildCsv()], {type:'text/csv'});
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+  });
+
+  // Copy
+  document.getElementById('copy-btn').addEventListener('click', function(){
+    navigator.clipboard.writeText(buildCsv()).then(function(){ copyStatus.textContent='Copied.'; }, function(){ copyStatus.textContent='Copy failed.'; });
+    setTimeout(function(){ copyStatus.textContent=''; }, 3000);
+  });
+
+  // Import
+  function showImportModal(doImport){
+    var modal = document.getElementById('import-modal');
+    document.getElementById('import-modal-msg').textContent = 'You have '+entries.length+' existing entr'+(entries.length===1?'y':'ies')+'. How should the imported file be handled?';
+    modal.style.display = 'flex';
+    function cleanup(){ modal.style.display = 'none'; }
+    document.getElementById('import-replace-btn').onclick = function(){ cleanup(); doImport(true); };
+    document.getElementById('import-append-btn').onclick = function(){ cleanup(); doImport(false); };
+    document.getElementById('import-cancel-btn').onclick = function(){ cleanup(); copyStatus.textContent='Import cancelled.'; setTimeout(function(){copyStatus.textContent='';},3000); };
+  }
+
+  document.getElementById('import-btn').addEventListener('click', function(){
+    var input = document.createElement('input'); input.type='file'; input.accept='.csv';
+    input.onchange = function(evt){
+      var file = evt.target.files[0]; if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(e){
+        try{
+          var rows = parseCSV(e.target.result);
+          if(rows.length<2){copyStatus.textContent='CSV appears empty.';return;}
+          var headers = rows[0];
+          function val(r,name){var i=headers.indexOf(name); return i>=0&&r[i]?r[i].trim():'';}
+
+          // Validate schema
+          var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+          if(toolIdx >= 0 && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Titles'){
+            alert('This does not appear to be a Slaughter Cataloger Titles CSV.'); return;
+          }
+
+          var body = rows.slice(1).filter(function(r){return !(r.length===1&&r[0]==='');});
+          var doImport = function(replace){
+            if(replace) entries = [];
+            var imported = 0;
+            body.forEach(function(r){
+              entries.push({
+                scatTool: 'Titles', schemaVersion: '2.0',
+                librarySlug: val(r,'Title Library Slug'),
+                libraryName: val(r,'Title Library Name'),
+                libraryNote: val(r,'Title Library Note'),
+                titleID: val(r,'TitleID'),
+                titleCode: val(r,'Title Code'),
+                firstYear: val(r,'First Year of Publication (CE)'),
+                firstYearNote: val(r,'First Year Note'),
+                firstYearSpeculative: val(r,'First Year Speculative'),
+                canonicalTitle: val(r,'Canonical Title'),
+                originalTitle: val(r,'Original / First Published Title'),
+                subtitle: val(r,'Subtitle'),
+                formerTitles: val(r,'Former Title(s)'),
+                laterTitles: val(r,'Later Title(s)'),
+                relatedTitles: val(r,'Related Title(s)'),
+                publisher: val(r,'Publisher'),
+                editors: val(r,'Editor(s)'),
+                city: val(r,'City'),
+                state: val(r,'State / Province'),
+                country: val(r,'Country'),
+                language: val(r,'Language'),
+                frequency: val(r,'Frequency'),
+                issn: val(r,'ISSN'),
+                pubHistory: val(r,'Publication History Note'),
+                mission: val(r,'Mission Statement / Prospectus'),
+                editorial: val(r,'Introduction / Editorial Statement'),
+                biblioNote: val(r,'Bibliographic Note'),
+                generalNotes: val(r,'General Notes'),
+                catalogingStatus: val(r,'Cataloging Status') || 'Not started',
+                expectedIssuesFilename: val(r,'Expected Issues Filename'),
+                expectedContentsFilename: val(r,'Expected Contents Filename'),
+                speculative: /^y/i.test(val(r,'Speculative')),
+                specFields: (val(r,'Speculative Fields')||'').split(';').map(function(s){return s.trim();}).filter(Boolean),
+                naFields: (val(r,'N/A Fields')||'').split(';').map(function(s){return s.trim();}).filter(Boolean),
+                _importOrder: parseInt(val(r,'Entry Order'),10) || 999999
+              });
+              imported++;
+            });
+            // Validate required fields and duplicates
+            var titleIDs = {};
+            var warnings = [];
+            entries.forEach(function(e, idx){
+              if(!e.titleID) warnings.push('Row ' + (idx+1) + ': missing TitleID');
+              else if(!/^[A-Z0-9]{8}-(\d{4}|\d{3}X|\d{2}XX|XXXX)$/.test(e.titleID))
+                warnings.push('Row ' + (idx+1) + ': invalid TitleID format: ' + e.titleID);
+              else if(titleIDs[e.titleID])
+                warnings.push('Row ' + (idx+1) + ': duplicate TitleID: ' + e.titleID);
+              else titleIDs[e.titleID] = true;
+              if(!e.canonicalTitle) warnings.push('Row ' + (idx+1) + ': missing Canonical Title');
+              if(!e.librarySlug) warnings.push('Row ' + (idx+1) + ': missing Title Library Slug');
+            });
+            if(warnings.length > 0){
+              alert('Import warnings:\n' + warnings.slice(0, 10).join('\n') + (warnings.length > 10 ? '\n...' + (warnings.length - 10) + ' more' : ''));
+            }
+            entries.sort(function(a,b){return (a._importOrder||0)-(b._importOrder||0);});
+            entries.forEach(function(e){delete e._importOrder;});
+            renderTable(); saveSession();
+            copyStatus.textContent = imported + ' title(s) imported.';
+            setTimeout(function(){copyStatus.textContent='';},4000);
+          };
+          if(entries.length===0) doImport(false);
+          else showImportModal(doImport);
+        }catch(err){ copyStatus.textContent='Import failed.'; }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  });
+
+  // Clear all
+  document.getElementById('clear-all-btn').addEventListener('click', function(){
+    if(entries.length===0) return;
+    if(!confirm('Clear all '+entries.length+' titles? This cannot be undone.')) return;
+    entries=[]; renderTable(); saveSession();
+  });
+
+  // ========== Session persistence ==========
+  var SESSION_KEY = 'slaughterTitles.beta2_5.session';
+  function saveSession(){
+    try{
+      if(entries.length===0) localStorage.removeItem(SESSION_KEY);
+      else localStorage.setItem(SESSION_KEY, JSON.stringify(entries));
+    }catch(err){}
+  }
+  try{
+    var saved = localStorage.getItem(SESSION_KEY);
+    if(saved){
+      var parsed = JSON.parse(saved);
+      if(Array.isArray(parsed) && parsed.length>0){
+        document.getElementById('restore-banner').style.display='';
+        document.getElementById('restore-yes-btn').addEventListener('click', function(){
+          entries=parsed; renderTable(); saveSession();
+          document.getElementById('restore-banner').style.display='none';
+        });
+        document.getElementById('restore-no-btn').addEventListener('click', function(){
+          try{localStorage.removeItem(SESSION_KEY);}catch(err){}
+          document.getElementById('restore-banner').style.display='none';
+        });
+      }
+    }
+  }catch(err){}
+
+  window.addEventListener('beforeunload', function(e){ if(entries.length>0){e.preventDefault();e.returnValue='';} });
+
+  // ========== Init ==========
+  updateGuessedStyles(); updateUnaddressed(); renderTable();
+
+})();
+</script>
+</body>
+</html>

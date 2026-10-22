@@ -1,0 +1,31 @@
+{
+  "file_kind": "PROVISIONAL_CANDIDATE_INDEX",
+  "contract_status": "PROVISIONAL_STAGING_ONLY",
+  "package_id": "example-gazette-v4n1-1875-provisional-import-candidate",
+  "canonical_title_id_reported": "EXAGAZEX-1872",
+  "working_issue_id": "EXAGAZEX-1872-KRNYWA2",
+  "verified_in_live_catalog": false,
+  "contents_candidates": {
+    "file": "candidate_contents_seq001-018.provisional.json",
+    "count": 18,
+    "permanent_ids": "NULL"
+  },
+  "contents_relations": {
+    "file": "content_id_relationship_crosswalk_seq001-018.csv",
+    "parent_links": 7
+  },
+  "item_and_page_text": {
+    "file": "fulltext.json",
+    "mapping_file": "item_to_page_mapping.json",
+    "source_text_file": "transcription.md",
+    "access": "PRIVATE"
+  },
+  "deep_index": {
+    "file": "private_index/deep_index.json",
+    "entities": 21,
+    "subjects": 5,
+    "access": "PRIVATE"
+  },
+  "rights": "RIGHTS_AND_ACCESS.json",
+  "review_queue": "REVIEW_QUEUE.json"
+}

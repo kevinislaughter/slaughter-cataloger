@@ -1,0 +1,115 @@
+{
+  "format": "slaughter-cataloger-issue",
+  "format_version": "1.0",
+  "package_id": "placeholder-leaflet-no3-specimen",
+  "state": "candidate",
+  "identity": {
+    "status": "unresolved",
+    "library_slug": null,
+    "title_id": null,
+    "issue_id": null,
+    "working_issue_id": null,
+    "provisional_key": "leaflet-specimen-0003",
+    "designation": "The Placeholder Leaflet, No. 3, Spring",
+    "identity_history": [
+      {
+        "kind": "provisional_key",
+        "key": "leaflet-specimen-draft",
+        "status": "retired",
+        "note": "An earlier staging key, replaced when the package was registered again."
+      }
+    ]
+  },
+  "content_map": {
+    "leaflet-item-001": null,
+    "leaflet-item-002": null,
+    "leaflet-item-003": null,
+    "leaflet-item-004": null,
+    "leaflet-item-005": null,
+    "leaflet-item-006": null,
+    "leaflet-item-007": null,
+    "leaflet-item-008": null
+  },
+  "cover": {
+    "path": "cover.jpg",
+    "media_type": "image/jpeg",
+    "width": 156,
+    "height": 200,
+    "source_page": 1,
+    "location": {
+      "source": "source/specimen-leaflet.pdf",
+      "pdf_page": 1,
+      "region": "right",
+      "rotation": 90,
+      "size": [
+        1080,
+        720
+      ],
+      "box": [
+        540,
+        0,
+        1080,
+        720
+      ]
+    },
+    "derivation": "The right half of PDF page 1, turned upright."
+  },
+  "sources": [
+    {
+      "path": "source/specimen-leaflet.pdf",
+      "media_type": "application/pdf",
+      "original_name": "specimen-leaflet.pdf",
+      "pages": 4
+    }
+  ],
+  "review": [
+    {
+      "id": "Q-01",
+      "status": "blocking",
+      "label": "Catalog identity unresolved",
+      "summary": "Match the leaflet against the live catalog, or approve new IDs, before import.",
+      "blocks": [
+        "local_import"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "cover.jpg",
+      "role": "cover",
+      "bytes": 2244,
+      "sha256": "546fffac85cd971b675efa81adbf81f00750861b879a49f19f4a0ee9a33426a6"
+    },
+    {
+      "path": "items.json",
+      "role": "items",
+      "bytes": 6818,
+      "sha256": "036128d44634051b12d3744c1546bdec1ea8f6dbb94efc4101c2c28361d6ba6a"
+    },
+    {
+      "path": "mentions.json",
+      "role": "mentions",
+      "bytes": 763,
+      "sha256": "a0a082ef5b8bcc8a2c861dac7e3f4469a0c49648ca3e47cacadc72362f85e541"
+    },
+    {
+      "path": "rights.json",
+      "role": "rights",
+      "bytes": 163,
+      "sha256": "c9f5305adca6e999143f08cc7dd07959cd78cc0626d730cca146b7ecf832543c"
+    },
+    {
+      "path": "source/specimen-leaflet.pdf",
+      "role": "source",
+      "bytes": 1857,
+      "sha256": "ca5735deb0148925bd94306e3c29b5e03c22610e131646560e47cda2d3baa90c"
+    },
+    {
+      "path": "text.json",
+      "role": "text",
+      "bytes": 7690,
+      "sha256": "edd51c24ce446a7de94a8dba3e5ffd4d56948ef30ff7ed6d6c6ae110d9ea4e89"
+    }
+  ],
+  "inventory_sha256": "94c967f7ffa3520687ea4eca92fb11b3fe7c9fd5e84f24d6514c6047a321022e"
+}

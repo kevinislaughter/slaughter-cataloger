@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slaughter Cataloger — Contents :: Beta 2.6</title>
+<style>
+  :root{
+    --paper:#ffffff;
+    --ink:#111111;
+    --ink-soft:#4a4a4a;
+    --line:#c9c9c9;
+    --line-strong:#8a8a8a;
+    --panel:#f3f3f1;
+    --panel-dark:#e4e4e2;
+    --entry:#a3410a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--panel);
+    color:var(--ink);
+    font-family:"Courier New", Courier, monospace;
+    font-size:14px;
+    line-height:1.5;
+    max-width:960px;
+    margin:0 auto;
+    padding:20px 16px 60px;
+  }
+
+  header{margin-bottom:14px; padding-bottom:6px;}
+  .stamp{
+    display:flex; align-items:baseline; justify-content:space-between;
+    flex-wrap:wrap; gap:4px 20px;
+  }
+  h1{
+    font-family:Georgia, "Times New Roman", serif;
+    font-weight:700; font-size:13px; letter-spacing:2.5px;
+    text-transform:uppercase; margin:0;
+  }
+  h1 .beta{font-size:9px; letter-spacing:3px; font-weight:400; color:var(--ink-soft); vertical-align:middle;}
+  .tagline{font-size:11px; color:var(--ink-soft); letter-spacing:.5px;}
+
+  .card{
+    position:relative; background:var(--paper);
+    border:1px solid var(--ink);
+    padding:26px 24px 20px; margin-bottom:22px;
+  }
+  .card::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:repeating-linear-gradient(90deg, var(--ink) 0px, var(--ink) 1px, transparent 1px, transparent 5px);
+  }
+  .card-title{
+    font-family:Georgia, serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:14px;
+  }
+
+  .tier-label{
+    font-family:Georgia, serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:10px; padding:5px 8px;
+    background:#fdf0e8;
+    border-bottom:1px solid var(--line);
+  }
+
+  .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px 16px;}
+  .field{min-width:0;}
+  .field.span-2{grid-column:span 2;}
+  .field.span-3{grid-column:span 3;}
+  .field.span-4{grid-column:span 4;}
+
+  .label-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:Georgia, serif; font-size:9px; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:3px; min-height:18px;
+  }
+  .opt{font-size:8px; letter-spacing:1px; text-transform:none; font-style:italic; color:#999;}
+
+  input[type="text"], textarea{
+    font-family:inherit; font-size:14px; color:var(--entry); font-weight:700; background:var(--paper);
+    border:none; border-bottom:1px solid var(--line-strong); padding:6px 2px; outline:none; width:100%;
+  }
+  input[type="text"]::placeholder, textarea::placeholder{color:#999; font-weight:400;}
+  input[type="text"].unaddressed, textarea.unaddressed{border-bottom-color:#e8a87c; border-bottom-width:2px;}
+  input[type="text"].guessed, textarea.guessed{border-bottom-style:dashed; border-bottom-color:var(--ink);}
+  input[type="text"]:disabled, textarea:disabled{opacity:.35; font-style:italic;}
+  input[type="text"]:focus, textarea:focus{border-bottom:2px solid var(--ink); padding-bottom:5px;}
+  textarea{resize:vertical; min-height:40px;}
+
+  .toggle-group{display:flex; gap:3px; margin-left:auto;}
+  .spec-toggle, .na-toggle{
+    font-family:Georgia, serif; font-size:8px; letter-spacing:1px; padding:1px 5px;
+    border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); cursor:pointer;
+  }
+  .spec-toggle.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .na-toggle.active{background:var(--ink-soft); color:var(--paper); border-color:var(--ink-soft);}
+  .header-toggle{
+    font-family:Georgia, serif; font-size:9px; letter-spacing:1px; padding:3px 8px;
+    border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); cursor:pointer;
+    text-transform:uppercase; margin-left:8px;
+  }
+  .header-toggle.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  .btn{font-size:12px; letter-spacing:1px; text-transform:uppercase; padding:9px 18px; border:1px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer;}
+  .btn:hover{background:var(--panel-dark);}
+  .btn.primary{background:var(--ink); color:var(--paper); font-weight:bold; padding:11px 30px;}
+  .btn.primary:hover{background:#333;}
+  .btn.ghost{border-color:var(--line-strong); color:var(--ink-soft);}
+  .btn.small{padding:5px 10px; font-size:10.5px;}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:18px;}
+
+  .table-scroll{overflow-x:auto; overflow-y:auto; max-height:320px; border:1px solid var(--ink);}
+  .table-scroll thead th{position:sticky; top:0; background:var(--panel); z-index:1;}
+  table{border-collapse:collapse; width:100%; font-size:12px;}
+  table.full-view{min-width:1200px;}
+  th, td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--line);}
+  th{
+    background:var(--panel); border-bottom:1px solid var(--ink); border-right:1px solid var(--line);
+    font-family:Georgia, serif; font-size:9px; text-transform:uppercase; letter-spacing:1px;
+    white-space:nowrap; cursor:default;
+  }
+  th.sortable{cursor:pointer;}
+  th.sortable:hover{background:var(--panel-dark);}
+  tr:hover{background:#fafaf8;}
+
+  .row-btn{border:1px solid var(--line-strong); background:var(--paper); color:var(--ink-soft); font-size:10px; padding:3px 7px; cursor:pointer;}
+  .row-btn:hover{background:var(--panel-dark);}
+
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    margin-bottom:14px; padding:8px 0;
+  }
+  .toolbar h2{
+    font-family:Georgia, serif; font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    margin-right:auto;
+  }
+  .count{font-size:11px; color:var(--ink-soft); margin-left:auto;}
+
+  .autosave-strip{
+    font-size:11px; color:var(--ink-soft); padding:6px 12px;
+    background:var(--panel); border:1px solid var(--line); margin-bottom:10px;
+    display:flex; align-items:center; gap:10px;
+  }
+
+  .issue-badge{
+    display:inline-block; background:#fdf0e8; border:1px solid var(--line);
+    font-size:10px; padding:1px 5px; letter-spacing:.5px; color:var(--entry);
+  }
+
+  footer{
+    margin-top:20px; text-align:center;
+    font-size:10.5px; color:var(--ink-soft); letter-spacing:.4px;
+  }
+  footer a{color:inherit; text-decoration:none; border-bottom:1px solid var(--line-strong);}
+
+  @media (max-width:760px){
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .field.span-2{grid-column:span 2;}
+    .field.span-3, .field.span-4{grid-column:span 2;}
+  }
+  @media (max-width:460px){
+    .grid{grid-template-columns:1fr;}
+    .field.span-2, .field.span-3, .field.span-4{grid-column:span 1;}
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="stamp">
+      <h1>Slaughter Cataloger <span class="beta">:: Beta 2.6</span></h1>
+      <div class="tagline">Contents &nbsp;·&nbsp; Slaughter Cataloger suite</div>
+    </div>
+  </header>
+
+  <div class="card">
+    <p class="card-title">
+      New Contents Entry
+      <button type="button" id="speculative-toggle" class="header-toggle" title="Part of this entry is uncertain. Auto-follows field-level ? marks. Resets after each Record.">Speculative</button>
+      <span id="edit-flag" style="display:none; color:var(--entry); font-weight:bold; text-transform:none; letter-spacing:0; font-size:11px; margin-left:10px;">Editing row</span>
+    </p>
+
+
+    <div class="tier-label">Data Source <span class="tier-hint">— load an Issues CSV to begin</span></div>
+    <div class="grid" style="margin-bottom:18px;">
+      <div class="field span-2">
+        <div class="label-row"><label for="f-load-issues" title="Import an Issues CSV exported from the Slaughter Cataloger Issues app. Required before entering contents.">Load Issues CSV <span class="opt">required</span></label></div>
+        <input type="file" id="f-load-issues" accept=".csv" style="font-size:11px; padding:4px 0;">
+        <div id="issues-status" style="font-size:11px; color:var(--ink-soft); margin-top:2px;"></div>
+      </div>
+      <div class="field span-2">
+        <div class="label-row"><label for="f-issue-selector" title="Select an issue from the loaded Issues CSV. Stored value is IssueID.">Select Issue</label></div>
+        <select id="f-issue-selector" disabled style="font-family:inherit; font-size:13px; color:var(--ink); background:var(--paper); border:1px solid var(--line-strong); padding:6px 8px; width:100%;">
+          <option value="">— Load an Issues CSV first —</option>
+        </select>
+        <div id="issue-id-link" style="font-family:monospace; font-size:10px; letter-spacing:1px; color:var(--ink-soft); margin-top:2px; min-height:14px;"></div>
+      </div>
+    </div>
+
+    <div id="locked-message" class="autosave-strip" style="border-color:var(--entry); margin-bottom:16px;">
+      Load a compatible Slaughter Cataloger schema 2.0 Issues CSV before entering contents. Contents entries must link to existing issue records by IssueID.
+    </div>
+
+    <div id="contents-form-body">
+    <div class="tier-label">Content Item</div>
+    <div class="grid">
+      <div class="field">
+        <div class="label-row"><label for="f-sequence" title="Order of this item within the issue. Auto-advances after each entry.">Sequence</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="sequence">?</button></div></div>
+        <input type="text" id="f-sequence" inputmode="numeric" placeholder="1">
+      </div>
+      <div class="field span-3">
+        <div class="label-row"><label for="f-item-title" title="Title of the article, poem, letter, notice, advertisement, etc. — as printed in the issue. Use brackets for supplied titles.">Item Title</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="itemTitle">?</button></div></div>
+        <input type="text" id="f-item-title" list="item-title-datalist" placeholder="e.g. The New Outlook">
+        <datalist id="item-title-datalist"></datalist>
+      </div>
+
+      <div class="field span-2">
+        <div class="label-row"><label for="f-author" title="Author or credit as printed. Mark N/A for genuinely uncredited items. Mark ? for partly illegible or uncertain attributions.">Author / Credit</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="author">?</button><button type="button" class="na-toggle" data-field="author">N/A</button></div></div>
+        <input type="text" id="f-author" list="author-datalist" placeholder="e.g. Covington Hall">
+        <datalist id="author-datalist"></datalist>
+      </div>
+      <div class="field">
+        <div class="label-row"><label for="f-content-type" title="Type of content — article, poem, editorial, correspondence, advertisement, etc. Type freely or pick from common values.">Content Type</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="contentType">?</button><button type="button" class="na-toggle" data-field="contentType">N/A</button></div></div>
+        <input type="text" id="f-content-type" list="content-type-datalist" placeholder="e.g. article">
+        <datalist id="content-type-datalist"></datalist>
+      </div>
+      <div class="field">
+        <div class="label-row"><label for="f-parent-item" title="For nested items (e.g. individual poems under a section heading), enter the parent item's title or sequence number. Mark N/A for top-level items.">Parent Item <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="parentItem">?</button><button type="button" class="na-toggle" data-field="parentItem">N/A</button></div></div>
+        <input type="text" id="f-parent-item" placeholder="e.g. Correspondence">
+      </div>
+
+      <div class="field">
+        <div class="label-row"><label for="f-start-page" title="Page number where this item begins. Mark ? if reconstructed or uncertain.">Start Page</label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="startPage">?</button><button type="button" class="na-toggle" data-field="startPage">N/A</button></div></div>
+        <input type="text" id="f-start-page" placeholder="e.g. 1">
+      </div>
+      <div class="field">
+        <div class="label-row"><label for="f-end-page" title="Page number where this item ends. Mark N/A if same as start page or not applicable.">End Page <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="endPage">?</button><button type="button" class="na-toggle" data-field="endPage">N/A</button></div></div>
+        <input type="text" id="f-end-page" placeholder="">
+      </div>
+      <div class="field span-2">
+        <div class="label-row"><label for="f-notes" title="Any additional context — continuation from previous issue, pseudonym, translation credit, etc.">Notes <span class="opt">optional</span></label><div class="toggle-group"><button type="button" class="spec-toggle" data-field="notes">?</button><button type="button" class="na-toggle" data-field="notes">N/A</button></div></div>
+        <input type="text" id="f-notes" placeholder="e.g. continued from No. 2; pseudonym for J. McCall">
+      </div>
+    </div>
+
+    </div><!-- end contents-form-body -->
+
+    <div class="btn-row">
+      <button class="btn ghost" id="cancel-edit-btn" style="display:none;">Cancel edit</button>
+      <button class="btn ghost" id="clear-form-btn">Clear form</button>
+      <button class="btn primary" id="record-btn">Record</button>
+    </div>
+  </div>
+
+  <div class="autosave-strip" id="undo-strip" style="display:none;">
+    <span id="undo-msg"></span>
+    <button class="btn small ghost" id="undo-delete-btn">Undo</button>
+  </div>
+
+  <div class="autosave-strip" id="restore-banner" style="display:none; border-color:var(--ink);">
+    <span>A previous session was found.</span>
+    <button class="btn small" id="restore-yes-btn">Restore</button>
+    <button class="btn small ghost" id="restore-no-btn">Discard</button>
+  </div>
+
+  <div class="toolbar">
+    <h2>Compiled Contents</h2>
+    <button class="btn small ghost" id="export-btn">Export .csv</button>
+    <button class="btn small ghost" id="copy-btn">Copy to clipboard</button>
+    <button class="btn small ghost" id="import-btn">Import .csv</button>
+    <button class="btn small ghost" id="table-view-toggle">Show full view</button>
+    <button class="btn small ghost" id="clear-all-btn">Clear all entries</button>
+    <span class="count" id="entry-count"></span>
+  </div>
+  <div id="table-container"></div>
+  <div id="copy-status" style="font-size:11px; color:var(--ink-soft); margin-top:4px;"></div>
+
+  <div class="modal-overlay" id="import-modal" style="display:none;">
+    <div style="background:var(--paper); border:1px solid var(--ink); max-width:440px; width:90%; padding:24px;">
+      <h3 style="font-family:Georgia,serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;">Import CSV</h3>
+      <p id="import-modal-msg" style="font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:18px;"></p>
+      <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;">
+        <button class="btn ghost" id="import-cancel-btn">Cancel</button>
+        <button class="btn ghost" id="import-append-btn">Append</button>
+        <button class="btn primary" id="import-replace-btn">Replace</button>
+      </div>
+    </div>
+  </div>
+  <style>.modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:1000;}</style>
+
+  <footer>Data stays in this browser on this computer. Export CSV regularly for permanent storage. &nbsp;·&nbsp; <a href="slaughter-01titles-beta2.6.html">Titles</a> &nbsp;·&nbsp; <a href="slaughter-02issues-beta2.6.html">Issues</a> &nbsp;·&nbsp; <a href="slaughter-04compiler-beta2.6.html">Compiler</a> &nbsp;·&nbsp; <a href="slaughter-cataloger-beta2.6.html">Documentation</a></footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Field refs ----------
+  var f = {
+    issueSelector: document.getElementById('f-issue-selector'),
+    sequence: document.getElementById('f-sequence'),
+    itemTitle: document.getElementById('f-item-title'),
+    author: document.getElementById('f-author'),
+    contentType: document.getElementById('f-content-type'),
+    parentItem: document.getElementById('f-parent-item'),
+    startPage: document.getElementById('f-start-page'),
+    endPage: document.getElementById('f-end-page'),
+    notes: document.getElementById('f-notes')
+  };
+
+  // ---------- Field-state system ----------
+  var TOGGLE_FIELD_KEYS = ["sequence","itemTitle","author","contentType","parentItem","startPage","endPage","notes"];
+  var TOGGLE_FIELD_LABELS = {
+    sequence:"Sequence", itemTitle:"Item Title", author:"Author / Credit",
+    contentType:"Content Type", parentItem:"Parent Item",
+    startPage:"Start Page", endPage:"End Page", notes:"Notes"
+  };
+  var specFields = {};
+  var naFields = {};
+  TOGGLE_FIELD_KEYS.forEach(function(key){ specFields[key] = false; naFields[key] = false; });
+
+  // Store original placeholders
+  var originalPlaceholders = {};
+  TOGGLE_FIELD_KEYS.forEach(function(key){
+    if(f[key]) originalPlaceholders[key] = f[key].placeholder || '';
+  });
+
+  function setFieldDisabled(key, disabled){
+    if(f[key]){
+      f[key].disabled = disabled;
+      if(disabled){
+        f[key].classList.remove('unaddressed');
+        f[key].placeholder = '[N/A]';
+      } else {
+        f[key].placeholder = originalPlaceholders[key] || '';
+      }
+    }
+  }
+
+  function updateGuessedStyles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      if(f[key]) f[key].classList.toggle('guessed', !!specFields[key]);
+    });
+  }
+
+  function updateUnaddressed(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      var el = f[key];
+      if(!el || el.disabled) return;
+      var blank = el.value.trim() === '';
+      var touched = !!specFields[key] || !!naFields[key];
+      el.classList.toggle('unaddressed', blank && !touched);
+    });
+  }
+
+  function getUnaddressedFields(){
+    var result = [];
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      var touched = !!specFields[key] || !!naFields[key];
+      if(touched) return;
+      var el = f[key];
+      if(!el || el.disabled) return;
+      if(el.value.trim() === '') result.push(TOGGLE_FIELD_LABELS[key]);
+    });
+    return result;
+  }
+
+  function resetSpecToggles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){ specFields[key] = false; });
+    Array.prototype.forEach.call(document.querySelectorAll('.spec-toggle'), function(btn){ btn.classList.remove('active'); });
+    updateGuessedStyles();
+  }
+
+  function resetNaToggles(){
+    TOGGLE_FIELD_KEYS.forEach(function(key){
+      naFields[key] = false;
+      setFieldDisabled(key, false);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){ btn.classList.remove('active'); });
+  }
+
+  // Speculative header toggle with auto-follow
+  var speculativeOn = false;
+  var speculativeManual = false;
+  var speculativeToggleBtn = document.getElementById('speculative-toggle');
+  function setSpeculative(on){
+    speculativeOn = on;
+    speculativeToggleBtn.classList.toggle('active', on);
+  }
+  function updateSpeculativeFromFields(){
+    if(speculativeManual) return;
+    var anySpec = TOGGLE_FIELD_KEYS.some(function(k){ return !!specFields[k]; });
+    setSpeculative(anySpec);
+  }
+  speculativeToggleBtn.addEventListener('click', function(){
+    speculativeManual = true;
+    setSpeculative(!speculativeOn);
+  });
+
+  // Wire ? toggles
+  Array.prototype.forEach.call(document.querySelectorAll('.spec-toggle'), function(btn){
+    var key = btn.dataset.field;
+    btn.addEventListener('click', function(){
+      specFields[key] = !specFields[key];
+      btn.classList.toggle('active', specFields[key]);
+      if(specFields[key] && naFields[key]){
+        naFields[key] = false;
+        setFieldDisabled(key, false);
+        var naBtn = document.querySelector('.na-toggle[data-field="' + key + '"]');
+        if(naBtn) naBtn.classList.remove('active');
+      }
+      updateGuessedStyles();
+      updateUnaddressed();
+      updateSpeculativeFromFields();
+    });
+  });
+
+  // Wire N/A toggles
+  Array.prototype.forEach.call(document.querySelectorAll('.na-toggle'), function(btn){
+    var key = btn.dataset.field;
+    btn.addEventListener('click', function(){
+      naFields[key] = !naFields[key];
+      btn.classList.toggle('active', naFields[key]);
+      if(naFields[key]){
+        if(f[key]) f[key].value = '';
+        if(specFields[key]){
+          specFields[key] = false;
+          var specBtn = document.querySelector('.spec-toggle[data-field="' + key + '"]');
+          if(specBtn) specBtn.classList.remove('active');
+          updateGuessedStyles();
+        }
+      }
+      setFieldDisabled(key, naFields[key]);
+      updateUnaddressed();
+      updateSpeculativeFromFields();
+    });
+  });
+
+  // Live unaddressed tracking
+  TOGGLE_FIELD_KEYS.forEach(function(key){
+    if(f[key]) f[key].addEventListener('input', updateUnaddressed);
+  });
+
+  // Collect active field-state arrays for export
+  function activeSpecFields(){
+    return TOGGLE_FIELD_KEYS.filter(function(k){ return !!specFields[k]; }).map(function(k){ return TOGGLE_FIELD_LABELS[k]; });
+  }
+  function activeNaFields(){
+    return TOGGLE_FIELD_KEYS.filter(function(k){ return !!naFields[k]; }).map(function(k){ return TOGGLE_FIELD_LABELS[k]; });
+  }
+
+  var recordBtn = document.getElementById('record-btn');
+  var cancelEditBtn = document.getElementById('cancel-edit-btn');
+  var copyStatus = document.getElementById('copy-status');
+  var tableContainer = document.getElementById('table-container');
+  var entryCountEl = document.getElementById('entry-count');
+
+  var entries = [];
+  var editingIndex = null;
+  // ---------- Issues CSV loader + controlled selector ----------
+  var loadedIssues = []; // Array of issue objects from Issues CSV
+  var selectedIssueID = '';
+  var selectedIssueRef = '';
+  var issuesLoaded = false;
+  var titleLibrarySlug = '';
+  var titleLibraryName = '';
+  var issueSelector = document.getElementById('f-issue-selector');
+  var contentsFormBody = document.getElementById('contents-form-body');
+  var lockedMessage = document.getElementById('locked-message');
+
+  function lockContentsForm(){
+    contentsFormBody.style.display = 'none';
+    lockedMessage.style.display = '';
+    document.getElementById('record-btn').disabled = true;
+    issueSelector.disabled = true;
+  }
+  function unlockContentsForm(){
+    contentsFormBody.style.display = '';
+    lockedMessage.style.display = 'none';
+    document.getElementById('record-btn').disabled = false;
+    issueSelector.disabled = false;
+  }
+
+  document.getElementById('f-load-issues').addEventListener('change', function(evt){
+    var file = evt.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var rows = parseCSV(e.target.result);
+        if(rows.length < 2){ document.getElementById('issues-status').textContent = 'CSV appears empty.'; return; }
+        var headers = rows[0];
+        function val(r, name){ var i = headers.indexOf(name); return i >= 0 && r[i] ? r[i].trim() : ''; }
+        var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+        if(toolIdx >= 0 && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Issues'){
+          alert('This does not appear to be a compatible Slaughter Cataloger schema 2.0 Issues CSV.'); return;
+        }
+        loadedIssues = [];
+        rows.slice(1).forEach(function(r){
+          if(r.length === 1 && r[0] === '') return;
+          loadedIssues.push({
+            issueID: val(r,'IssueID'),
+            titleID: val(r,'TitleID'),
+            shortName: val(r,'Short Name'),
+            title: val(r,'Title'),
+            librarySlug: val(r,'Title Library Slug'),
+            libraryName: val(r,'Title Library Name')
+          });
+        });
+        if(loadedIssues.length === 0){ document.getElementById('issues-status').textContent = 'No issues found.'; return; }
+        titleLibrarySlug = loadedIssues[0].librarySlug || '';
+        titleLibraryName = loadedIssues[0].libraryName || '';
+
+        issueSelector.innerHTML = '<option value="">\u2014 Select an issue \u2014</option>';
+        loadedIssues.forEach(function(iss){
+          var opt = document.createElement('option');
+          opt.value = iss.issueID;
+          opt.textContent = (iss.shortName || iss.title || '') + ' \u2014 ' + iss.issueID;
+          issueSelector.appendChild(opt);
+        });
+        issuesLoaded = true; unlockContentsForm();
+        document.getElementById('issues-status').textContent = loadedIssues.length + ' issue(s) loaded from ' + (titleLibrarySlug || 'Issues CSV') + '.';
+      }catch(err){ alert('Could not parse Issues CSV.'); }
+      evt.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // Issue selector change
+  issueSelector.addEventListener('change', function(){
+    selectedIssueID = issueSelector.value;
+    selectedIssueRef = '';
+    loadedIssues.forEach(function(iss){
+      if(iss.issueID === selectedIssueID) selectedIssueRef = iss.shortName || iss.title || '';
+    });
+    document.getElementById('issue-id-link').textContent = selectedIssueID ? 'IssueID: ' + selectedIssueID : '';
+    if(editingIndex === null) f.sequence.value = nextSequence();
+  });
+
+  lockContentsForm(); // Start locked
+
+  // Datalists for item titles, authors, content types
+  function refreshDatalists(){
+    function fill(id, values){
+      var dl = document.getElementById(id);
+      if(!dl) return;
+      var uniq = Array.from(new Set(values.filter(Boolean))).sort();
+      dl.innerHTML = '';
+      uniq.forEach(function(v){ var opt = document.createElement('option'); opt.value = v; dl.appendChild(opt); });
+    }
+    fill('item-title-datalist', entries.map(function(e){ return e.itemTitle; }));
+    fill('author-datalist', entries.map(function(e){ return e.author; }));
+    var builtIn = ['article','essay','poem','short story','fiction','editorial','letter','correspondence','review','notice','advertisement','illustration','translation','bibliography','obituary','reprint','excerpt','speech','satire','serial','financial report'];
+    fill('content-type-datalist', builtIn.concat(entries.map(function(e){ return e.contentType; })));
+  }
+
+  // ---------- Auto-advance sequence ----------  // ---------- Auto-advance sequence ----------
+  function nextSequence(){
+    if(!selectedIssueID) return '1';
+    var max = 0;
+    entries.forEach(function(e){
+      if(e.issueID === selectedIssueID){
+        var n = parseInt(e.sequence, 10);
+        if(n > max) max = n;
+      }
+    });
+    return String(max + 1);
+  }
+
+  // Sequence auto-fill handled by issueSelector.change above
+
+  // ---------- Record ----------
+  recordBtn.addEventListener('click', function(){
+    if(!selectedIssueID){
+      alert('Select an issue from the loaded Issues CSV before recording.');
+      issueSelector.focus();
+      return;
+    }
+    if(!f.itemTitle.value.trim()){
+      f.itemTitle.focus();
+      return;
+    }
+
+    // Check for unaddressed fields
+    var unaddressed = getUnaddressedFields();
+    if(unaddressed.length > 0){
+      var msg = 'The following field' + (unaddressed.length === 1 ? ' has' : 's have') + ' not been addressed:\n\n' +
+        unaddressed.join(', ') + '\n\n' +
+        'Press OK to record anyway, or Cancel to go back and review.';
+      if(!confirm(msg)) return;
+    }
+
+    // Check for duplicate sequence
+    var seqVal = f.sequence.value.trim() || nextSequence();
+    var seqDupe = entries.some(function(e, i){
+      return e.issueID === selectedIssueID && e.sequence === seqVal && i !== editingIndex;
+    });
+    if(seqDupe && !confirm('This issue already has a contents entry with sequence ' + seqVal + '. Record anyway?')) return;
+
+    var entry = {
+      scatTool: 'Contents',
+      schemaVersion: '2.0',
+      librarySlug: titleLibrarySlug,
+      titleID: '',
+      issueID: selectedIssueID,
+      issueRef: selectedIssueRef,
+      _findTitleID: true,
+      sequence: f.sequence.value.trim() || nextSequence(),
+      itemTitle: f.itemTitle.value.trim(),
+      author: f.author.value.trim(),
+      contentType: f.contentType.value.trim(),
+      parentItem: f.parentItem.value.trim(),
+      startPage: f.startPage.value.trim(),
+      endPage: f.endPage.value.trim(),
+      notes: f.notes.value.trim(),
+      speculative: speculativeOn,
+      specFields: activeSpecFields(),
+      naFields: activeNaFields()
+    };
+
+    if(editingIndex !== null){
+      entries[editingIndex] = entry;
+      exitEditMode();
+    } else {
+      entries.push(entry);
+    }
+
+    renderTable(false);
+    saveSession();
+
+    // Fill titleID from loaded issues
+    if(entry._findTitleID){
+      loadedIssues.forEach(function(iss){
+        if(iss.issueID === entry.issueID) entry.titleID = iss.titleID || '';
+      });
+      delete entry._findTitleID;
+    }
+
+    // Clear item-level fields, keep issue selector and advance sequence
+    ['itemTitle','author','contentType','parentItem','startPage','endPage','notes'].forEach(function(k){
+      f[k].value = '';
+    });
+    f.sequence.value = nextSequence();
+    setSpeculative(false);
+    speculativeManual = false;
+    resetSpecToggles();
+    resetNaToggles();
+    refreshDatalists();
+    updateUnaddressed();
+    f.itemTitle.focus();
+  });
+
+  // ---------- Edit mode ----------
+  function enterEditMode(idx){
+    editingIndex = idx;
+    var e = entries[idx];
+    // Restore issue selector
+    if(e.issueID) issueSelector.value = e.issueID;
+    selectedIssueID = e.issueID || '';
+    selectedIssueRef = e.issueRef || '';
+    document.getElementById('issue-id-link').textContent = selectedIssueID ? 'IssueID: ' + selectedIssueID : '';
+    f.sequence.value = e.sequence;
+    f.itemTitle.value = e.itemTitle;
+    f.author.value = e.author;
+    f.contentType.value = e.contentType;
+    f.parentItem.value = e.parentItem;
+    f.startPage.value = e.startPage;
+    f.endPage.value = e.endPage;
+    f.notes.value = e.notes;
+    // Restore field states
+    resetSpecToggles();
+    resetNaToggles();
+    (e.specFields||[]).forEach(function(label){
+      TOGGLE_FIELD_KEYS.forEach(function(k){
+        if(TOGGLE_FIELD_LABELS[k] === label){
+          specFields[k] = true;
+          var btn = document.querySelector('.spec-toggle[data-field="' + k + '"]');
+          if(btn) btn.classList.add('active');
+        }
+      });
+    });
+    (e.naFields||[]).forEach(function(label){
+      TOGGLE_FIELD_KEYS.forEach(function(k){
+        if(TOGGLE_FIELD_LABELS[k] === label){
+          naFields[k] = true;
+          setFieldDisabled(k, true);
+          var btn = document.querySelector('.na-toggle[data-field="' + k + '"]');
+          if(btn) btn.classList.add('active');
+        }
+      });
+    });
+    setSpeculative(!!e.speculative);
+    speculativeManual = false;
+    updateGuessedStyles();
+    updateUnaddressed();
+    recordBtn.textContent = 'Update Record';
+    cancelEditBtn.style.display = '';
+    editFlag.style.display = '';
+  }
+
+  function exitEditMode(){
+    editingIndex = null;
+    recordBtn.textContent = 'Record';
+    cancelEditBtn.style.display = 'none';
+    editFlag.style.display = 'none';
+  }
+
+  cancelEditBtn.addEventListener('click', function(){
+    exitEditMode();
+    document.getElementById('clear-form-btn').click();
+  });
+
+  // ---------- Clear form ----------
+  document.getElementById('clear-form-btn').addEventListener('click', function(){
+    Object.keys(f).forEach(function(k){ f[k].value = ''; });
+    setSpeculative(false);
+    speculativeManual = false;
+    resetSpecToggles();
+    resetNaToggles();
+    updateUnaddressed();
+    exitEditMode();
+  });
+
+  // ---------- Undo delete ----------
+  var undoTimer = null;
+  function offerUndo(entry, idx){
+    if(undoTimer) clearTimeout(undoTimer);
+    var strip = document.getElementById('undo-strip');
+    document.getElementById('undo-msg').textContent = 'Deleted: ' + (entry.itemTitle || 'entry') + '.';
+    strip.style.display = '';
+    function dismiss(){ strip.style.display = 'none'; if(undoTimer){ clearTimeout(undoTimer); undoTimer = null; } }
+    document.getElementById('undo-delete-btn').onclick = function(){
+      entries.splice(Math.min(idx, entries.length), 0, entry);
+      renderTable(false);
+      saveSession();
+      dismiss();
+    };
+    undoTimer = setTimeout(dismiss, 6000);
+  }
+
+  // ---------- Table ----------
+  var COLUMNS = [
+    {key:'rowNum', label:'#', sortable:false},
+    {key:'issueRef', label:'Issue', sortable:true},
+    {key:'issueID', label:'IssueID', sortable:true},
+    {key:'sequence', label:'Seq', sortable:true},
+    {key:'itemTitle', label:'Item Title', sortable:true},
+    {key:'author', label:'Author', sortable:true},
+    {key:'contentType', label:'Type', sortable:true},
+    {key:'parentItem', label:'Parent', sortable:false},
+    {key:'startPage', label:'Start Pg', sortable:true},
+    {key:'endPage', label:'End Pg', sortable:false},
+    {key:'notes', label:'Notes', sortable:false},
+    {key:'actions', label:'', sortable:false}
+  ];
+
+  var COMPACT_KEYS = {rowNum:1, issueRef:1, sequence:1, itemTitle:1, author:1, startPage:1, actions:1};
+  var tableViewFull = false;
+
+  var SORT_ACCESSORS = {
+    issueRef: function(e){ return (e.issueRef||'').toLowerCase(); },
+    issueID: function(e){ return (e.issueID||'').toLowerCase(); },
+    sequence: function(e){ return parseInt(e.sequence,10)||0; },
+    itemTitle: function(e){ return (e.itemTitle||'').toLowerCase(); },
+    author: function(e){ return (e.author||'').toLowerCase(); },
+    contentType: function(e){ return (e.contentType||'').toLowerCase(); },
+    startPage: function(e){ return parseInt(e.startPage,10)||0; }
+  };
+
+  var sortState = {key:null, dir:1};
+
+  function compareBy(key, a, b){
+    var va = SORT_ACCESSORS[key] ? SORT_ACCESSORS[key](a) : '';
+    var vb = SORT_ACCESSORS[key] ? SORT_ACCESSORS[key](b) : '';
+    if(va < vb) return -1;
+    if(va > vb) return 1;
+    return 0;
+  }
+
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function renderTable(preserveSort){
+    if(!preserveSort){ /* keep sort */ }
+    var activeColumns = tableViewFull ? COLUMNS : COLUMNS.filter(function(c){ return COMPACT_KEYS[c.key]; });
+
+    // Build display order
+    var idxs = entries.map(function(_, i){ return i; });
+    if(sortState.key && SORT_ACCESSORS[sortState.key]){
+      idxs.sort(function(ia, ib){ return compareBy(sortState.key, entries[ia], entries[ib]) * sortState.dir; });
+    }
+
+    var headHtml = '<tr>' + activeColumns.map(function(c){
+      var cls = c.sortable ? ' class="sortable"' : '';
+      var arrow = (sortState.key === c.key) ? (sortState.dir === 1 ? ' ▲' : ' ▼') : '';
+      return '<th' + cls + ' data-key="' + c.key + '">' + c.label + arrow + '</th>';
+    }).join('') + '</tr>';
+
+    var bodyHtml = '';
+    idxs.forEach(function(realIdx, displayIdx){
+      var e = entries[realIdx];
+      var cells = {
+        rowNum: '<td>' + (realIdx + 1) + '</td>',
+        issueRef: '<td><span class="issue-badge">' + esc(e.issueRef || '') + '</span></td>',
+        issueID: '<td style="font-family:monospace; font-size:10px; letter-spacing:1px;">' + esc(e.issueID||'') + '</td>',
+        sequence: '<td>' + esc(e.sequence) + '</td>',
+        itemTitle: '<td>' + (e.parentItem ? '<span style="color:var(--ink-soft); font-size:10px;">↳ </span>' : '') + esc(e.itemTitle) + '</td>',
+        author: '<td>' + esc(e.author) + '</td>',
+        contentType: '<td>' + esc(e.contentType) + '</td>',
+        parentItem: '<td>' + esc(e.parentItem) + '</td>',
+        startPage: '<td>' + esc(e.startPage) + '</td>',
+        endPage: '<td>' + esc(e.endPage) + '</td>',
+        notes: '<td>' + esc(e.notes) + '</td>',
+        actions: '<td><button class="row-btn" data-act="edit" data-idx="' + realIdx + '">edit</button> <button class="row-btn" data-act="delete" data-idx="' + realIdx + '">×</button></td>'
+      };
+      bodyHtml += '<tr>' + activeColumns.map(function(c){ return cells[c.key]; }).join('') + '</tr>';
+    });
+
+    if(entries.length === 0){
+      bodyHtml = '<tr><td colspan="' + activeColumns.length + '" style="text-align:center; color:var(--ink-soft); padding:20px;">No entries yet. Record your first content item above.</td></tr>';
+    }
+
+    tableContainer.innerHTML = '<div class="table-scroll"><table' + (tableViewFull ? ' class="full-view"' : '') + '><thead>' + headHtml + '</thead><tbody>' + bodyHtml + '</tbody></table></div>';
+
+    // Wire sort headers
+    Array.prototype.forEach.call(tableContainer.querySelectorAll('th.sortable'), function(th){
+      th.addEventListener('click', function(){
+        var key = th.dataset.key;
+        if(sortState.key === key) sortState.dir *= -1;
+        else { sortState.key = key; sortState.dir = 1; }
+        renderTable(true);
+      });
+    });
+
+    entryCountEl.textContent = entries.length + ' item' + (entries.length === 1 ? '' : 's') + ' cataloged';
+  }
+
+  // Event delegation for table edit/delete — one listener, survives re-renders
+  tableContainer.addEventListener('click', function(evt){
+    var btn = evt.target.closest('[data-act]');
+    if(!btn) return;
+    var act = btn.dataset.act;
+    var idx = parseInt(btn.dataset.idx, 10);
+    if(isNaN(idx)) return;
+    if(act === 'edit'){
+      if(editingIndex === idx){ exitEditMode(); renderTable(false); return; }
+      enterEditMode(idx);
+    } else if(act === 'delete'){
+      if(idx === editingIndex) exitEditMode();
+      var deleted = entries.splice(idx, 1)[0];
+      renderTable(false);
+      saveSession();
+      offerUndo(deleted, idx);
+    }
+  });
+
+  // Table view toggle
+  var tableViewToggleBtn = document.getElementById('table-view-toggle');
+  tableViewToggleBtn.addEventListener('click', function(){
+    tableViewFull = !tableViewFull;
+    tableViewToggleBtn.textContent = tableViewFull ? 'Show compact view' : 'Show full view';
+    renderTable(false);
+  });
+
+  // ---------- CSV ----------
+  var HEADERS = ['Slaughter Cataloger Tool','Schema Version','Title Library Slug','TitleID','Entry Order','IssueID','Issue Reference','Sequence','Item Title','Author / Credit','Content Type','Parent Item','Start Page','End Page','Notes','Speculative','Speculative Fields','N/A Fields'];
+
+  function csvSafe(v){
+    var s = String(v||'');
+    if(/^[=+\-@]/.test(s)) s = "'" + s;
+    return '"' + s.replace(/"/g,'""') + '"';
+  }
+
+  function buildCsv(){
+    var rows = [HEADERS.join(',')];
+    entries.forEach(function(e, i){
+      rows.push([
+        e.scatTool||'Contents', e.schemaVersion||'2.0', e.librarySlug||'', e.titleID||'',
+        i + 1,
+        e.issueID||'', e.issueRef||'', e.sequence, e.itemTitle, e.author,
+        e.contentType, e.parentItem, e.startPage, e.endPage, e.notes,
+        e.speculative ? 'Yes' : 'No',
+        (e.specFields||[]).join('; '),
+        (e.naFields||[]).join('; ')
+      ].map(csvSafe).join(','));
+    });
+    return rows.join('\n');
+  }
+
+  function parseCSV(text){
+    var rows = []; var row = []; var field = ''; var inQ = false;
+    for(var i = 0; i < text.length; i++){
+      var c = text[i];
+      if(inQ){
+        if(c === '"' && text[i+1] === '"'){ field += '"'; i++; }
+        else if(c === '"') inQ = false;
+        else field += c;
+      } else {
+        if(c === '"') inQ = true;
+        else if(c === ','){ row.push(field); field = ''; }
+        else if(c === '\n' || c === '\r'){
+          if(c === '\r' && text[i+1] === '\n') i++;
+          row.push(field); field = ''; rows.push(row); row = [];
+        } else field += c;
+      }
+    }
+    row.push(field); if(row.length > 1 || row[0]) rows.push(row);
+    return rows;
+  }
+
+  // Export
+  document.getElementById('export-btn').addEventListener('click', function(){
+    var blob = new Blob([buildCsv()], {type:'text/csv'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    // Guard: block export if loaded issues span multiple TitleIDs
+    var titleIDsInIssues = {};
+    loadedIssues.forEach(function(iss){ if(iss.titleID) titleIDsInIssues[iss.titleID] = true; });
+    var titleIDKeys = Object.keys(titleIDsInIssues);
+    if(titleIDKeys.length > 1){
+      alert('The loaded Issues CSV contains multiple TitleIDs (' + titleIDKeys.join(', ') + '). Contents is meant to maintain one title at a time. Please load a single-title Issues CSV before exporting Contents.');
+      return;
+    }
+    var slug = titleLibrarySlug || 'LIBRARY';
+    var tid = titleIDKeys[0] || 'NOTITLE';
+    a.download = 'SCAT_' + slug + '_' + tid + '_CONTENTS.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  // Copy
+  document.getElementById('copy-btn').addEventListener('click', function(){
+    navigator.clipboard.writeText(buildCsv()).then(function(){
+      copyStatus.textContent = 'Copied to clipboard.';
+    }, function(){
+      copyStatus.textContent = 'Copy failed.';
+    });
+    setTimeout(function(){ copyStatus.textContent = ''; }, 3000);
+  });
+
+  // Import
+  function showImportModal(doImport){
+    var modal = document.getElementById('import-modal');
+    document.getElementById('import-modal-msg').textContent =
+      'You have ' + entries.length + ' existing entr' + (entries.length === 1 ? 'y' : 'ies') + '. How should the imported file be handled?';
+    modal.style.display = 'flex';
+    function cleanup(){ modal.style.display = 'none'; }
+    document.getElementById('import-replace-btn').onclick = function(){ cleanup(); doImport(true); };
+    document.getElementById('import-append-btn').onclick = function(){ cleanup(); doImport(false); };
+    document.getElementById('import-cancel-btn').onclick = function(){ cleanup(); copyStatus.textContent = 'Import cancelled.'; setTimeout(function(){ copyStatus.textContent = ''; }, 3000); };
+  }
+
+  document.getElementById('import-btn').addEventListener('click', function(){
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = '.csv';
+    input.onchange = function(evt){
+      var file = evt.target.files[0];
+      if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(e){
+        try{
+          var rows = parseCSV(e.target.result);
+          if(rows.length < 2){ copyStatus.textContent = 'CSV appears empty.'; return; }
+          var headers = rows[0];
+          function val(r, name){ var i = headers.indexOf(name); return i >= 0 && r[i] ? r[i].trim() : ''; }
+          // Validate schema
+          var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+          if(toolIdx >= 0 && rows[1] && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Contents'){
+            alert('This does not appear to be a compatible Slaughter Cataloger schema 2.0 Contents CSV.'); return;
+          }
+          var body = rows.slice(1).filter(function(r){ return !(r.length === 1 && r[0] === ''); });
+
+          var doImport = function(replace){
+            if(replace) entries = [];
+            var imported = 0;
+            body.forEach(function(r){
+              entries.push({
+                scatTool: 'Contents',
+                schemaVersion: val(r,'Schema Version') || '2.0',
+                librarySlug: val(r,'Title Library Slug'),
+                titleID: val(r,'TitleID'),
+                issueID: val(r,'IssueID'),
+                issueRef: val(r,'Issue Reference'),
+                sequence: val(r,'Sequence'),
+                itemTitle: val(r,'Item Title'),
+                author: val(r,'Author / Credit') || val(r,'Author'),
+                contentType: val(r,'Content Type'),
+                parentItem: val(r,'Parent Item'),
+                startPage: val(r,'Start Page'),
+                endPage: val(r,'End Page'),
+                notes: val(r,'Notes'),
+                speculative: /^y/i.test(val(r,'Speculative')),
+                specFields: (val(r,'Speculative Fields') || '').split(';').map(function(s){return s.trim();}).filter(Boolean),
+                naFields: (val(r,'N/A Fields') || '').split(';').map(function(s){return s.trim();}).filter(Boolean),
+                _importOrder: parseInt(val(r,'Entry Order'), 10) || 999999
+              });
+              imported++;
+            });
+            entries.sort(function(a, b){ return (a._importOrder||0) - (b._importOrder||0); });
+            entries.forEach(function(e){ delete e._importOrder; });
+            refreshDatalists();
+            renderTable(false);
+            copyStatus.textContent = imported + ' item(s) imported.';
+            saveSession();
+            setTimeout(function(){ copyStatus.textContent = ''; }, 4000);
+          };
+
+          if(entries.length === 0){
+            doImport(false);
+          } else {
+            showImportModal(doImport);
+          }
+        }catch(err){
+          copyStatus.textContent = 'Import failed — check the file format.';
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  });
+
+  // Clear all
+  document.getElementById('clear-all-btn').addEventListener('click', function(){
+    if(entries.length === 0) return;
+    if(!confirm('Clear all ' + entries.length + ' entries? This cannot be undone.')) return;
+    entries = [];
+    renderTable(false);
+    saveSession();
+  });
+
+  // ---------- Session persistence (localStorage) ----------
+  var SESSION_KEY = 'slaughterContents.beta2_6.session';
+  function saveSession(){
+    try{
+      if(entries.length === 0){ localStorage.removeItem(SESSION_KEY); }
+      else { localStorage.setItem(SESSION_KEY, JSON.stringify(entries)); }
+    }catch(err){}
+  }
+  // Restore
+  try{
+    var saved = localStorage.getItem(SESSION_KEY);
+    if(saved){
+      var parsed = JSON.parse(saved);
+      if(Array.isArray(parsed) && parsed.length > 0){
+        document.getElementById('restore-banner').style.display = '';
+        document.getElementById('restore-yes-btn').addEventListener('click', function(){
+          entries = parsed;
+          refreshDatalists();
+          renderTable(false);
+          saveSession();
+          document.getElementById('restore-banner').style.display = 'none';
+        });
+        document.getElementById('restore-no-btn').addEventListener('click', function(){
+          try{ localStorage.removeItem(SESSION_KEY); }catch(err){}
+          document.getElementById('restore-banner').style.display = 'none';
+        });
+      }
+    }
+  }catch(err){}
+
+  // beforeunload warning
+  window.addEventListener('beforeunload', function(e){
+    if(entries.length > 0){ e.preventDefault(); e.returnValue = ''; }
+  });
+
+  // ---------- Init ----------
+  refreshDatalists();
+  renderTable(false);
+  updateGuessedStyles();
+  updateUnaddressed();
+  f.sequence.value = '1';
+
+})();
+</script>
+</body>
+</html>

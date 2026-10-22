@@ -1,0 +1,43 @@
+{
+  "file_kind": "PROVISIONAL_PRIVATE_ASSET_RIGHTS_POLICY__NOT_PUBLIC_AUTHORIZATION",
+  "rights_assessment": "UNKNOWN_OR_UNDETERMINED; this is not a copyright determination",
+  "access_defaults": {
+    "bibliographic_metadata": {
+      "status": "PRIVATE_STAGING",
+      "public_release_authorized": false
+    },
+    "fulltext": {
+      "status": "PRIVATE",
+      "public_release_authorized": false,
+      "includes": [
+        "fulltext.json",
+        "transcription.md",
+        "item_to_page_mapping.json"
+      ]
+    },
+    "cover": {
+      "status": "REVIEW_REQUIRED",
+      "public_release_authorized": false,
+      "file": "cover.jpg"
+    },
+    "deep_index": {
+      "status": "PRIVATE",
+      "public_release_authorized": false,
+      "file": "private_index/deep_index.json"
+    },
+    "source_pdf": {
+      "status": "PRIVATE",
+      "public_release_authorized": false,
+      "file": "source/example-gazette-v4n1.pdf"
+    }
+  },
+  "export_policy": "No public outputs authorized.",
+  "approvals": {
+    "catalog_merge": false,
+    "local_import": false,
+    "public_release": false,
+    "fulltext_public_release": false,
+    "cover_public_release": false,
+    "index_public_release": false
+  }
+}

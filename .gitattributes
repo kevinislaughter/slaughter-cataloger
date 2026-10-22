@@ -1,0 +1,3 @@
+# The invented issue package is checked byte for byte (every file has a SHA-256 in issue.json).
+# Never let Git change its line endings or anything else on checkout.
+sample-data/issue-package/** -text

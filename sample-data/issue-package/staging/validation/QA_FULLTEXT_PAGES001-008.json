@@ -1,0 +1,14 @@
+{
+  "file_kind": "QA_FULLTEXT_PAGES001-008",
+  "checks": [
+    {
+      "check": "every page character covered exactly once",
+      "result": "PASS"
+    },
+    {
+      "check": "every segment equals its page slice",
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

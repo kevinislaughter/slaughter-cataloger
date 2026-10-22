@@ -1,0 +1,393 @@
+{
+  "format": "slaughter-cataloger-issue/conversion-report",
+  "format_version": "1.0",
+  "converter": "tools/convert-staging.js 1.0",
+  "staging": {
+    "format": "draft-0.1/provisional-consolidation",
+    "package_id": "example-gazette-v4n1-1875-provisional-import-candidate",
+    "archive": null
+  },
+  "treatment": {
+    "re_expressed": [
+      "fulltext.json → text.json (rebuilt exactly from it by reconstruct(); fields with no place in 1.0 are kept in \"origin\")",
+      "candidate_contents_seq001-018.provisional.json → items.json (rebuilt exactly from it by reconstruct(); fields with no place in 1.0 are kept in \"origin\")",
+      "private_index/deep_index.json → mentions.json (rebuilt exactly from it by reconstruct(); fields with no place in 1.0 are kept in \"origin\")"
+    ],
+    "mapped": [
+      "MANIFEST.json → issue.json (identity, cover, sources, rights or review; every other field kept in \"origin\")",
+      "RIGHTS_AND_ACCESS.json → rights.json (identity, cover, sources, rights or review; every other field kept in \"origin\")",
+      "REVIEW_QUEUE.json → issue.json (identity, cover, sources, rights or review; every other field kept in \"origin\")"
+    ],
+    "verified": [
+      "transcription.md (cross-checked against the re-expressed files)",
+      "item_to_page_mapping.json (cross-checked against the re-expressed files)",
+      "content_id_relationship_crosswalk_seq001-018.csv (cross-checked against the re-expressed files)",
+      "CHECKSUMS.sha256 (cross-checked against the re-expressed files)"
+    ],
+    "stored_natively": [
+      "cover.jpg → cover.jpg (byte for byte)",
+      "source/example-gazette-v4n1.pdf → source/example-gazette-v4n1.pdf (byte for byte)"
+    ],
+    "not_stored_because_derived": [
+      "each segment's and unassigned span's text: the page text between its offsets (each one checked equal first)",
+      "each item's text: its segments joined in reading order (checked equal first)",
+      "transcription.md: the apparatus followed by every page text (checked equal; the original is kept under provenance/staging/)"
+    ],
+    "all_files_kept": "every staging file is kept byte for byte under provenance/staging/ (or as the native cover or source file); issue.json › provenance.files lists each with its SHA-256"
+  },
+  "checks": [
+    {
+      "check": "CHECKSUMS.sha256: every entry matches",
+      "result": "pass"
+    },
+    {
+      "check": "MANIFEST.json active_assets: every hash and size matches",
+      "result": "pass"
+    },
+    {
+      "check": "candidate_contents_seq001-018.provisional.json: header order is the 3.0 Contents header order",
+      "result": "pass"
+    },
+    {
+      "check": "page 1: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 1: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 1: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 2: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 2: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 2: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 3: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 3: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 3: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 4: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 4: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 4: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 5: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 5: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 5: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 6: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 6: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 6: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 7: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 7: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 7: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "page 8: length in code points",
+      "result": "pass"
+    },
+    {
+      "check": "page 8: SHA-256 of the text",
+      "result": "pass"
+    },
+    {
+      "check": "page 8: the manifest agrees (printed page, text hash)",
+      "result": "pass"
+    },
+    {
+      "check": "fulltext.json: the same items, in the same order, as candidate_contents_seq001-018.provisional.json",
+      "result": "pass"
+    },
+    {
+      "check": "segment p001-s0001-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p002-s0001-02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p001-s0002-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p001-s0003-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p001-s0003-02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p002-s0003-03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p001-s0004-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p001-s0005-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p002-s0006-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p002-s0007-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p002-s0008-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p006-s0008-02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p003-s0009-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p003-s0009-02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p004-s0010-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p004-s0011-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p004-s0012-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p005-s0013-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p005-s0014-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p006-s0015-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p006-s0016-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p006-s0017-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p007-s0018-01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p007-s0018-02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p007-s0018-03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "segment p007-s0018-04: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p001-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p001-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p001-u03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p001-u04: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p001-u05: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p002-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p002-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p002-u03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p003-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p003-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p003-u03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p004-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p004-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p005-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p005-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p005-u03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p006-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p006-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p006-u03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p007-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p007-u02: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p007-u03: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p007-u04: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p007-u05: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "span p008-u01: stored text equals the page text at its offsets",
+      "result": "pass"
+    },
+    {
+      "check": "transcription.md is exactly the apparatus followed by every page text",
+      "result": "pass"
+    },
+    {
+      "check": "fulltext.json: source_transcription_sha256 matches transcription.md",
+      "result": "pass"
+    },
+    {
+      "check": "item_to_page_mapping.json agrees with the segments and spans",
+      "result": "pass"
+    },
+    {
+      "check": "content_id_relationship_crosswalk_seq001-018.csv agrees with the candidate rows",
+      "result": "pass"
+    },
+    {
+      "check": "cover: SHA-256 as stated in the manifest",
+      "result": "pass"
+    },
+    {
+      "check": "source file source/example-gazette-v4n1.pdf: SHA-256 and size as stated",
+      "result": "pass"
+    },
+    {
+      "check": "fulltext.json rebuilds exactly from the native files",
+      "result": "pass"
+    },
+    {
+      "check": "candidate_contents_seq001-018.provisional.json rebuilds exactly from the native files",
+      "result": "pass"
+    },
+    {
+      "check": "private_index/deep_index.json rebuilds exactly from the native files",
+      "result": "pass"
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slaughter Cataloger — Compiler :: Beta 2.6</title>
+  <style>
+    :root{
+      --paper:#ffffff; --ink:#111111; --ink-soft:#4a4a4a;
+      --line:#c9c9c9; --line-strong:#8a8a8a; --panel:#f3f3f1; --entry:#a3410a;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{
+      background:var(--paper); color:var(--ink);
+      font-family:"Courier New",Courier,monospace;
+      font-size:13px; line-height:1.6;
+      max-width:860px; margin:0 auto; padding:36px 28px 80px;
+    }
+    h1{font-family:Georgia,serif; font-size:13px; font-weight:700;
+       letter-spacing:2.5px; text-transform:uppercase; margin-bottom:4px;}
+    .tagline{font-size:11px; color:var(--ink-soft); letter-spacing:.5px; margin-bottom:28px;}
+
+    /* Steps */
+    .step-section{margin-bottom:20px; border:1px solid var(--line); padding:14px 16px;}
+    .step-section.step-locked{opacity:.4; pointer-events:none;}
+    .step-label{
+      font-family:Georgia,serif; font-size:9px; letter-spacing:2px;
+      text-transform:uppercase; color:var(--ink-soft);
+      margin-bottom:12px; display:flex; align-items:center; gap:8px;
+    }
+    .step-badge{
+      background:var(--entry); color:#fff; font-family:monospace;
+      font-size:9px; padding:1px 7px; letter-spacing:1px;
+    }
+    .step-locked .step-badge{background:var(--line-strong);}
+    .step-hint{font-style:italic; font-weight:400; color:var(--ink-soft);}
+
+    /* Form elements */
+    select,input[type=text]{
+      font-family:inherit; font-size:13px; color:var(--ink);
+      background:var(--paper); border:1px solid var(--line-strong);
+      padding:6px 8px; width:100%;
+    }
+    input[type=file]{display:none;}
+    label{cursor:pointer;}
+
+    .btn{
+      font-family:inherit; font-size:12px; letter-spacing:.5px;
+      padding:6px 14px; border:1px solid var(--ink); background:var(--ink);
+      color:var(--paper); cursor:pointer; display:inline-block;
+    }
+    .btn:disabled{opacity:.4; cursor:not-allowed;}
+    .btn.ghost{background:var(--paper); color:var(--ink);}
+    .btn.small{padding:4px 10px; font-size:11px;}
+    .btn.primary{background:var(--ink);}
+    .btn-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;}
+
+    /* File loaders */
+    .file-loader{display:flex; align-items:center; gap:10px; margin:8px 0;}
+    .file-loader .expected{font-size:11px; color:var(--ink-soft); font-style:italic; flex:1;}
+    .file-status{font-size:11px; color:var(--ink-soft); margin-top:3px;}
+    .file-status.loaded{color:#3a7a3a;}
+    .file-status.error{color:#c0392b;}
+
+    /* Title selector */
+    .title-manifest-info{
+      margin-top:10px; padding:8px 10px; background:var(--panel);
+      border:1px solid var(--line); font-size:11px; line-height:1.8;
+    }
+    .manifest-row{display:flex; gap:8px;}
+    .manifest-row .ml{color:var(--ink-soft); min-width:120px;}
+    .manifest-row code{font-size:10px;}
+
+    /* Validation dashboard */
+    .vd-item{display:flex; align-items:baseline; gap:8px; font-size:12px; padding:2px 0;}
+    .vd-ok{color:#3a7a3a; font-weight:700;}
+    .vd-pending{color:var(--ink-soft);}
+    .vd-error{color:#c0392b; font-weight:700;}
+    .vd-icon{min-width:14px; text-align:center;}
+
+    /* Output type */
+    .output-type-option{
+      display:block; padding:8px 12px; margin:4px 0;
+      border:1px solid var(--line); cursor:pointer; position:relative;
+    }
+    .output-type-option:hover{border-color:var(--line-strong);}
+    .output-type-option.selected{border-color:var(--entry); background:#fef8f5;}
+    .output-type-option.disabled{opacity:.55; cursor:not-allowed;}
+    .output-group-label{font-family:Georgia,serif; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid var(--line);}
+    .output-type-status{font-size:9px; letter-spacing:.5px; text-transform:uppercase; color:var(--line-strong); margin-top:4px;}
+    .output-type-label{font-weight:700;}
+    .output-type-req{font-size:10px; color:var(--ink-soft); margin-top:2px;}
+    .output-type-options{display:flex; flex-wrap:wrap; gap:0;}
+    .output-type-option{flex:1 1 180px;}
+
+    /* Filters */
+    .filter-section{margin-top:10px;}
+    .cb-row{display:block; font-size:12px; line-height:1.8; cursor:pointer;}
+    .cb-row input{margin-right:6px;}
+    #scope-checkboxes{
+      max-height:160px; overflow-y:auto; padding:6px 8px;
+      background:var(--paper); border:1px solid var(--line);
+      font-size:12px; line-height:2; margin-top:6px;
+    }
+
+    /* Checklist options */
+    .options-grid{display:grid; grid-template-columns:1fr 1fr; gap:4px 24px; margin-top:8px;}
+    .options-grid label{font-size:12px; cursor:pointer; line-height:1.8;}
+
+    /* Preview */
+    .preview-header{
+      display:flex; justify-content:space-between; align-items:baseline;
+      margin-bottom:10px;
+    }
+    .preview-label{
+      font-family:Georgia,serif; font-size:9px; letter-spacing:2px;
+      text-transform:uppercase; color:var(--ink-soft);
+    }
+    .preview-box{
+      border:1px solid var(--line); padding:12px 14px; background:var(--panel);
+      min-height:80px; max-height:400px; overflow-y:auto;
+      font-size:12px; line-height:1.7; white-space:pre-wrap; word-break:break-all;
+    }
+    .preview-box.rendered{white-space:normal; word-break:normal;}
+    .output-filename{
+      font-family:monospace; font-size:11px; color:var(--entry);
+      padding:6px 0; border-top:1px solid var(--line); margin-top:8px;
+    }
+    .status{font-size:11px; color:var(--ink-soft); margin-top:4px; min-height:16px;}
+
+    /* Select style dropdown */
+    select.style-select{width:auto; min-width:200px;}
+
+    footer{
+      margin-top:48px; padding-top:14px; border-top:1px solid var(--line);
+      font-size:11px; color:var(--ink-soft); letter-spacing:.5px;
+    }
+    footer a{color:inherit; text-decoration:none; border-bottom:1px solid var(--line);}
+  </style>
+</head>
+<body>
+
+  <h1>Slaughter Cataloger <span style="font-size:9px; letter-spacing:3px; font-weight:400; color:var(--ink-soft);">:: Beta 2.6</span></h1>
+  <div class="tagline">Compiler &nbsp;·&nbsp; Slaughter Cataloger suite</div>
+
+  <!-- ══════════════ STEP 1: Library Manifest ══════════════ -->
+  <div class="step-section" id="step-1">
+    <div class="step-label">
+      <span class="step-badge">1</span>
+      Library Manifest
+      <span class="step-hint">— load the Titles CSV to begin</span>
+    </div>
+    <input type="file" id="f-load-titles" accept=".csv">
+    <div class="file-loader">
+      <button class="btn small" id="btn-load-titles" type="button">Load Titles CSV</button>
+      <button class="btn small ghost" id="btn-clear-titles" type="button" style="display:none;">Clear</button>
+    </div>
+    <div class="file-status" id="titles-status"></div>
+  </div>
+
+  <!-- ══════════════ STEP 2: Select Title ══════════════ -->
+  <div class="step-section step-locked" id="step-2">
+    <div class="step-label">
+      <span class="step-badge">2</span>
+      Select Title
+    </div>
+    <select id="title-selector" disabled autocomplete="off">
+      <option value="">— Load a Titles CSV first —</option>
+    </select>
+    <div style="margin-top:8px;">
+      <button class="btn small primary" id="btn-use-title" type="button" disabled>Use this title</button>
+      <span id="title-selected-badge" style="display:none; margin-left:10px; font-size:11px; color:#3a7a3a; font-weight:bold;">✓ Title selected</span>
+    </div>
+    <div class="title-manifest-info" id="title-manifest-info" style="display:none;"></div>
+  </div>
+
+  <!-- ══════════════ STEP 3: Source Files ══════════════ -->
+  <div class="step-section step-locked" id="step-3">
+    <div class="step-label">
+      <span class="step-badge">3</span>
+      Source Files
+      <span class="step-hint">— load the working CSVs for the selected title</span>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px; color:var(--ink-soft); margin-bottom:4px; letter-spacing:.5px;">ISSUES CSV <span style="color:var(--entry);">required</span></div>
+      <div class="expected-file" id="issues-expected" style="font-size:11px; font-style:italic; color:var(--ink-soft); margin-bottom:6px;"></div>
+      <input type="file" id="f-load-issues" accept=".csv">
+      <div class="file-loader">
+        <button class="btn small" id="btn-load-issues" type="button" disabled>Load Issues CSV</button>
+        <button class="btn small ghost" id="btn-clear-issues" type="button" style="display:none;">Clear</button>
+      </div>
+      <div class="file-status" id="issues-status"></div>
+    </div>
+    <div>
+      <div style="font-size:11px; color:var(--ink-soft); margin-bottom:4px; letter-spacing:.5px;">CONTENTS CSV <span style="color:var(--ink-soft);">required for RIS, Proofing, WordPress Catalog</span></div>
+      <div class="expected-file" id="contents-expected" style="font-size:11px; font-style:italic; color:var(--ink-soft); margin-bottom:6px;"></div>
+      <input type="file" id="f-load-contents" accept=".csv">
+      <div class="file-loader">
+        <button class="btn small" id="btn-load-contents" type="button" disabled>Load Contents CSV</button>
+        <button class="btn small ghost" id="btn-clear-contents" type="button" style="display:none;">Clear</button>
+      </div>
+      <div class="file-status" id="contents-status"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ STEP 4: Validation ══════════════ -->
+  <div class="step-section" id="step-4">
+    <div class="step-label">
+      <span class="step-badge">4</span>
+      Validation
+    </div>
+    <div id="validation-dashboard">
+      <div class="vd-item"><span class="vd-icon vd-pending">○</span> Load a Titles CSV to begin.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ STEP 5: Output Type ══════════════ -->
+  <div class="step-section step-locked" id="step-5">
+    <div class="step-label">
+      <span class="step-badge">5</span>
+      Output Type
+    </div>
+    <div id="output-type-options">
+
+      <div class="output-group-label">Catalog &amp; Verification</div>
+      <div class="output-type-options">
+        <label class="output-type-option selected" data-type="checklist">
+          <input type="radio" name="output-type" value="checklist" checked style="display:none;">
+          <div class="output-type-label">Checklist</div>
+          <div class="output-type-req">Requires: Issues CSV</div>
+        </label>
+        <label class="output-type-option" data-type="full-catalog">
+          <input type="radio" name="output-type" value="full-catalog" style="display:none;">
+          <div class="output-type-label">Full Catalog</div>
+          <div class="output-type-req">Requires: Titles + Issues + Contents</div>
+        </label>
+        <label class="output-type-option" data-type="proofing-catalog">
+          <input type="radio" name="output-type" value="proofing-catalog" style="display:none;">
+          <div class="output-type-label">Proofing Catalog</div>
+          <div class="output-type-req">Requires: Titles + Issues + Contents</div>
+        </label>
+      </div>
+
+      <div class="output-group-label" style="margin-top:14px;">Bibliographic</div>
+      <div class="output-type-options">
+        <label class="output-type-option disabled" data-type="bibliography">
+          <input type="radio" name="output-type" value="bibliography" disabled style="display:none;">
+          <div class="output-type-label">Bibliography</div>
+          <div class="output-type-req">Formatted citation list per issue — Chicago, MLA, or house style. For publication appendices and notes.</div>
+          <div class="output-type-status">In development</div>
+        </label>
+        <label class="output-type-option disabled" data-type="contents-listing">
+          <input type="radio" name="output-type" value="contents-listing" disabled style="display:none;">
+          <div class="output-type-label">Contents Listing</div>
+          <div class="output-type-req">Article-level index across all issues — sortable by author, content type, or title.</div>
+          <div class="output-type-status">In development</div>
+        </label>
+      </div>
+
+      <div class="output-group-label" style="margin-top:14px;">Data &amp; Archival</div>
+      <div class="output-type-options">
+        <label class="output-type-option" data-type="ris">
+          <input type="radio" name="output-type" value="ris" style="display:none;">
+          <div class="output-type-label">RIS for Zotero</div>
+          <div class="output-type-req">Requires: Titles + Issues + Contents</div>
+        </label>
+        <label class="output-type-option disabled" data-type="flat-export">
+          <input type="radio" name="output-type" value="flat-export" disabled style="display:none;">
+          <div class="output-type-label">Flat Export</div>
+          <div class="output-type-req">Denormalized CSV, TSV, or JSON — one row per content item. For spreadsheets, databases, and external tools.</div>
+          <div class="output-type-status">Planned</div>
+        </label>
+        <label class="output-type-option disabled" data-type="archival-metadata">
+          <input type="radio" name="output-type" value="archival-metadata" disabled style="display:none;">
+          <div class="output-type-label">Archival Metadata</div>
+          <div class="output-type-req">MARC XML, Dublin Core, Omeka CSV, or Internet Archive metadata — for library catalogs and digital collections.</div>
+          <div class="output-type-status">Planned</div>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ STEP 6: Filters ══════════════ -->
+  <div class="step-section step-locked" id="step-6">
+    <div class="step-label">
+      <span class="step-badge">6</span>
+      Output Filters
+    </div>
+
+    <!-- Checklist style (only for Checklist) -->
+    <div class="filter-section" id="checklist-style-section">
+      <div style="font-size:11px; color:var(--ink-soft); margin-bottom:4px; letter-spacing:.5px;">STYLE</div>
+      <select id="f-style" class="style-select">
+        <option value="plain">Plain — No., date</option>
+        <option value="bibliographic" selected>Bibliographic — Full citation</option>
+        <option value="technical">Technical — IssueID-led</option>
+      </select>
+    </div>
+
+    <!-- Scope -->
+    <div class="filter-section" style="margin-top:12px;">
+      <div style="font-size:11px; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.5px;">SCOPE</div>
+      <div>
+        <label style="margin-right:16px; font-size:12px;"><input type="radio" name="scope-mode" id="scope-all" checked> All issues</label>
+        <label style="font-size:12px;"><input type="radio" name="scope-mode" id="scope-filter"> Filter by volume / year</label>
+      </div>
+      <div id="scope-group-list" style="display:none; margin-top:8px;">
+        <div style="display:flex; gap:8px; margin-bottom:4px; font-size:11px;">
+          <button class="btn small ghost" id="scope-select-all" type="button">Select all</button>
+          <button class="btn small ghost" id="scope-select-none" type="button">Select none</button>
+          <span id="scope-count" style="line-height:26px; color:var(--ink-soft);"></span>
+        </div>
+        <div id="scope-checkboxes"></div>
+      </div>
+    </div>
+
+    <!-- Checklist options (only for Checklist) -->
+    <div class="filter-section" id="checklist-options-section" style="margin-top:12px;">
+      <div style="font-size:11px; color:var(--ink-soft); margin-bottom:4px; letter-spacing:.5px;">OPTIONS</div>
+      <div class="options-grid">
+        <label class="cb-row"><input type="checkbox" id="opt-checkboxes" checked> Show checkboxes</label>
+        <label class="cb-row"><input type="checkbox" id="opt-speculative"> Flag speculative entries</label>
+        <label class="cb-row"><input type="checkbox" id="opt-issueid"> Show IssueID</label>
+        <label class="cb-row"><input type="checkbox" id="opt-notes"> Show notes</label>
+        <label class="cb-row"><input type="checkbox" id="opt-pages"> Show page count</label>
+        <label class="cb-row"><input type="checkbox" id="opt-subtitle"> Show subtitle</label>
+        <label class="cb-row"><input type="checkbox" id="opt-size"> Show physical size</label>
+        <label class="cb-row"><input type="checkbox" id="opt-group-by-title"> Group by title</label>
+        <label class="cb-row"><input type="checkbox" id="opt-price"> Show price</label>
+        <label class="cb-row"><input type="checkbox" id="opt-designation"> Show issue designation</label>
+        <label class="cb-row"><input type="checkbox" id="opt-publisher"> Show publisher</label>
+        <label class="cb-row"><input type="checkbox" id="opt-evidence"> Show evidence basis</label>
+        <label class="cb-row"><input type="checkbox" id="opt-printer"> Show printer</label>
+      </div>
+    </div>
+
+    <!-- Catalog options -->
+    <div class="filter-section" id="catalog-options-section" style="display:none; margin-top:12px;">
+      <label class="cb-row"><input type="checkbox" id="opt-hide-nested" checked> Hide nested items — top-level entries only (lighter output)</label>
+      <div style="margin-top:10px; font-size:11px; color:var(--ink-soft); letter-spacing:.5px; margin-bottom:4px;">OUTPUT FORMAT</div>
+      <label style="margin-right:16px; font-size:12px;"><input type="radio" name="catalog-format" id="catalog-fmt-html" checked> Standalone HTML file</label>
+      <label style="font-size:12px;"><input type="radio" name="catalog-format" id="catalog-fmt-wp"> WordPress Blocks (paste into Code Editor)</label>
+    </div>
+
+  </div>
+
+  <!-- ══════════════ STEP 7: Preview & Export ══════════════ -->
+  <div class="step-section step-locked" id="step-7">
+    <div class="step-label">
+      <span class="step-badge">7</span>
+      Preview &amp; Export
+    </div>
+    <div class="output-filename" id="output-filename" style="display:none;"></div>
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn primary" id="generate-btn" disabled>Generate Preview</button>
+    </div>
+    <div id="preview-container" style="display:none; margin-top:16px;">
+      <div class="preview-header">
+        <span class="preview-label">Preview</span>
+        <span>
+          <button class="btn small ghost" id="copy-btn">Copy</button>
+          <button class="btn small ghost" id="export-html-btn" style="display:none;">Export HTML</button>
+          <button class="btn small ghost" id="export-md-btn" style="display:none;">Export Markdown</button>
+          <button class="btn small ghost" id="export-txt-btn" style="display:none;">Export Plain Text</button>
+          <button class="btn small ghost" id="export-ris-btn" style="display:none;">Export RIS</button>
+          <button class="btn small ghost" id="export-proofing-btn" style="display:none;">Export Proofing Catalog</button>
+          <button class="btn small ghost" id="export-catalog-html-btn" style="display:none;">Export HTML</button>
+          <button class="btn small ghost" id="export-catalog-wp-btn" style="display:none;">Export WP Blocks</button>
+        </span>
+      </div>
+      <div class="preview-box" id="preview-box"></div>
+      <div class="status" id="export-status"></div>
+    </div>
+  </div>
+
+  <footer>
+    Slaughter Cataloger — Beta 2.6 &nbsp;·&nbsp; Developed by Kevin I. Slaughter<br>
+    <a href="slaughter-cataloger-beta2.6.html">Documentation</a> &nbsp;·&nbsp;
+    <a href="slaughter-01titles-beta2.6.html">Titles</a> &nbsp;·&nbsp;
+    <a href="slaughter-02issues-beta2.6.html">Issues</a> &nbsp;·&nbsp;
+    <a href="slaughter-03contents-beta2.6.html">Contents</a>
+  </footer>
+
+<script>
+(function(){
+'use strict';
+
+  // ══════════════════════════════════════════════════════════════
+  // STATE
+  // ══════════════════════════════════════════════════════════════
+  var loadedTitles = [];
+  var selectedTitleID = '';
+  var selectedTitle = null;
+  var titleLibrarySlug = '';
+
+  var issues = [];       // loaded Issues for selected title
+  var contents = [];     // loaded Contents for selected title
+
+  var issuesReady = false;
+  var contentsReady = false;
+  var checklistReady = false;
+  var contentsLevelReady = false;
+  var risReady = false;
+
+  var outputType = 'checklist';
+
+  // Scope state
+  var scopeGroups = [];
+  var selectedGroupKeys = {};
+
+  // DOM refs
+  var titleSelector   = document.getElementById('title-selector');
+  var generateBtn     = document.getElementById('generate-btn');
+  var previewBox      = document.getElementById('preview-box');
+  var previewContainer = document.getElementById('preview-container');
+  var exportStatus    = document.getElementById('export-status');
+
+  // ══════════════════════════════════════════════════════════════
+  // CORE STATE UPDATE — called after every change
+  // ══════════════════════════════════════════════════════════════
+  function updateCompilerState(){
+    // 1. Compute issuesReady
+    issuesReady = (selectedTitleID !== '') && (issues.length > 0) &&
+      issues.every(function(i){ return i.titleID === selectedTitleID; });
+
+    // 2. Compute contentsReady
+    if(issuesReady && contents.length > 0){
+      var issIDSet = {};
+      issues.forEach(function(i){ issIDSet[i.issueID] = true; });
+      contentsReady =
+        contents.every(function(c){ return c.titleID === selectedTitleID; }) &&
+        contents.every(function(c){ return issIDSet[c.issueID]; });
+    } else {
+      contentsReady = false;
+    }
+
+    // 3. Derived readiness
+    checklistReady     = issuesReady;
+    contentsLevelReady = issuesReady && contentsReady;
+    risReady           = contentsLevelReady;
+
+    // 4. Update UI
+    updateStepLocking();
+    updateValidationDashboard();
+    updateOutputTypeAvailability();
+    updateExpectedFilename();
+    updateExportButtons();
+    updateFilterVisibility();
+    updateOutputFilename();
+
+    // Rebuild scope if issues changed
+    if(issuesReady) buildScopeGroups();
+    if(document.getElementById('scope-filter').checked) renderScopeCheckboxes();
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP LOCKING
+  // ══════════════════════════════════════════════════════════════
+  function setStepLocked(id, locked){
+    var el = document.getElementById(id);
+    if(el){ el.classList.toggle('step-locked', locked); }
+  }
+
+  function updateStepLocking(){
+    setStepLocked('step-2', loadedTitles.length === 0);
+    setStepLocked('step-3', !selectedTitleID);
+    // Step 4 always visible
+    setStepLocked('step-5', !issuesReady);
+    setStepLocked('step-6', !issuesReady);
+    setStepLocked('step-7', !issuesReady);
+    document.getElementById('btn-load-issues').disabled   = !selectedTitleID;
+    document.getElementById('btn-load-contents').disabled = !selectedTitleID;
+    titleSelector.disabled = loadedTitles.length === 0;
+    generateBtn.disabled = !isCurrentOutputReady();
+  }
+
+  function isCurrentOutputReady(){
+    if(outputType === 'checklist') return checklistReady;
+    if(outputType === 'ris' || outputType === 'proofing-catalog' || outputType === 'full-catalog' || outputType === 'full-catalog')
+      return contentsLevelReady;
+    return false;
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // VALIDATION DASHBOARD
+  // ══════════════════════════════════════════════════════════════
+  function vItem(icon, cls, msg){
+    return '<div class="vd-item"><span class="vd-icon ' + cls + '">' + icon + '</span> ' + msg + '</div>';
+  }
+
+  function updateValidationDashboard(){
+    var db = document.getElementById('validation-dashboard');
+    var rows = [];
+
+    // Titles
+    if(loadedTitles.length > 0){
+      rows.push(vItem('✓','vd-ok', 'Titles CSV loaded &nbsp;<span style="color:var(--ink-soft);font-size:11px;">(' + loadedTitles.length + ' title' + (loadedTitles.length===1?'':'s') + ' · ' + titleLibrarySlug + ')</span>'));
+    } else {
+      rows.push(vItem('○','vd-pending', 'Titles CSV not loaded'));
+    }
+
+    // Selected title
+    if(selectedTitleID && selectedTitle){
+      rows.push(vItem('✓','vd-ok', 'Selected title: <strong>' + esc(selectedTitle.canonicalTitle) + '</strong> &nbsp;<code style="font-size:10px;">' + esc(selectedTitleID) + '</code>'));
+    } else if(loadedTitles.length > 0){
+      rows.push(vItem('○','vd-pending', 'Select a title in Step 2'));
+    } else {
+      rows.push(vItem('○','vd-pending', 'No title selected'));
+    }
+
+    // Issues
+    if(issues.length > 0){
+      var issuesMismatch = issues.filter(function(i){ return i.titleID !== selectedTitleID; });
+      if(issuesMismatch.length > 0){
+        rows.push(vItem('✗','vd-error', issuesMismatch.length + ' Issues row(s) belong to a different TitleID — load the correct Issues CSV'));
+      } else {
+        rows.push(vItem('✓','vd-ok', 'Issues CSV loaded &nbsp;<span style="color:var(--ink-soft);font-size:11px;">(' + issues.length + ' issue' + (issues.length===1?'':'s') + ')</span>'));
+      }
+    } else {
+      rows.push(vItem('○','vd-pending', 'Issues CSV not loaded'));
+    }
+
+    // Contents
+    if(contents.length > 0){
+      var cMismatch = contents.filter(function(c){ return c.titleID !== selectedTitleID; });
+      var issIDSet = {}; issues.forEach(function(i){ issIDSet[i.issueID]=true; });
+      var cOrphans = contents.filter(function(c){ return c.issueID && !issIDSet[c.issueID]; });
+      if(cMismatch.length > 0){
+        rows.push(vItem('✗','vd-error', cMismatch.length + ' Contents row(s) have a mismatched TitleID'));
+      } else if(cOrphans.length > 0){
+        rows.push(vItem('✗','vd-error', cOrphans.length + ' Contents row(s) reference IssueIDs not in loaded Issues'));
+      } else {
+        rows.push(vItem('✓','vd-ok', 'Contents CSV loaded &nbsp;<span style="color:var(--ink-soft);font-size:11px;">(' + contents.length + ' item' + (contents.length===1?'':'s') + ')</span>'));
+      }
+    } else {
+      rows.push(vItem('○','vd-pending', 'Contents CSV not loaded &nbsp;<span style="color:var(--ink-soft);font-size:11px;">(required for RIS, Proofing, WordPress Catalog)</span>'));
+    }
+
+    // Readiness summary
+    if(contentsLevelReady){
+      rows.push(vItem('✓','vd-ok', '<strong>Ready</strong> for Checklist, RIS, Proofing Catalog, WordPress Catalog'));
+    } else if(checklistReady){
+      rows.push(vItem('✓','vd-ok', '<strong>Ready</strong> for Checklist'));
+      rows.push(vItem('○','vd-pending', 'Load Contents CSV for RIS and contents-level outputs'));
+    } else {
+      rows.push(vItem('○','vd-pending', 'Load Titles CSV, select a title, and load Issues CSV to continue'));
+    }
+
+    db.innerHTML = rows.join('');
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // OUTPUT TYPE AVAILABILITY
+  // ══════════════════════════════════════════════════════════════
+  function updateOutputTypeAvailability(){
+    document.querySelectorAll('.output-type-option').forEach(function(lbl){
+      var type = lbl.dataset.type;
+      if(lbl.classList.contains('disabled')) return;
+      var needsContents = ['ris','proofing-catalog','full-catalog'].indexOf(type) >= 0;
+      var available = needsContents ? contentsLevelReady : checklistReady;
+      lbl.style.opacity = available ? '1' : '0.55';
+      lbl.querySelector('input').disabled = !available;
+    });
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // EXPECTED FILENAMES (Step 3 hints)
+  // ══════════════════════════════════════════════════════════════
+  function updateExpectedFilename(){
+    var issEl = document.getElementById('issues-expected');
+    var conEl = document.getElementById('contents-expected');
+    if(!issEl || !conEl) return;
+    if(selectedTitle && selectedTitle.expectedIssuesFilename){
+      issEl.textContent = 'Expected: ' + selectedTitle.expectedIssuesFilename;
+    } else if(selectedTitleID && titleLibrarySlug){
+      issEl.textContent = 'Expected: SCAT_' + titleLibrarySlug + '_' + selectedTitleID + '_ISSUES.csv';
+    } else {
+      issEl.textContent = '';
+    }
+    if(selectedTitle && selectedTitle.expectedContentsFilename){
+      conEl.textContent = 'Expected: ' + selectedTitle.expectedContentsFilename;
+    } else if(selectedTitleID && titleLibrarySlug){
+      conEl.textContent = 'Expected: SCAT_' + titleLibrarySlug + '_' + selectedTitleID + '_CONTENTS.csv';
+    } else {
+      conEl.textContent = '';
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // OUTPUT FILENAME PREVIEW (Step 7)
+  // ══════════════════════════════════════════════════════════════
+  function getOutputFilename(ext){
+    var slug   = titleLibrarySlug || 'LIBRARY';
+    var scope  = selectedTitleID || '';
+    var s      = scope ? '_' + scope : '';
+    var date   = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    var typeMap = {
+      checklist:'CHECKLIST', ris:'RIS-ZOTERO',
+      'proofing-catalog':'PROOFING-CATALOG',
+      'full-catalog':'CATALOG'
+    };
+    var type = typeMap[outputType] || outputType.toUpperCase();
+    return 'SCATOUT_' + slug + s + '_' + type + '_' + date + '.' + ext;
+  }
+
+  function updateOutputFilename(){
+    var el = document.getElementById('output-filename');
+    if(!el) return;
+    if(!issuesReady){ el.style.display='none'; return; }
+    var wpFmtEl = document.getElementById('catalog-fmt-wp');
+    var extMap = {
+      checklist:'html', ris:'ris', 'proofing-catalog':'html',
+      'full-catalog': (wpFmtEl && wpFmtEl.checked) ? 'txt' : 'html'
+    };
+    var ext = extMap[outputType] || 'html';
+    el.textContent = 'Output file: ' + getOutputFilename(ext);
+    el.style.display = '';
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // EXPORT BUTTONS (context-sensitive)
+  // ══════════════════════════════════════════════════════════════
+  function updateExportButtons(){
+    var show = function(id, visible){ var el=document.getElementById(id); if(el) el.style.display = visible?'':'none'; };
+    var isChecklist = outputType === 'checklist';
+    var isRIS       = outputType === 'ris';
+    var isProof     = outputType === 'proofing-catalog';
+    var isCatalog = outputType === 'full-catalog';
+    show('export-html-btn',      isChecklist);
+    show('export-md-btn',        isChecklist);
+    show('export-txt-btn',       isChecklist);
+    show('export-ris-btn',       isRIS);
+    show('export-proofing-btn',  isProof);
+    show('export-catalog-html-btn', isCatalog);
+    show('export-catalog-wp-btn',   isCatalog);
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // FILTER / OPTIONS VISIBILITY
+  // ══════════════════════════════════════════════════════════════
+  function updateFilterVisibility(){
+    var isChecklist = outputType === 'checklist';
+    var isWP        = outputType === 'full-catalog';
+    var styleEl = document.getElementById('checklist-style-section');
+    var optEl   = document.getElementById('checklist-options-section');
+    if(styleEl) styleEl.style.display = isChecklist ? '' : 'none';
+    if(optEl)   optEl.style.display   = isChecklist ? '' : 'none';
+    var catOptEl = document.getElementById('catalog-options-section');
+    if(catOptEl) catOptEl.style.display = (outputType === 'full-catalog') ? '' : 'none';
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 1 — TITLES CSV LOAD
+  // ══════════════════════════════════════════════════════════════
+  document.getElementById('btn-load-titles').addEventListener('click', function(){
+    document.getElementById('f-load-titles').click();
+  });
+  document.getElementById('btn-clear-titles').addEventListener('click', function(){
+    if(!confirm('Clear the Titles CSV? This will reset title selection, Issues, and Contents.')) return;
+    loadedTitles = []; selectedTitleID = ''; selectedTitle = null; titleLibrarySlug = '';
+    issues = []; contents = [];
+    titleSelector.innerHTML = '<option value="">— Load a Titles CSV first —</option>';
+    titleSelector.disabled = true;
+    document.getElementById('titles-status').textContent = '';
+    document.getElementById('titles-status').className = 'file-status';
+    document.getElementById('title-manifest-info').style.display = 'none';
+    document.getElementById('btn-clear-titles').style.display = 'none';
+    var useBtn2 = document.getElementById('btn-use-title');
+    if(useBtn2){ useBtn2.disabled = true; }
+    var badge2 = document.getElementById('title-selected-badge');
+    if(badge2) badge2.style.display = 'none';
+    clearIssuesState(); clearContentsState();
+    updateCompilerState();
+  });
+
+  document.getElementById('f-load-titles').addEventListener('change', function(evt){
+    var file = evt.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var rows = parseCSV(e.target.result);
+        if(rows.length < 2){ setFileStatus('titles-status','CSV appears empty.','error'); return; }
+        var headers = rows[0];
+        function val(r, n){ var i=headers.indexOf(n); return i>=0&&r[i]?r[i].trim():''; }
+        var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+        if(toolIdx>=0 && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Titles'){
+          setFileStatus('titles-status','Not a compatible Slaughter Cataloger schema 2.0 Titles CSV.','error'); return;
+        }
+        loadedTitles = [];
+        rows.slice(1).forEach(function(r){
+          if(r.length===1&&r[0]==='') return;
+          loadedTitles.push({
+            titleID:val(r,'TitleID'), titleCode:val(r,'Title Code'),
+            canonicalTitle:val(r,'Canonical Title'), subtitle:val(r,'Subtitle'),
+            originalTitle:val(r,'Original / First Published Title'),
+            formerTitles:val(r,'Former Title(s)'), laterTitles:val(r,'Later Title(s)'),
+            relatedTitles:val(r,'Related Title(s)'),
+            publisher:val(r,'Publisher'), editors:val(r,'Editor(s)'),
+            city:val(r,'City'), state:val(r,'State')||val(r,'State / Province'),
+            country:val(r,'Country'), language:val(r,'Language'),
+            frequency:val(r,'Frequency'), issn:val(r,'ISSN'),
+            firstYear:val(r,'First Year of Publication (CE)'),
+            librarySlug:val(r,'Title Library Slug'), libraryName:val(r,'Title Library Name'),
+            catalogingStatus:val(r,'Cataloging Status'),
+            mission:val(r,'Mission Statement / Prospectus'),
+            pubHistory:val(r,'Publication History Note'),
+            editorial:val(r,'Introduction / Editorial Statement'),
+            biblioNote:val(r,'Bibliographic Note'), generalNotes:val(r,'General Notes'),
+            expectedIssuesFilename:val(r,'Expected Issues Filename'),
+            expectedContentsFilename:val(r,'Expected Contents Filename'),
+            specFields:val(r,'Speculative Fields'), naFields:val(r,'N/A Fields')
+          });
+        });
+        if(loadedTitles.length===0){ setFileStatus('titles-status','No title records found.','error'); return; }
+        titleLibrarySlug = loadedTitles[0].librarySlug || '';
+        var libName = loadedTitles[0].libraryName || titleLibrarySlug;
+        // Reset and populate title selector — reset first so browser treats any pick as a change
+        titleSelector.value = '';
+        titleSelector.innerHTML = '<option value="">— Select a title —</option>';
+        loadedTitles.forEach(function(t){
+          var opt = document.createElement('option');
+          opt.value = t.titleID;
+          opt.textContent = t.canonicalTitle + ' — ' + t.titleID;
+          titleSelector.appendChild(opt);
+        });
+        titleSelector.disabled = false;
+        // Enable the confirm button whenever the selector has a value
+        var useBtn = document.getElementById('btn-use-title');
+        if(useBtn) useBtn.disabled = !titleSelector.value;
+        setFileStatus('titles-status', loadedTitles.length + ' title(s) loaded · ' + libName + ' · slug: ' + titleLibrarySlug, 'loaded');
+        document.getElementById('btn-clear-titles').style.display = '';
+        // Auto-select if only one title
+        if(loadedTitles.length === 1){
+          titleSelector.value = loadedTitles[0].titleID;
+        }
+        // Always fire change event after options are populated —
+        // handles browser form-memory pre-selection (which does not
+        // fire a native change event) as well as single-title auto-select
+        if(titleSelector.value){
+          titleSelector.dispatchEvent(new Event('change'));
+        }
+      }catch(err){ setFileStatus('titles-status','Could not parse Titles CSV: ' + err.message, 'error'); }
+      updateCompilerState();
+      evt.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 2 — TITLE SELECTOR
+  // ══════════════════════════════════════════════════════════════
+  function applyTitleSelection(){
+    var chosenID = titleSelector.value;
+    if(!chosenID) return;
+    selectedTitleID = chosenID;
+    selectedTitle = null;
+    loadedTitles.forEach(function(t){ if(t.titleID === selectedTitleID) selectedTitle = t; });
+
+    var badge = document.getElementById('title-selected-badge');
+    if(badge) badge.style.display = selectedTitle ? '' : 'none';
+
+    var info = document.getElementById('title-manifest-info');
+    if(selectedTitle){
+      var slug = titleLibrarySlug || '';
+      var expIss = selectedTitle.expectedIssuesFilename || ('SCAT_'+slug+'_'+selectedTitleID+'_ISSUES.csv');
+      var expCon = selectedTitle.expectedContentsFilename || ('SCAT_'+slug+'_'+selectedTitleID+'_CONTENTS.csv');
+      info.innerHTML =
+        '<div class="manifest-row"><span class="ml">Title</span><strong>' + esc(selectedTitle.canonicalTitle) + '</strong></div>' +
+        '<div class="manifest-row"><span class="ml">TitleID</span><code>' + esc(selectedTitleID) + '</code></div>' +
+        '<div class="manifest-row"><span class="ml">Issues file</span><code>' + esc(expIss) + '</code></div>' +
+        '<div class="manifest-row"><span class="ml">Contents file</span><code>' + esc(expCon) + '</code></div>';
+      info.style.display = '';
+    } else {
+      info.style.display = 'none';
+    }
+
+    // Immediately unlock Step 3 and enable source file buttons
+    var step3el = document.getElementById('step-3');
+    if(step3el) step3el.classList.remove('step-locked');
+    var biBtn = document.getElementById('btn-load-issues');
+    var bcBtn = document.getElementById('btn-load-contents');
+    if(biBtn) biBtn.disabled = false;
+    if(bcBtn) bcBtn.disabled = false;
+    // Update expected filename hints right away
+    updateExpectedFilename();
+
+    // Clear any previously loaded Issues/Contents
+    clearIssuesState();
+    clearContentsState();
+    if(previewContainer) previewContainer.style.display = 'none';
+
+    // Full state refresh (wrapped so a crash here can't leave UI broken)
+    try{ updateCompilerState(); }catch(e){ console.error('updateCompilerState error:', e); }
+  }
+
+  // Enable the Use this title button when selector has a value
+  titleSelector.addEventListener('change', function(){
+    var useBtn = document.getElementById('btn-use-title');
+    if(useBtn) useBtn.disabled = !titleSelector.value;
+  });
+  titleSelector.addEventListener('input', function(){
+    var useBtn = document.getElementById('btn-use-title');
+    if(useBtn) useBtn.disabled = !titleSelector.value;
+  });
+
+  // Primary action: explicit button click applies the selection
+  document.getElementById('btn-use-title').addEventListener('click', applyTitleSelection);
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 3 — ISSUES CSV
+  // ══════════════════════════════════════════════════════════════
+  document.getElementById('btn-load-issues').addEventListener('click', function(){
+    document.getElementById('f-load-issues').click();
+  });
+  document.getElementById('btn-clear-issues').addEventListener('click', function(){
+    clearIssuesState(); clearContentsState(); updateCompilerState();
+  });
+
+  function clearIssuesState(){
+    issues = [];
+    setFileStatus('issues-status','','');
+    document.getElementById('btn-clear-issues').style.display = 'none';
+    invalidatePreview();
+  }
+  function clearContentsState(){
+    contents = [];
+    setFileStatus('contents-status','','');
+    document.getElementById('btn-clear-contents').style.display = 'none';
+    invalidatePreview();
+  }
+
+  document.getElementById('f-load-issues').addEventListener('change', function(evt){
+    var file = evt.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var rows = parseCSV(e.target.result);
+        if(rows.length<2){ setFileStatus('issues-status','CSV appears empty.','error'); return; }
+        var headers = rows[0];
+        function val(r,n){ var i=headers.indexOf(n); return i>=0&&r[i]?r[i].trim():''; }
+        var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+        if(toolIdx>=0 && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Issues'){
+          setFileStatus('issues-status','Not a compatible Slaughter Cataloger schema 2.0 Issues CSV.','error'); return;
+        }
+        // Check slug match
+        var issSlug = rows[1] ? val(rows[1],'Title Library Slug') : '';
+        if(titleLibrarySlug && issSlug && issSlug !== titleLibrarySlug){
+          setFileStatus('issues-status','Title Library Slug mismatch: expected "' + titleLibrarySlug + '" but file has "' + issSlug + '".','error'); return;
+        }
+        var loaded = [];
+        rows.slice(1).forEach(function(r){
+          if(r.length===1&&r[0]==='') return;
+          loaded.push({
+            librarySlug:val(r,'Title Library Slug'), issueID:val(r,'IssueID'),
+            titleID:val(r,'TitleID'), titleCode:val(r,'Title Code'),
+            firstYear:val(r,'First Year of Publication (CE)'),
+            shortname:val(r,'Short Name'), title:val(r,'Title'),
+            subtitle:val(r,'Subtitle'), publisher:val(r,'Publisher'),
+            editors:val(r,'Editor(s)'), printer:val(r,'Printer'),
+            printerLocation:val(r,'Printer Location'), contributors:val(r,'Contributors'),
+            volume:val(r,'Volume'), issue:val(r,'Issue'),
+            number:val(r,'Whole No.')||val(r,'Number'),
+            year:val(r,'Year'), months:val(r,'Month(s)'), day:val(r,'Day'),
+            datePrinted:val(r,'Date as Printed'), issueDesignation:val(r,'Issue Designation'),
+            specialIssue:/^y/i.test(val(r,'Special Issue')),
+            supplement:/^y/i.test(val(r,'Supplement')),
+            supplementLabel:val(r,'Supplement Label'), edition:val(r,'Edition'),
+            pages:val(r,'Pages'), size:val(r,'Size'), sizeUnit:val(r,'Size Unit'),
+            price:val(r,'Price'), city:val(r,'City'), state:val(r,'State')||val(r,'State / Province'),
+            country:val(r,'Country'), language:val(r,'Language'),
+            frequency:val(r,'Frequency'), series:val(r,'Series'),
+            notes:val(r,'Notes on Issue'), speculative:/^y/i.test(val(r,'Speculative')),
+            naFields:val(r,'N/A Fields'), contributors:val(r,'Contributors'),
+            specFields:val(r,'Speculative Fields'),
+            evidenceBasis:val(r,'Evidence Basis'), evidenceNote:val(r,'Evidence Note'),
+            endYear:val(r,'End Year'), yearCalendar:val(r,'Year Calendar'),
+            calendarNote:val(r,'Calendar Note'), dateType:val(r,'Date Type'),
+            seriesNumber:val(r,'Series Number'),
+            entryOrder:parseInt(val(r,'Entry Order'),10)||9999
+          });
+        });
+        loaded.sort(function(a,b){ return a.entryOrder-b.entryOrder; });
+        // Validate before accepting
+        var titleIDs = {};
+        loaded.forEach(function(i){ if(i.titleID) titleIDs[i.titleID]=true; });
+        var tids = Object.keys(titleIDs);
+        if(tids.length > 1){
+          setFileStatus('issues-status','Rejected: this Issues CSV contains records for ' + tids.length + ' TitleIDs. Load a single-title Issues CSV.','error');
+          // do not set issues = loaded
+        } else if(selectedTitleID && tids.length===1 && tids[0] !== selectedTitleID){
+          setFileStatus('issues-status','Rejected: TitleID mismatch — file is for ' + tids[0] + ' but selected title is ' + selectedTitleID + '.','error');
+          // do not set issues = loaded
+        } else {
+          issues = loaded;
+          setFileStatus('issues-status', issues.length + ' issue(s) loaded.','loaded');
+          document.getElementById('btn-clear-issues').style.display = '';
+        }
+      }catch(err){ setFileStatus('issues-status','Could not parse Issues CSV: ' + err.message,'error'); }
+      updateCompilerState();
+      evt.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 3 — CONTENTS CSV
+  // ══════════════════════════════════════════════════════════════
+  document.getElementById('btn-load-contents').addEventListener('click', function(){
+    document.getElementById('f-load-contents').click();
+  });
+  document.getElementById('btn-clear-contents').addEventListener('click', function(){
+    clearContentsState(); updateCompilerState();
+  });
+
+  document.getElementById('f-load-contents').addEventListener('change', function(evt){
+    var file = evt.target.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var rows = parseCSV(e.target.result);
+        if(rows.length<2){ setFileStatus('contents-status','CSV appears empty.','error'); return; }
+        var headers = rows[0];
+        function val(r,n){ var i=headers.indexOf(n); return i>=0&&r[i]?r[i].trim():''; }
+        var toolIdx = headers.indexOf('Slaughter Cataloger Tool');
+        if(toolIdx>=0 && rows[1][toolIdx] && rows[1][toolIdx].trim() !== 'Contents'){
+          setFileStatus('contents-status','Not a compatible Slaughter Cataloger schema 2.0 Contents CSV.','error'); return;
+        }
+        var conSlug = rows[1] ? val(rows[1],'Title Library Slug') : '';
+        if(titleLibrarySlug && conSlug && conSlug !== titleLibrarySlug){
+          setFileStatus('contents-status','Title Library Slug mismatch.','error'); return;
+        }
+        var loaded = [];
+        rows.slice(1).forEach(function(r){
+          if(r.length===1&&r[0]==='') return;
+          loaded.push({
+            issueID:val(r,'IssueID'), titleID:val(r,'TitleID'),
+            issueRef:val(r,'Issue Reference'), librarySlug:val(r,'Title Library Slug'),
+            sequence:val(r,'Sequence'), itemTitle:val(r,'Item Title'),
+            author:val(r,'Author / Credit'), contentType:val(r,'Content Type'),
+            parentItem:val(r,'Parent Item'), startPage:val(r,'Start Page'),
+            endPage:val(r,'End Page'), notes:val(r,'Notes'),
+            speculative:val(r,'Speculative')==='Yes', specFields:val(r,'Speculative Fields'),
+            naFields:val(r,'N/A Fields')
+          });
+        });
+        // Validate before accepting
+        var cTitleIDs = {};
+        loaded.forEach(function(c){ if(c.titleID) cTitleIDs[c.titleID]=true; });
+        var ctids = Object.keys(cTitleIDs);
+        var issIDSet = {};
+        issues.forEach(function(i){ issIDSet[i.issueID] = true; });
+        var orphans = loaded.filter(function(c){ return c.issueID && !issIDSet[c.issueID]; });
+        if(selectedTitleID && ctids.length > 0 && ctids.some(function(t){ return t !== selectedTitleID; })){
+          setFileStatus('contents-status','Rejected: Contents CSV contains records for a different TitleID.','error');
+        } else if(orphans.length > 0 && issues.length > 0){
+          setFileStatus('contents-status','Rejected: ' + orphans.length + ' Contents row(s) reference IssueIDs not found in the loaded Issues CSV.','error');
+        } else {
+          contents = loaded;
+          setFileStatus('contents-status', contents.length + ' item(s) loaded.','loaded');
+          document.getElementById('btn-clear-contents').style.display = '';
+        }
+      }catch(err){ setFileStatus('contents-status','Could not parse Contents CSV: ' + err.message,'error'); }
+      updateCompilerState();
+      evt.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 5 — OUTPUT TYPE SELECTION
+  // ══════════════════════════════════════════════════════════════
+  document.querySelectorAll('.output-type-option input[type=radio]').forEach(function(radio){
+    radio.addEventListener('change', function(){
+      if(this.disabled) return;
+      outputType = this.value;
+      document.querySelectorAll('.output-type-option').forEach(function(lbl){
+        lbl.classList.toggle('selected', lbl.dataset.type === outputType);
+      });
+      generateBtn.disabled = !isCurrentOutputReady();
+      updateExportButtons();
+      updateFilterVisibility();
+      updateOutputFilename();
+      previewContainer.style.display = 'none';
+    });
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 6 — SCOPE
+  // ══════════════════════════════════════════════════════════════
+  function getScopeMode(){ return document.getElementById('scope-all').checked ? 'all' : 'filter'; }
+  function getFilteredIssues(){
+    if(getScopeMode()==='all') return issues;
+    var allowed={};
+    scopeGroups.forEach(function(g){ if(selectedGroupKeys[g.key]) g.issueIDs.forEach(function(id){ allowed[id]=true; }); });
+    return issues.filter(function(i){ return allowed[i.issueID]; });
+  }
+  function getFilteredContents(fi){
+    var ids={};fi.forEach(function(i){ids[i.issueID]=true;});
+    return contents.filter(function(c){return ids[c.issueID];});
+  }
+
+  document.getElementById('scope-all').addEventListener('change', function(){
+    document.getElementById('scope-group-list').style.display='none';
+    updateScopeCount();
+    invalidatePreview();
+  });
+  document.getElementById('scope-filter').addEventListener('change', function(){
+    document.getElementById('scope-group-list').style.display='';
+    renderScopeCheckboxes();
+    invalidatePreview();
+  });
+  document.getElementById('scope-select-all').addEventListener('click', function(){
+    scopeGroups.forEach(function(g){selectedGroupKeys[g.key]=true;});
+    renderScopeCheckboxes();
+    invalidatePreview();
+  });
+  document.getElementById('scope-select-none').addEventListener('click', function(){
+    scopeGroups.forEach(function(g){selectedGroupKeys[g.key]=false;});
+    renderScopeCheckboxes();
+    invalidatePreview();
+  });
+
+  // Auto-regenerate checklist options
+  document.querySelectorAll('#step-6 input[type=checkbox], #f-style, input[name="catalog-format"]').forEach(function(el){
+    el.addEventListener('change', function(){
+      updateOutputFilename();
+      invalidatePreview();
+    });
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // STEP 7 — GENERATE
+  // ══════════════════════════════════════════════════════════════
+  generateBtn.addEventListener('click', function(){
+    if(!isCurrentOutputReady()) return;
+    var fi = getFilteredIssues();
+    var fc = getFilteredContents(fi);
+    // Temporarily override globals for builders
+    var _iss = issues, _con = contents;
+    issues = fi; contents = fc;
+    try{
+      var html, text, isHtml = false;
+      if(outputType === 'checklist'){
+        html = buildChecklistFragment();
+        previewBox.innerHTML = html;
+        previewBox.className = 'preview-box rendered';
+      } else if(outputType === 'ris'){
+        text = buildRIS();
+        previewBox.textContent = text;
+        previewBox.className = 'preview-box';
+      } else if(outputType === 'proofing-catalog'){
+        html = buildProofingCatalog();
+        // Proofing catalog is print-optimised — show a summary rather than render inline
+        var proofIssueCount = fi.length;
+        var proofItemCount  = fc.length;
+        var proofTitle2 = selectedTitle ? esc(selectedTitle.canonicalTitle) + ' (' + esc(selectedTitle.titleID) + ')' : '';
+        previewBox.innerHTML =
+          '<div style="font-size:12px;line-height:1.9;">' +
+          '<strong>Proofing Catalog ready</strong><br>' +
+          (proofTitle2 ? proofTitle2 + '<br>' : '') +
+          proofIssueCount + ' issue' + (proofIssueCount===1?'':'s') + ' &nbsp;·&nbsp; ' +
+          proofItemCount + ' contents item' + (proofItemCount===1?'':'s') + '<br>' +
+          '<span style="color:var(--ink-soft);font-size:11px;">Use <strong>Export Proofing Catalog</strong> to download the full print-ready document.</span>' +
+          '</div>';
+        previewBox.className = 'preview-box';
+        previewBox._proofingCatalog = html; // store for copy
+      } else if(outputType === 'full-catalog'){
+        var wpFmtEl2 = document.getElementById('catalog-fmt-wp');
+        var catalogFmt = (wpFmtEl2 && wpFmtEl2.checked) ? 'wordpress' : 'html';
+        var catalogOut = buildFullCatalog(catalogFmt);
+        if(catalogFmt === 'wordpress'){
+          previewBox.textContent = catalogOut;
+          previewBox.className = 'preview-box';
+        } else {
+          previewBox.innerHTML = catalogOut;
+          previewBox.className = 'preview-box rendered';
+        }
+      }
+      previewContainer.style.display = '';
+    }catch(err){
+      alert('Error generating output: ' + err.message + '\n' + (err.stack||''));
+    }
+    issues = _iss; contents = _con;
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // EXPORT HANDLERS
+  // ══════════════════════════════════════════════════════════════
+  function downloadFile(content, filename, mime){
+    if(!content){ alert('Nothing to download — generate output first.'); return; }
+    var type = mime || 'text/plain';
+    var exportEl = document.getElementById('export-status');
+    function statusMsg(msg){ if(exportEl) exportEl.textContent = msg; }
+    function clearStatus(){ setTimeout(function(){ statusMsg(''); }, 5000); }
+
+    // Try Blob URL first (works in Chrome/Edge/Firefox over http; may fail on file://)
+    try{
+      var blob = new Blob([content], {type: type});
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href = url; a.download = filename; a.style.display = 'none';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+      statusMsg('Downloaded: ' + filename); clearStatus();
+      return;
+    }catch(e1){
+      // Fall through to data URI
+    }
+
+    // Fallback: data URI (works on file:// but limited to ~2MB)
+    try{
+      var dataUri = 'data:' + type + ';charset=utf-8,' + encodeURIComponent(content);
+      var a2 = document.createElement('a');
+      a2.href = dataUri; a2.download = filename; a2.style.display = 'none';
+      document.body.appendChild(a2); a2.click(); document.body.removeChild(a2);
+      statusMsg('Downloaded: ' + filename); clearStatus();
+    }catch(e2){
+      // Both failed — offer manual copy
+      statusMsg('Download blocked by browser. Copy the output manually from the preview.');
+      alert('Download failed (' + e2.message + ').\n\nTry:\n1. Serve the app via a local web server (python3 -m http.server)\n2. Or use the Copy button and paste into a text editor.');
+    }
+  }
+
+  function doExport(content, filename, mime){
+    downloadFile(content, filename, mime);
+    exportStatus.textContent = 'Exported: ' + filename;
+    setTimeout(function(){ exportStatus.textContent=''; }, 4000);
+  }
+
+  document.getElementById('copy-btn').addEventListener('click', function(){
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    var text = '';
+    if(outputType === 'checklist')        text = buildPlainText();
+    else if(outputType === 'ris')         text = previewBox.textContent;
+    else if(outputType === 'full-catalog'){
+      var wpFmtElCopy = document.getElementById('catalog-fmt-wp');
+      var isCopyWP = wpFmtElCopy && wpFmtElCopy.checked;
+      text = buildFullCatalog(isCopyWP ? 'wordpress' : 'html');
+    }
+    else text = previewBox.textContent;
+    issues=_i; contents=_c;
+    if(!text){ exportStatus.textContent='Generate output first.'; return; }
+    navigator.clipboard.writeText(text).then(
+      function(){ exportStatus.textContent='Copied.'; },
+      function(){ exportStatus.textContent='Copy failed — select and copy manually.'; }
+    );
+    setTimeout(function(){ exportStatus.textContent=''; },3000);
+  });
+
+  document.getElementById('export-html-btn').addEventListener('click', function(){
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    var fn = getOutputFilename('html');
+    doExport(buildHTML(), fn, 'text/html');
+    issues=_i; contents=_c;
+  });
+  document.getElementById('export-md-btn').addEventListener('click', function(){
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    var fn = getOutputFilename('md').replace('html','md').replace('CHECKLIST_','CHECKLIST_');
+    fn = getOutputFilename('md');
+    doExport(buildMarkdown(), fn, 'text/markdown');
+    issues=_i; contents=_c;
+  });
+  document.getElementById('export-txt-btn').addEventListener('click', function(){
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    doExport(buildPlainText(), getOutputFilename('txt'), 'text/plain');
+    issues=_i; contents=_c;
+  });
+  document.getElementById('export-ris-btn').addEventListener('click', function(){
+    if(!risReady){ alert('RIS export requires validated Titles, Issues, and Contents CSVs.'); return; }
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    doExport(buildRIS(), getOutputFilename('ris'), 'application/x-research-info-systems');
+    issues=_i; contents=_c;
+  });
+  document.getElementById('export-proofing-btn').addEventListener('click', function(){
+    if(!contentsLevelReady){ alert('Proofing Catalog requires Titles + Issues + Contents.'); return; }
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    try{ doExport(buildProofingCatalog(), getOutputFilename('html'), 'text/html'); }
+    catch(err){ alert('Export error: ' + err.message); }
+    issues=_i; contents=_c;
+  });
+  document.getElementById('export-catalog-html-btn').addEventListener('click', function(){
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    try{ doExport(buildFullCatalog('html'), getOutputFilename('html'), 'text/html'); }
+    catch(err){ alert('Export error: ' + err.message); }
+    issues=_i; contents=_c;
+  });
+  document.getElementById('export-catalog-wp-btn').addEventListener('click', function(){
+    var fi=getFilteredIssues(), _i=issues, _c=contents;
+    issues=fi; contents=getFilteredContents(fi);
+    try{
+      var slug = titleLibrarySlug || 'LIBRARY';
+      var scope = getSingleTitleScope(); var scopeStr = scope ? '_'+scope : '';
+      var date = new Date().toISOString().slice(0,10).replace(/-/g,'');
+      doExport(buildFullCatalog('wordpress'), 'SCATOUT_'+slug+scopeStr+'_CATALOG-WPBLOCKS_'+date+'.txt', 'text/plain');
+    }catch(err){ alert('Export error: ' + err.message); }
+    issues=_i; contents=_c;
+  });
+
+
+  // ══════════════════════════════════════════════════════════════
+  // HELPERS
+  // ══════════════════════════════════════════════════════════════
+  function esc(value){
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function isNestedContentItem(item){
+    var parent = String(item && item.parentItem != null ? item.parentItem : '').trim().toLowerCase();
+    return parent !== '' && parent !== 'n/a';
+  }
+  function hideNestedItemsEnabled(){
+    var checkbox = document.getElementById('opt-hide-nested');
+    return !!(checkbox && checkbox.checked);
+  }
+
+  function setFileStatus(id, msg, type){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.textContent = msg;
+    el.className = 'file-status' + (type ? ' ' + type : '');
+  }
+  function getActiveTitles(issArr){
+    var tidSet={};
+    issArr.forEach(function(i){ if(i.titleID) tidSet[i.titleID]=true; });
+    if(loadedTitles && loadedTitles.length>0){
+      var active = loadedTitles.filter(function(t){ return t.titleID && tidSet[t.titleID]; });
+      if(active.length>0) return active;
+    }
+    var syn={};
+    issArr.forEach(function(i){
+      if(i.titleID && !syn[i.titleID]) syn[i.titleID]={
+        titleID:i.titleID, canonicalTitle:i.title||'', subtitle:i.subtitle||'',
+        publisher:i.publisher||'', editors:i.editors||'', city:i.city||'',
+        state:i.state||'', country:i.country||'', language:i.language||'',
+        frequency:i.frequency||'', issn:i.issn||'', specFields:'', naFields:''
+      };
+    });
+    return Object.keys(syn).map(function(k){return syn[k];});
+  }
+
+  function opt(id){ return document.getElementById(id) && document.getElementById(id).checked; }
+
+  // ══════════════════════════════════════════════════════════════
+  // INITIAL STATE
+  // ══════════════════════════════════════════════════════════════
+  updateCompilerState();
+
+
+
+
+  function parseCSV(text){
+    // Strip UTF-8 BOM if present
+    if(text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+    var rows = []; var row = []; var field = ''; var inQ = false;
+    for(var i = 0; i < text.length; i++){
+      var c = text[i];
+      if(inQ){
+        if(c === '"' && text[i+1] === '"'){ field += '"'; i++; }
+        else if(c === '"') inQ = false;
+        else field += c;
+      } else {
+        if(c === '"') inQ = true;
+        else if(c === ','){ row.push(field); field = ''; }
+        else if(c === '\n' || c === '\r'){
+          if(c === '\r' && text[i+1] === '\n') i++;
+          row.push(field); field = ''; rows.push(row); row = [];
+        } else field += c;
+      }
+    }
+    row.push(field); if(row.length > 1 || row[0]) rows.push(row);
+    return rows;
+  }
+
+
+
+
+  function numberStr(iss){
+    var parts = [];
+    if(iss.volume) parts.push('Vol. ' + iss.volume);
+    if(iss.issue) parts.push('No. ' + iss.issue);
+    if(iss.number && !iss.issue) parts.push('No. ' + iss.number);
+    else if(iss.number && iss.issue) parts.push('(Whole No. ' + iss.number + ')');
+    if(parts.length === 0 && iss.shortname) return iss.shortname;
+    return parts.join(', ');
+  }
+
+  function dateStr(iss){
+    if(iss.datePrinted) return iss.datePrinted;
+    var parts = [];
+    if(iss.months) parts.push(iss.months);
+    if(iss.day) parts.push(iss.day + ',');
+    if(iss.year) parts.push(iss.year);
+    if(iss.endYear) parts.push('–' + iss.endYear);
+    return parts.join(' ') || '';
+  }
+
+
+  function buildLine(iss, style){
+    var line = '';
+    var num = numberStr(iss);
+    var date = dateStr(iss);
+
+    if(style === 'plain'){
+      line = num;
+      if(date) line += ' — ' + date;
+    }
+
+    if(style === 'biblio'){
+      line = num;
+      if(date) line += ', ' + date + '.';
+      if(opt('opt-pages') && iss.pages) line += ' ' + iss.pages + ' pages.';
+      if(opt('opt-size') && iss.size) line += ' ' + iss.size + (iss.sizeUnit ? ' ' + iss.sizeUnit : '') + '.';
+      if(opt('opt-price') && iss.price) line += ' ' + iss.price + '.';
+      if(opt('opt-publisher') && iss.publisher) line += ' ' + iss.publisher + (iss.city ? ', ' + iss.city : '') + '.';
+      if(opt('opt-printer') && iss.printer) line += ' Printed by ' + iss.printer + (iss.printerLocation ? ', ' + iss.printerLocation : '') + '.';
+    }
+
+    if(style === 'technical'){
+      if(iss.issueID) line = iss.issueID + ' — ';
+      line += num;
+      if(date) line += ' — ' + date;
+    }
+
+    // Append optional fields (all styles)
+    if(style !== 'biblio'){
+      if(opt('opt-pages') && iss.pages) line += ' [' + iss.pages + 'pp]';
+      if(opt('opt-price') && iss.price) line += ' [' + iss.price + ']';
+    }
+    if(opt('opt-issueid') && style !== 'technical' && iss.issueID) line += ' {' + iss.issueID + '}';
+    if(opt('opt-subtitle') && iss.subtitle) line += ' — "' + iss.subtitle + '"';
+    if(opt('opt-designation') && iss.issueDesignation) line += ' [' + iss.issueDesignation + ']';
+    if(opt('opt-designation') && iss.supplement && iss.supplementLabel) line += ' [Supplement: ' + iss.supplementLabel + ']';
+    if(opt('opt-evidence') && iss.evidenceBasis === 'Reported') line += ' [Reported' + (iss.evidenceNote ? ': ' + iss.evidenceNote : '') + ']';
+
+    return line;
+  }
+
+  function buildChecklistFragment(){
+    var style  = document.getElementById('f-style').value;
+    var fi = getFilteredIssues();
+    return fi.map(function(iss){ return buildLine(iss, style); }).join('\n');
+  }
+
+  function buildHTML(){
+    var fragment = buildChecklistFragment();
+    return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>Checklist</title>\n' +
+      '<style>body{font-family:"Courier New",Courier,monospace;font-size:13px;line-height:1.7;max-width:820px;margin:36px auto;padding:0 20px;color:#111;}' +
+      '.cl-check{margin-right:6px;font-size:14px;}.cl-detail{color:#666;}.cl-id{font-size:10px;color:#999;}\n</style>\n</head>\n<body>\n' +
+      fragment + scAttribution('html') + '\n</body>\n</html>';
+  }
+
+  function buildMarkdown(){
+    var style = document.getElementById('f-style').value;
+    var showCheck = opt('opt-checkboxes');
+    var showSpec = opt('opt-speculative');
+    var showNotes = opt('opt-notes');
+    var groupByTitle = false /* group-by-title removed: single-title workflow */;
+
+    var groups = {};
+    var groupOrder = [];
+    issues.forEach(function(iss){
+      var key = groupByTitle ? (iss.title || 'Untitled') : '__all__';
+      if(!groups[key]){ groups[key] = []; groupOrder.push(key); }
+      groups[key].push(iss);
+    });
+
+    var lines = [];
+    groupOrder.forEach(function(groupKey){
+      if(groupByTitle && groupKey !== '__all__'){
+        if(lines.length > 0) lines.push('');
+        lines.push('### ' + groupKey);
+        lines.push('');
+      }
+      groups[groupKey].forEach(function(iss){
+        var line = '';
+        if(showCheck) line += '- [ ] ';
+        else line += '- ';
+        line += buildLine(iss, style);
+        if(showSpec && iss.speculative) line += ' *[speculative' + (iss.specFields ? ': ' + iss.specFields : '') + ']*';
+        lines.push(line);
+        if(showNotes && iss.notes) lines.push('  > ' + iss.notes);
+      });
+    });
+    return lines.join('\n') + scAttribution('md');
+  }
+
+  function buildPlainText(){
+    var style = document.getElementById('f-style').value;
+    var showCheck = opt('opt-checkboxes');
+    var showSpec = opt('opt-speculative');
+    var showNotes = opt('opt-notes');
+    var groupByTitle = false /* group-by-title removed: single-title workflow */;
+
+    var groups = {};
+    var groupOrder = [];
+    issues.forEach(function(iss){
+      var key = groupByTitle ? (iss.title || 'Untitled') : '__all__';
+      if(!groups[key]){ groups[key] = []; groupOrder.push(key); }
+      groups[key].push(iss);
+    });
+
+    var lines = [];
+    groupOrder.forEach(function(groupKey){
+      if(groupByTitle && groupKey !== '__all__'){
+        if(lines.length > 0) lines.push('');
+        lines.push(groupKey);
+        lines.push('='.repeat(groupKey.length));
+      }
+      groups[groupKey].forEach(function(iss){
+        var line = '';
+        if(showCheck) line += '☐ ';
+        line += buildLine(iss, style);
+        if(showSpec && iss.speculative) line += ' [speculative' + (iss.specFields ? ': ' + iss.specFields : '') + ']';
+        lines.push(line);
+        if(showNotes && iss.notes) lines.push('   ' + iss.notes);
+      });
+    });
+    return lines.join('\n') + scAttribution('txt');
+  }
+
+  function buildRIS(){
+    if(!risReady){ alert('RIS export requires validated Titles, Issues, and Contents CSVs from the same Title Library.'); return ''; }
+    var issueMap = {};
+    issues.forEach(function(iss){ issueMap[iss.issueID] = iss; });
+    var titleMap = {};
+    if(loadedTitles){
+      loadedTitles.forEach(function(t){ titleMap[t.titleID] = t; });
+    }
+
+    var records = [];
+    contents.forEach(function(c){
+      var iss = issueMap[c.issueID] || {};
+      var title = titleMap[c.titleID || iss.titleID] || {};
+      var lines = [];
+      lines.push('TY  - JOUR');
+      if(c.itemTitle) lines.push('TI  - ' + risClean(c.itemTitle));
+      if(c.author){
+        c.author.split(';').forEach(function(a){
+          a = a.trim();
+          if(a) lines.push('AU  - ' + risClean(a));
+        });
+      }
+      lines.push('T2  - ' + risClean(title.canonicalTitle || iss.title || ''));
+      if(iss.year) lines.push('PY  - ' + risClean(iss.year));
+      if(iss.datePrinted) lines.push('DA  - ' + risClean(iss.datePrinted));
+      if(iss.volume) lines.push('VL  - ' + risClean(iss.volume));
+      if(iss.issue) lines.push('IS  - ' + risClean(iss.issue));
+      if(c.startPage) lines.push('SP  - ' + risClean(c.startPage));
+      if(c.endPage) lines.push('EP  - ' + risClean(c.endPage));
+      if(iss.issn || title.issn) lines.push('SN  - ' + risClean(iss.issn || title.issn || ''));
+      if(iss.language || title.language) lines.push('LA  - ' + risClean(iss.language || title.language || ''));
+      // Preserve Slaughter Cataloger identifiers
+      if(titleLibrarySlug) lines.push('KW  - ' + titleLibrarySlug);
+      if(c.titleID || iss.titleID) lines.push('KW  - ' + (c.titleID || iss.titleID));
+      if(c.issueID) lines.push('KW  - ' + c.issueID);
+      if(c.contentType) lines.push('KW  - ' + risClean(c.contentType));
+      // Notes
+      if(c.titleID || iss.titleID) lines.push('N1  - Slaughter Cataloger TitleID: ' + (c.titleID || iss.titleID));
+      if(c.issueID) lines.push('N1  - Slaughter Cataloger IssueID: ' + c.issueID);
+      if(c.contentType) lines.push('N1  - Content Type: ' + risClean(c.contentType));
+      if(c.speculative && c.specFields) lines.push('N1  - Speculative fields: ' + risClean(c.specFields));
+      if(c.notes) lines.push('N1  - ' + risClean(c.notes));
+      lines.push('ER  - ');
+      records.push(lines.join('\n'));
+    });
+    return records.join('\n\n') + scAttribution('ris');
+  }
+
+
+  function risClean(s){
+    s = String(s || '');
+    s = s.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+    // Prevent accidental ER  - inside user text
+    s = s.replace(/^ER  -/g, 'ER -');
+    return s;
+  }
+
+  // ---------- Build plain text ----------
+
+
+  function groupIssues(issArr){
+    var THRESHOLD = 10;
+    if(issArr.length <= THRESHOLD) return [{label:null, issues:issArr}];
+
+    // Try volume grouping first
+    var hasVolumes = issArr.some(function(i){ return i.volume && i.volume.trim(); });
+    if(hasVolumes){
+      var vGroups = {}, vOrder = [];
+      issArr.forEach(function(iss){
+        var v = iss.volume ? iss.volume.trim() : '—';
+        if(!vGroups[v]){ vGroups[v]=[]; vOrder.push(v); }
+        vGroups[v].push(iss);
+      });
+      return vOrder.map(function(v){
+        var grp = vGroups[v];
+        var yrs = grp.map(function(i){ return parseInt(i.year,10); }).filter(function(y){ return !isNaN(y); }).sort(function(a,b){return a-b;});
+        var yStr = yrs.length > 1 ? yrs[0]+'–'+yrs[yrs.length-1] : (yrs[0]||'');
+        var label = v==='—' ? (yStr||'Issues') : 'Volume '+v+(yStr ? ' ('+yStr+')' : '');
+        return {label:label, issues:grp};
+      });
+    }
+
+    // Fall back to year grouping
+    var yGroups = {}, yOrder = [];
+    issArr.forEach(function(iss){
+      var yr = (iss.year && iss.year.trim()) ? iss.year.trim() : '—';
+      if(!yGroups[yr]){ yGroups[yr]=[]; yOrder.push(yr); }
+      yGroups[yr].push(iss);
+    });
+    return yOrder.map(function(yr){
+      return {label: yr==='—' ? 'Undated' : yr, issues: yGroups[yr]};
+    });
+  }
+
+
+  function getSingleTitleScope(){
+    var ids = {};
+    if(contents && contents.length > 0){
+      contents.forEach(function(c){
+        var tid = c.titleID;
+        if(!tid){
+          var iss = issues.filter(function(i){ return i.issueID === c.issueID; })[0];
+          if(iss) tid = iss.titleID;
+        }
+        if(tid) ids[tid] = true;
+      });
+    } else {
+      issues.forEach(function(i){ if(i.titleID) ids[i.titleID] = true; });
+    }
+    var keys = Object.keys(ids);
+    return keys.length === 1 ? keys[0] : '';
+  }
+
+
+  function buildScopeGroups(){
+    // Group by volume if available, else by year
+    var hasVolumes = issues.some(function(i){ return i.volume && i.volume.trim(); });
+    scopeGroups = [];
+    if(hasVolumes){
+      var vMap = {}, vOrder = [];
+      issues.forEach(function(i){
+        var v = i.volume ? i.volume.trim() : '—';
+        if(!vMap[v]){ vMap[v]=[]; vOrder.push(v); }
+        vMap[v].push(i.issueID);
+      });
+      vOrder.forEach(function(v){
+        var yrs = issues.filter(function(i){ return (i.volume||'—')===v; })
+          .map(function(i){ return parseInt(i.year,10); }).filter(function(y){ return !isNaN(y); }).sort(function(a,b){return a-b;});
+        var yStr = yrs.length>1 ? yrs[0]+'–'+yrs[yrs.length-1] : (yrs[0]||'');
+        var label = v==='—' ? ('Ungrouped'+(yStr?' ('+yStr+')':'')) : ('Volume '+v+(yStr?' ('+yStr+')':''))+' — '+vMap[v].length+' issue'+(vMap[v].length===1?'':'s');
+        scopeGroups.push({key:'vol:'+v, label:label, issueIDs:vMap[v]});
+      });
+    } else {
+      var yMap = {}, yOrder = [];
+      issues.forEach(function(i){
+        var yr = (i.year&&i.year.trim())||'—';
+        if(!yMap[yr]){ yMap[yr]=[]; yOrder.push(yr); }
+        yMap[yr].push(i.issueID);
+      });
+      yOrder.forEach(function(yr){
+        scopeGroups.push({key:'yr:'+yr, label:(yr==='—'?'Undated':yr)+' — '+yMap[yr].length+' issue'+(yMap[yr].length===1?'':'s'), issueIDs:yMap[yr]});
+      });
+    }
+    // Default: all selected
+    selectedGroupKeys = {};
+    scopeGroups.forEach(function(g){ selectedGroupKeys[g.key]=true; });
+  }
+
+
+  function renderScopeCheckboxes(){
+    var box = document.getElementById('scope-checkboxes');
+    if(!box) return;
+    box.innerHTML = '';
+    scopeGroups.forEach(function(g){
+      var lbl = document.createElement('label');
+      lbl.style.display = 'block';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = g.key;
+      cb.checked = !!selectedGroupKeys[g.key];
+      cb.style.marginRight = '6px';
+      cb.addEventListener('change', function(){
+        selectedGroupKeys[g.key] = cb.checked;
+        updateScopeCount();
+      });
+      lbl.appendChild(cb);
+      lbl.appendChild(document.createTextNode(g.label));
+      box.appendChild(lbl);
+    });
+    updateScopeCount();
+  }
+
+  // Returns only titles that have at least one issue in the current issues array
+
+
+  var SC_REPO = 'https://github.com/kevinislaughter/Slaughter-Cataloger/';
+
+  function scAttribution(fmt){
+    var d = new Date();
+    var dateStr = d.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+    var text = 'The Slaughter Cataloger was used to compile and export this bibliographic information on ' +
+               dateStr + '. Learn more at ' + SC_REPO;
+    if(fmt === 'html'){
+      return '\n<footer style="margin-top:3em;padding:1em 0 0;border-top:1px solid #ccc;' +
+             'font-size:11px;color:#999;font-family:Georgia,serif;">' + text.replace(SC_REPO,
+             '<a href="'+SC_REPO+'" style="color:inherit;">'+SC_REPO+'</a>') + '</footer>';
+    }
+    if(fmt === 'wp'){
+      return '\n\n<!-- wp:separator {"opacity":"css"} -->\n<hr class="wp-block-separator has-css-opacity"/>\n<!-- /wp:separator -->' +
+             '\n\n<!-- wp:paragraph {"style":{"typography":{"fontSize":"0.8em"},"color":{"text":"#999"}}} -->' +
+             '\n<p class="has-text-color" style="font-size:0.8em;color:#999;">' +
+             text.replace(SC_REPO, '<a href="'+SC_REPO+'">'+SC_REPO+'</a>') +
+             '</p>\n<!-- /wp:paragraph -->';
+    }
+    if(fmt === 'md')  return '\n\n---\n*' + text + '*';
+    if(fmt === 'txt') return '\n\n---\n' + text;
+    if(fmt === 'ris') return '\n; ' + text;
+    return text;
+  }
+
+  function invalidatePreview(){
+    previewContainer.style.display = 'none';
+    previewBox.innerHTML = '';
+    exportStatus.textContent = '';
+  }
+
+  function updateScopeCount(){
+    var fi = getFilteredIssues();
+    var countEl = document.getElementById('scope-count');
+    if(countEl) countEl.textContent = fi.length + ' of ' + issues.length + ' issues selected';
+  }
+
+
+  function buildFullCatalog(fmt){
+    // Gather title-level data — only from titles that have issues loaded
+    var _activeTitles = getActiveTitles(issues);
+    var titleScope = getSingleTitleScope();
+    var titleRec = null;
+    if(titleScope) _activeTitles.forEach(function(t){ if(t.titleID===titleScope) titleRec=t; });
+    if(!titleRec) titleRec = _activeTitles[0] || null;
+
+    // Build issue map and contents map
+    var issueMap = {};
+    issues.forEach(function(iss){ issueMap[iss.issueID] = iss; });
+    var contentsByIssue = {};
+    var hideNested = hideNestedItemsEnabled();
+    contents.forEach(function(c){
+      if(hideNested && isNestedContentItem(c)) return;
+      if(!contentsByIssue[c.issueID]) contentsByIssue[c.issueID] = [];
+      contentsByIssue[c.issueID].push(c);
+    });
+    // Sort contents by sequence within each issue
+    Object.keys(contentsByIssue).forEach(function(id){
+      contentsByIssue[id].sort(function(a,b){
+        var na = parseInt(a.sequence,10)||9999, nb = parseInt(b.sequence,10)||9999;
+        return na - nb;
+      });
+    });
+
+    // Title display values
+    var canonicalTitle = (titleRec && titleRec.canonicalTitle) || (issues[0] && issues[0].title) || 'Untitled';
+    var subtitle       = (titleRec && titleRec.subtitle)       || (issues[0] && issues[0].subtitle) || '';
+    var firstYear      = (titleRec && titleRec.firstYear)      || (issues[0] && issues[0].year) || '';
+    var publisher      = (titleRec && titleRec.publisher)      || (issues[0] && issues[0].publisher) || '';
+    var editors        = (titleRec && titleRec.editors)        || (issues[0] && issues[0].editors) || '';
+    var city           = (titleRec && titleRec.city)           || (issues[0] && issues[0].city) || '';
+    var country        = (titleRec && titleRec.country)        || (issues[0] && issues[0].country) || '';
+    var language       = (titleRec && titleRec.language)       || (issues[0] && issues[0].language) || '';
+    var frequency      = (titleRec && titleRec.frequency)      || (issues[0] && issues[0].frequency) || '';
+    var issn           = (titleRec && titleRec.issn)           || (issues[0] && issues[0].issn) || '';
+    var mission        = (titleRec && titleRec.mission)        || '';
+    var pubHistory     = (titleRec && titleRec.pubHistory)     || '';
+    var biblioNote     = (titleRec && titleRec.biblioNote)     || '';
+    var generalNotes   = (titleRec && titleRec.generalNotes)   || '';
+    var titleID        = (titleRec && titleRec.titleID)        || titleScope || '';
+    var librarySlug    = (titleRec && titleRec.librarySlug)    || titleLibrarySlug || '';
+
+    // Work out run years from issues
+    var years = issues.map(function(i){ return parseInt(i.year,10); }).filter(function(y){ return !isNaN(y); }).sort(function(a,b){return a-b;});
+    var runYears = years.length > 1 ? years[0] + '\u2013' + years[years.length-1] : (years[0] || firstYear || '');
+
+    var generated = new Date().toISOString().slice(0,10);
+
+    // Check output mode
+    var wordpressMode = (fmt === 'wordpress');
+
+    // WordPress Blocks mode — skip CSS, return native block markup
+    if(wordpressMode){
+      return buildWordPressBlocks({
+        canonicalTitle:canonicalTitle, subtitle:subtitle, runYears:runYears, titleID:titleID,
+        publisher:publisher, editors:editors, city:city, country:country,
+        language:language, frequency:frequency, issn:issn,
+        mission:mission, pubHistory:pubHistory, biblioNote:biblioNote,
+        issues:issues, contentsByIssue:contentsByIssue,
+        issueMap:issueMap
+      });
+    }
+
+    // ── CSS ──
+    var css = [
+      ':root{--paper:#ffffff;--ink:#111111;--ink-soft:#4a4a4a;--line:#c9c9c9;--line-strong:#8a8a8a;--panel:#f3f3f1;--entry:#a3410a;}',
+      '*{box-sizing:border-box;margin:0;padding:0;}',
+      'body{background:var(--paper);color:var(--ink);font-family:"Courier New",Courier,monospace;font-size:14px;line-height:1.7;max-width:860px;margin:0 auto;padding:48px 32px 80px;}',
+      'a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}',
+      'a:hover{border-bottom-color:var(--ink);}',
+
+      /* Header band */
+      '.journal-title{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:700;letter-spacing:1px;line-height:1.2;margin-bottom:4px;}',
+      '.journal-subtitle{font-family:Georgia,serif;font-size:15px;font-style:italic;color:var(--ink-soft);margin-bottom:4px;}',
+      '.journal-years{font-size:11px;letter-spacing:2px;color:var(--ink-soft);margin-bottom:4px;}',
+      '.journal-id{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--ink-soft);}',
+
+      /* Publication facts */
+      '.pub-facts{margin:24px 0 32px;padding:16px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);}',
+      '.pub-facts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 24px;}',
+      '.pub-fact label{font-family:Georgia,serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:1px;}',
+      '.pub-fact span{font-size:13px;}',
+
+      /* Mission / intro */
+      '.journal-mission{margin-bottom:32px;padding:14px 20px;border-left:3px solid var(--ink);background:var(--panel);font-size:13px;line-height:1.8;color:var(--ink-soft);font-style:italic;}',
+      '.journal-notes{margin-bottom:32px;font-size:13px;line-height:1.8;color:var(--ink-soft);}',
+
+      /* ToC */
+      '.toc{margin-bottom:36px;padding:16px 0;border-top:2px solid var(--ink);}',
+      '.toc-title{font-family:Georgia,serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}',
+      '.toc-list{list-style:none;font-size:12px;line-height:2;}',
+      '.toc-list a{border-bottom:none;color:var(--ink-soft);}',
+      '.toc-list a:hover{color:var(--ink);border-bottom:1px solid var(--line);}',
+
+      /* Issue blocks */
+      '.issue{margin-bottom:48px;padding-top:20px;border-top:2px solid var(--ink);}',
+      '.issue-header{margin-bottom:4px;}',
+      '.issue-shortname{font-family:Georgia,serif;font-size:17px;font-weight:700;margin-bottom:1px;}',
+      '.issue-subtitle{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:2px;}',
+      '.issue-meta{font-size:12px;color:var(--ink-soft);letter-spacing:.3px;margin-bottom:3px;}',
+      ,
+      '.issue-physical{font-size:11px;color:var(--ink-soft);letter-spacing:.3px;margin-bottom:4px;}',
+      '.issue-editor{font-size:11px;color:var(--ink-soft);margin-bottom:3px;}',
+      '.issue-production{font-size:11px;color:var(--ink-soft);margin-bottom:4px;}',
+      '.issue-notes{font-size:12px;color:var(--ink-soft);margin-top:8px;margin-bottom:8px;font-style:italic;}',
+
+      /* Contents table */
+      '.contents-table{width:100%;border-collapse:collapse;font-size:9px;margin-top:8px;border:none;}',
+      '.contents-table th{font-family:Georgia,serif;font-size:8.5px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);text-align:left;padding:3px 8px 3px 0;border-bottom:1.5px solid var(--ink);white-space:nowrap;}',
+      '.contents-table td{text-align:left;padding:2px 8px 2px 0;vertical-align:top;}',
+      '.contents-table tbody tr:nth-child(even){background:#f7f7f5;}',
+      '.ct-page{width:4em;color:var(--ink-soft);text-align:right;padding-right:12px!important;font-size:9px;white-space:nowrap;}',
+      '.ct-type{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--line-strong);margin-right:5px;white-space:nowrap;}',
+      '.ct-type-col{font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;width:6em;}',
+      '.ct-title{font-weight:400;color:var(--ink);}',
+      '.ct-title.speculative{font-style:italic;font-weight:400;}',
+      '.ct-title.speculative::after{content:" ?";color:var(--ink-soft);font-size:9px;vertical-align:super;}',
+      '.ct-author{color:var(--ink-soft);}',
+      '.ct-child td:first-child{padding-left:16px;}',
+      '.ct-notes{font-size:11px;color:var(--ink-soft);font-style:italic;}',
+
+      /* Footer */
+      '.catalog-footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:10px;color:var(--ink-soft);letter-spacing:.5px;}',
+
+      '@media(max-width:600px){.pub-facts-grid{grid-template-columns:repeat(2,1fr);}.contents-table .ct-author{display:none;}}'
+    ].join('\n');
+
+    // ── Helper: build date string ──
+    function issDate(iss){
+      if(iss.datePrinted) return iss.datePrinted;
+      var parts = [];
+      if(iss.months) parts.push(iss.months);
+      if(iss.year) parts.push(iss.year);
+      return parts.join(' ');
+    }
+
+    // ── Helper: build numbering string ──
+    function issNum(iss){
+      var parts = [];
+      if(iss.volume) parts.push('Vol.\u00a0' + iss.volume);
+      if(iss.issue)  parts.push('No.\u00a0' + iss.issue);
+      if(iss.number && !iss.issue) parts.push('No.\u00a0' + iss.number);
+      else if(iss.number && iss.issue) parts.push('(Whole No.\u00a0' + iss.number + ')');
+      return parts.join(', ');
+    }
+
+    // ── Helper: publication line (city, publisher) ──
+    function pubLine(iss){
+      var parts = [];
+      if(iss.city || city){
+        var c2 = iss.city || city;
+        if(iss.state) c2 += ', ' + iss.state;
+        else if(iss.country && iss.country !== country) c2 += ', ' + iss.country;
+        parts.push(c2);
+      }
+      if(iss.publisher || publisher) parts.push(iss.publisher || publisher);
+      return parts.join(': ');
+    }
+
+
+    // ── Pub facts block ──
+    function pubFact(label, val){
+      if(!val) return '';
+      return '<div class="pub-fact"><label>' + esc(label) + '</label><span>' + esc(val) + '</span></div>';
+    }
+    var cityLine = city + (country ? (city ? ', ' : '') + country : '');
+    var pubFactsHTML = [
+      pubFact('Publisher', publisher),
+      pubFact('Editor(s)', editors),
+      pubFact('City', cityLine),
+      pubFact('Language', language),
+      pubFact('Frequency', frequency),
+      pubFact('ISSN', issn),
+    ].filter(Boolean).join('\n          ');
+
+    // ── Issue blocks (grouped) ──
+    var issueGroups = groupIssues(issues);
+    var issueBlocks = issueGroups.map(function(grp){
+      var groupHTML = grp.label ? '<h2 class="volume-heading" style="font-family:Georgia,serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin:36px 0 0;padding:8px 0;border-top:1px solid var(--line);">' + esc(grp.label) + '</h2>' : '';
+      var issBlocksInner = grp.issues.map(function(iss){
+      var num    = issNum(iss);
+      var date   = issDate(iss);
+      var header = iss.shortname || num;
+
+      // Physical facts line
+      var phys = [];
+      if(iss.pages) phys.push(iss.pages + '\u00a0pp.');
+      if(iss.size)  phys.push(iss.size + (iss.sizeUnit ? '\u00a0' + iss.sizeUnit : ''));
+      if(iss.price) phys.push(iss.price);
+      if(iss.edition) phys.push(iss.edition);
+
+      // Production line — printer only if present
+      var prod = [];
+      var pr = iss.printer || '';
+      var pl = iss.printerLocation || '';
+      if(pr){ prod.push('Printed by ' + pr + (pl ? ', ' + pl : '')); }
+      // Publisher override
+      var pbl = pubLine(iss);
+      if(pbl && pbl !== pubLine({city:city,state:'',country:country,publisher:publisher})) prod.push(pbl);
+
+      // Contents for this issue
+      var issContents = contentsByIssue[iss.issueID] || [];
+      var hasContents = issContents.length > 0;
+
+      var contentsHTML = '';
+      if(hasContents){
+        var rows = issContents.map(function(c){
+          var isChild = isNestedContentItem(c);
+          var pg = c.startPage || '';
+          if(c.endPage && c.endPage !== c.startPage) pg += '\u2013' + c.endPage;
+          var indent = isChild ? '\u2514\u00a0' : '';
+          var row = '<tr class="' + (isChild ? 'ct-child' : '') + '">' +
+            '<td class="ct-page">' + esc(pg) + '</td>' +
+            '<td class="ct-title">' + indent + esc(c.itemTitle) + '</td>' +
+            '<td class="ct-type-col">' + esc(c.contentType||'') + '</td>' +
+            '<td class="ct-author">' + esc(c.author||'') + '</td>' +
+            '</tr>';
+          return row;
+        }).join('\n          ');
+
+        contentsHTML = '<table class="contents-table">' +
+          '<thead><tr><th class="ct-page">Pg.</th><th>Item</th><th class="ct-type-col">Type</th><th class="ct-author">Author</th></tr></thead>' +
+          '<tbody>' + rows + '</tbody></table>';
+      }
+
+      var specNote = (iss.speculative && iss.specFields) ? '<div class="issue-notes">Speculative: ' + esc(iss.specFields) + '</div>' : '';
+      var issNotes = iss.notes ? '<div class="issue-notes">' + esc(iss.notes) + '</div>' : '';
+
+      // Single pipe-separated meta line: num/date | designation | supplement
+      var metaParts = [];
+      if(iss.shortname){
+        if(date) metaParts.push(esc(date));
+      } else {
+        var numDate = num + (date ? '\u2002\u2014\u2002' + date : '');
+        if(numDate.trim()) metaParts.push(esc(numDate));
+      }
+      if(iss.issueDesignation) metaParts.push(esc(iss.issueDesignation));
+      if(iss.supplementLabel)  metaParts.push('Supplement: ' + esc(iss.supplementLabel));
+      var metaLine = metaParts.length
+        ? '<div class="issue-meta">' + metaParts.join(' \u007c ') + '</div>'
+        : '';
+
+      return '<div class="issue" id="' + esc(iss.issueID) + '">' +
+        '<div class="issue-header">' +
+          '<div class="issue-shortname">' + esc(header) + '</div>' +
+          (iss.subtitle ? '<div class="issue-subtitle">' + esc(iss.subtitle) + '</div>' : '') +
+          metaLine +
+        '</div>' +
+        (phys.length ? '<div class="issue-physical">' + phys.map(esc).join('\u2002\u00b7\u2002') + '</div>' : '') +
+        (iss.editors ? '<div class="issue-editor">Edited by ' + esc(iss.editors) + '</div>' : '') +
+        (prod.length ? '<div class="issue-production">' + prod.map(esc).join('\u2002\u00b7\u2002') + '</div>' : '') +
+        issNotes + specNote +
+        contentsHTML +
+      '</div>';
+    }).join('\n');
+      return groupHTML + issBlocksInner;
+    }).join('\n');
+
+    // ── Standalone HTML mode — full document with embedded CSS ──
+    // ── Standalone HTML mode — full document with embedded CSS ──
+    return '<!DOCTYPE html>\n<html lang="en">\n<head>\n' +
+      '<meta charset="UTF-8">\n' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+      '<title>' + esc(canonicalTitle) + (runYears ? ' (' + runYears + ')' : '') + '</title>\n' +
+      '<style>\n' + css + '\n</style>\n</head>\n<body>\n\n' +
+
+      '<header>\n' +
+      '<div class="journal-title">' + esc(canonicalTitle) + '</div>\n' +
+      (subtitle ? '<div class="journal-subtitle">' + esc(subtitle) + '</div>\n' : '') +
+      (runYears ? '<div class="journal-years">' + esc(runYears) + '</div>\n' : '') +
+      (titleID  ? '<div class="journal-id">' + esc(titleID) + '</div>\n' : '') +
+      '</header>\n\n' +
+
+      (pubFactsHTML ? '<section class="pub-facts">\n  <div class="pub-facts-grid">\n    ' +
+        pubFactsHTML + '\n  </div>\n</section>\n\n' : '') +
+
+      (mission ? '<blockquote class="journal-mission">' + esc(mission) + '</blockquote>\n\n' : '') +
+      (pubHistory ? '<div class="journal-notes">' + esc(pubHistory) + '</div>\n\n' : '') +
+      (biblioNote ? '<div class="journal-notes">' + esc(biblioNote) + '</div>\n\n' : '') +
+
+
+      '<section id="index">\n' + issueBlocks + '\n</section>\n\n' +
+
+      '<footer class="catalog-footer">' +
+        esc(canonicalTitle) + (titleID ? '\u2002\u00b7\u2002' + titleID : '') +
+        '\u2002\u00b7\u2002Slaughter Cataloger\u2002\u00b7\u2002Generated ' + generated +
+      '</footer>\n\n' + scAttribution('html') + '\n</body>\n</html>';
+  }
+
+
+  function buildWordPressBlocks(d){
+    var out = [];
+    function ex(s){ s=String(s==null?'':s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function heading(level, html, anchor){
+      var attr = anchor ? '{"level":'+level+',"anchor":"'+ex(anchor)+'"}' : '{"level":'+level+'}';
+      var idAt = anchor ? ' id="'+ex(anchor)+'"' : '';
+      return '<!-- wp:heading '+attr+' -->\n<h'+level+' class="wp-block-heading"'+idAt+'>'+html+'</h'+level+'>\n<!-- /wp:heading -->';
+    }
+    function para(html){ return html ? '<!-- wp:paragraph -->\n<p>'+html+'</p>\n<!-- /wp:paragraph -->' : ''; }
+    function separator(){ return '<!-- wp:separator {"className":"is-style-wide"} -->\n<hr class="wp-block-separator has-alpha-channel-opacity is-style-wide"/>\n<!-- /wp:separator -->'; }
+    function issNum(iss){ var p=[]; if(iss.volume) p.push('Vol.\u00a0'+iss.volume); if(iss.issue) p.push('No.\u00a0'+iss.issue); if(iss.number&&!iss.issue) p.push('No.\u00a0'+iss.number); else if(iss.number&&iss.issue) p.push('(Whole\u00a0No.\u00a0'+iss.number+')'); return p.join(', '); }
+    function issDate(iss){ if(iss.datePrinted) return iss.datePrinted; var p=[]; if(iss.months) p.push(iss.months); if(iss.year) p.push(iss.year); return p.join(' '); }
+
+    // Journal title
+    // H1 is the WordPress page title — don't duplicate it in content
+    // Output subtitle and run years as a compact intro paragraph instead
+    var introLine = [];
+    if(d.subtitle)  introLine.push('<em>'+ex(d.subtitle)+'</em>');
+    if(d.runYears)  introLine.push(ex(String(d.runYears)));
+    if(introLine.length) out.push(para(introLine.join(' · ')));
+
+    // Publication facts
+    var facts = [];
+    if(d.publisher) facts.push('<strong>Publisher:</strong> '+ex(d.publisher));
+    if(d.editors)   facts.push('<strong>Editor(s):</strong> '+ex(d.editors));
+    var cityLine = [d.city,d.country].filter(Boolean).join(', ');
+    if(cityLine)    facts.push('<strong>City:</strong> '+ex(cityLine));
+    if(d.language)  facts.push('<strong>Language:</strong> '+ex(d.language));
+    if(d.frequency) facts.push('<strong>Frequency:</strong> '+ex(d.frequency));
+    if(d.issn)      facts.push('<strong>ISSN:</strong> '+ex(d.issn));
+    if(d.titleID)   facts.push('<strong>TitleID:</strong> <code>'+ex(d.titleID)+'</code>');
+    if(facts.length) out.push(para(facts.join('<br>')));
+
+    // Mission statement
+    if(d.mission){
+      out.push('<!-- wp:quote -->\n<blockquote class="wp-block-quote"><!-- wp:paragraph -->\n<p>'+ex(d.mission)+'</p>\n<!-- /wp:paragraph --></blockquote>\n<!-- /wp:quote -->');
+    }
+    if(d.pubHistory) out.push(para(ex(d.pubHistory)));
+    if(d.biblioNote) out.push(para(ex(d.biblioNote)));
+
+
+
+    // Issues (grouped by volume or year for long catalogs)
+    var wpGroups = groupIssues(d.issues);
+    var hasGroups = wpGroups.some(function(g){ return g.label; });
+    wpGroups.forEach(function(grp){
+      if(grp.label){
+        out.push(heading(2, ex(grp.label)));
+      }
+      grp.issues.forEach(function(iss){
+      var num = issNum(iss), dt = issDate(iss), header = iss.shortname || num;
+      out.push(separator());
+      out.push(heading(hasGroups ? 3 : 2, ex(header), iss.issueID));
+
+      // Compact metadata — one paragraph, two lines, no blank gaps between them
+      var metaLines = [];
+      // Line 1: subtitle (if any)
+      if(iss.subtitle) metaLines.push('<em>'+ex(iss.subtitle)+'</em>');
+      // Line 2: num/date | designation | supplement — single pipe-separated line
+      var dateParts = [];
+      if(!iss.shortname && num) dateParts.push(ex(num));
+      if(dt) dateParts.push(ex(dt));
+      if(iss.issueDesignation) dateParts.push(ex(iss.issueDesignation));
+      if(iss.supplementLabel)  dateParts.push('Supplement: '+ex(iss.supplementLabel));
+      if(dateParts.length) metaLines.push(dateParts.join(' | '));
+      // Line 2: editors (if present)
+      if(iss.editors) metaLines.push('Edited by '+ex(iss.editors));
+      // Line 3: physical specs + printer combined
+      var physParts = [];
+      if(iss.pages)   physParts.push(ex(iss.pages)+'\u00a0pp.');
+      if(iss.size)    physParts.push(ex(iss.size)+(iss.sizeUnit?'\u00a0'+ex(iss.sizeUnit):''));
+      if(iss.price)   physParts.push(ex(iss.price));
+      if(iss.edition) physParts.push(ex(iss.edition));
+      if(iss.printer) physParts.push('Printed by '+ex(iss.printer)+(iss.printerLocation?', '+ex(iss.printerLocation):''));
+      if(physParts.length) metaLines.push('<span style="color:#555;font-size:0.9em;">'+physParts.join('\u2002\u00b7\u2002')+'</span>');
+      if(metaLines.length) out.push(para(metaLines.join('<br>')));
+      if(iss.notes) out.push(para('<em style="color:#555;font-size:0.9em;">'+ex(iss.notes)+'</em>'));
+
+
+      var issContents = d.contentsByIssue[iss.issueID]||[];
+      if(issContents.length){
+        var TBL = 'border-collapse:collapse;border:none;width:100%;font-size:0.85em;';
+        var TH  = 'border:none;border-bottom:1px solid #111;font-size:0.75em;letter-spacing:0.08em;text-transform:uppercase;color:#666;padding:3px 10px 3px 0;text-align:left;font-weight:normal;';
+        var TH_PG = TH + 'width:3em;text-align:right;padding-right:12px;';
+        var TD  = 'border:none;padding:3px 10px 3px 0;vertical-align:top;';
+        var TD_PG = TD + 'width:4em;text-align:right;padding-right:12px;color:#666;white-space:nowrap;';
+        var thead = '<thead><tr>' +
+          '<th style="'+TH_PG+'">Pg.</th>' +
+          '<th style="'+TH+'">Item</th>' +
+          '<th style="'+TH+'">Author</th>' +
+          '</tr></thead>';
+        var tbody = '<tbody>'+issContents.map(function(c){
+          var isChild = isNestedContentItem(c);
+          var pg = c.startPage||''; if(c.endPage&&c.endPage!==c.startPage) pg+='\u2013'+c.endPage;
+          var typeTag  = c.contentType ? '<span style="font-size:0.8em;color:#888;"> \u2014 '+ex(c.contentType)+'</span>' : '';
+          var indent   = isChild ? '\u2514\u00a0' : '';
+          var titleCell = '<span style="color:#111;">'+indent+ex(c.itemTitle)+'</span>'+typeTag;
+          return '<tr>' +
+            '<td style="'+TD_PG+'">'+ex(pg)+'</td>' +
+            '<td style="'+TD+'">'+titleCell+'</td>' +
+            '<td style="'+TD+'color:#555;">'+ex(c.author||'')+'</td>' +
+            '</tr>';
+        }).join('')+'</tbody>';
+        out.push('<!-- wp:table {"hasFixedLayout":false} -->\n<figure class="wp-block-table" style="margin:0 !important;"><table style="'+TBL+'">'+thead+tbody+'</table></figure>\n<!-- /wp:table -->');
+
+      }
+      });
+    });
+
+    out.push(scAttribution('wp'));
+    return out.join('\n\n');
+  }
+
+
+  function buildProofingCatalog(){
+    var today = new Date().toISOString().slice(0,10);
+    var slug  = titleLibrarySlug || '';
+
+    function pv(v){ return (v==null||String(v).trim()==='')?'[blank]':String(v); }
+    function pesc(s){ s=String(s==null?'':s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function pFieldSet(val){
+      var s=new Set(); String(val||'').split(';').forEach(function(x){x=x.trim();if(x)s.add(x);}); return s;
+    }
+    function pStatus(label, record){
+      if(pFieldSet(record.naFields).has(label)) return 'N/A';
+      if(pFieldSet(record.specFields).has(label)) return '?';
+      var key = label; // fallback
+      // map display labels to property names for value lookup
+      var propMap = {
+        'Short Name':'shortname','Title':'title','Subtitle':'subtitle',
+        'Volume':'volume','Issue':'issue','Whole No.':'number',
+        'Year':'year','Month(s)':'months','Day':'day',
+        'Date as Printed':'datePrinted','Special Issue':'specialIssue',
+        'Issue Designation':'issueDesignation','Supplement':'supplement',
+        'Supplement Label':'supplementLabel','Edition':'edition',
+        'Publisher':'publisher','Editor(s)':'editors','Contributors':'contributors',
+        'Printer':'printer','Printer Location':'printerLocation',
+        'City':'city','State / Province':'state','Country':'country',
+        'Language':'language','Frequency':'frequency','Price':'price',
+        'Pages':'pages','Size':'size','Size Unit':'sizeUnit',
+        'Evidence Basis':'evidenceBasis','Evidence Note':'evidenceNote',
+        'Notes on Issue':'notes','Canonical Title':'canonicalTitle',
+        'Original Title':'originalTitle','Former Title(s)':'formerTitles',
+        'Later Title(s)':'laterTitles','Related Title(s)':'relatedTitles',
+        'ISSN':'issn','First Year':'firstYear','Publication History Note':'pubHistory',
+        'Mission Statement':'mission','Bibliographic Note':'biblioNote',
+        'General Notes':'generalNotes'
+      };
+      var prop = propMap[label] || label;
+      var val = record[prop];
+      if(val==null||String(val).trim()==='') return 'blank';
+      return 'filled';
+    }
+
+    function pRow(label, val, status){
+      var check = '\u2610'; // ☐
+      var statusTd;
+      if(status==='N/A')     statusTd = '<span style="color:#888;">[N/A]</span>';
+      else if(status==='?')  statusTd = '<strong>?</strong>';
+      else if(status==='blank') statusTd = '<span style="color:#aaa;">[blank]</span>';
+      else statusTd = 'Filled';
+      return '<tr><td class="pc">' + check + '</td><td class="pl"><strong>' + pesc(label) + '</strong></td>' +
+        '<td class="pv">' + (status==='blank'?'<span style="color:#aaa;">[blank]</span>':pesc(String(val==null?'':val))) + '</td>' +
+        '<td class="ps">' + statusTd + '</td>' +
+        '<td class="pn"></td></tr>';
+    }
+
+    function pFieldTable(fieldsArr, record){
+      var rows = fieldsArr.map(function(pair){
+        var label = pair[0], prop = pair[1];
+        var val = record[prop];
+        var status = pStatus(label, record);
+        return pRow(label, val, status);
+      }).join('');
+      return '<table><thead><tr><th class="pc"></th><th class="pl">Field</th><th class="pv">Value</th>' +
+        '<th class="ps">Status</th><th class="pn">Correction / Notes</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    var ISSUE_FIELDS = [
+      ['Short Name','shortname'],['Title','title'],['Subtitle','subtitle'],
+      ['Volume','volume'],['Issue','issue'],['Whole No.','number'],
+      ['Year','year'],['Month(s)','months'],['Day','day'],
+      ['Date as Printed','datePrinted'],['Special Issue','specialIssue'],
+      ['Issue Designation','issueDesignation'],['Supplement','supplement'],
+      ['Supplement Label','supplementLabel'],['Edition','edition'],
+      ['Publisher','publisher'],['Editor(s)','editors'],['Contributors','contributors'],
+      ['Printer','printer'],['Printer Location','printerLocation'],
+      ['City','city'],['State / Province','state'],['Country','country'],
+      ['Language','language'],['Frequency','frequency'],['Price','price'],
+      ['Pages','pages'],['Size','size'],['Size Unit','sizeUnit'],
+      ['Evidence Basis','evidenceBasis'],['Evidence Note','evidenceNote'],
+      ['Notes on Issue','notes']
+    ];
+
+    var TITLE_FIELDS = [
+      ['Canonical Title','canonicalTitle'],['Subtitle','subtitle'],
+      ['Original Title','originalTitle'],['Former Title(s)','formerTitles'],
+      ['Later Title(s)','laterTitles'],['Related Title(s)','relatedTitles'],
+      ['Publisher','publisher'],['Editor(s)','editors'],
+      ['City','city'],['State / Province','state'],['Country','country'],
+      ['Language','language'],['Frequency','frequency'],['ISSN','issn'],
+      ['First Year','firstYear'],['Publication History Note','pubHistory'],
+      ['Mission Statement','mission'],['Bibliographic Note','biblioNote'],
+      ['General Notes','generalNotes']
+    ];
+
+    // Issue map + contents by issue
+    var issueMap = {};
+    issues.forEach(function(i){ issueMap[i.issueID]=i; });
+    var contentsMap = {};
+    contents.forEach(function(c){
+      if(!contentsMap[c.issueID]) contentsMap[c.issueID]=[];
+      contentsMap[c.issueID].push(c);
+    });
+    Object.keys(contentsMap).forEach(function(id){
+      contentsMap[id].sort(function(a,b){ return (parseInt(a.sequence,10)||9999)-(parseInt(b.sequence,10)||9999); });
+    });
+
+    var html = [];
+
+    // CSS
+    html.push('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">');
+    html.push('<title>Proofing Catalog \u2014 ' + pesc(slug) + ' \u2014 ' + today + '</title>');
+    html.push('<style>');
+    html.push('@page{size:letter;margin:0.55in;}');
+    html.push('body{font-family:Georgia,"Times New Roman",serif;color:#111;background:#fff;font-size:10.5pt;line-height:1.35;margin:0;padding:0;}');
+    html.push('h1{font-size:16pt;margin:0 0 6pt;}h2{font-size:13pt;margin:18pt 0 6pt;border-bottom:1pt solid #999;padding-bottom:3pt;}h3{font-size:11pt;margin:12pt 0 4pt;}');
+    html.push('table{width:100%;border-collapse:collapse;margin:4pt 0 10pt;font-size:9.5pt;}');
+    html.push('th,td{border:1pt solid #999;padding:3pt 5pt;vertical-align:top;}');
+    html.push('th{background:#f0f0f0;font-weight:bold;text-align:left;}');
+    html.push('.pc{width:0.3in;text-align:center;font-size:12pt;}');
+    html.push('.pl{width:1.5in;}');
+    html.push('.pv{width:2.2in;}');
+    html.push('.ps{width:0.8in;}');
+    html.push('.pn{min-width:1.8in;}');
+    html.push('.id-line{font-family:"Courier New",monospace;font-size:8.5pt;color:#444;margin:3pt 0;}');
+    html.push('.legend td{border:none;padding:2pt 8pt 2pt 0;font-size:9pt;}');
+    html.push('.signoff{margin-top:16pt;padding:8pt;border:1pt solid #ccc;}');
+    html.push('.signoff table{margin:4pt 0;}');
+    html.push('.signoff td{border:none;padding:3pt 6pt;font-size:9.5pt;}');
+    html.push('.blank-line{border-bottom:1pt solid #999;min-height:0.22in;display:block;margin:2pt 0;}');
+    html.push('.meta-block{background:#f8f8f8;padding:8pt;margin:10pt 0;border:1pt solid #ddd;font-size:9.5pt;}');
+    html.push('.meta-block td{border:none;padding:2pt 8pt 2pt 0;}');
+    html.push('@media print{');
+    html.push('.proof-explainer{break-after:page;page-break-after:always;}');
+    html.push('.proof-title-page{break-after:page;page-break-after:always;}');
+    html.push('.proof-issue{break-before:page;page-break-before:always;}');
+    html.push('table,tr,td,th{break-inside:avoid;page-break-inside:avoid;}');
+    html.push('.signoff{break-inside:avoid;page-break-inside:avoid;}');
+    html.push('}');
+    html.push('</style></head><body>');
+
+    // ── Page 1: Explainer ──
+    html.push('<section class="proof-explainer">');
+    html.push('<h1>Slaughter Cataloger \u2014 Proofing Catalog</h1>');
+    html.push('<p style="margin:6pt 0 12pt;font-size:10pt;color:#444;">This document is for checking Slaughter Cataloger records against physical issues or reliable source images. Each issue begins on a new page. Use the checkboxes to confirm fields as you verify them. Write corrections directly on the page or in the margin, then update the source CSVs in Slaughter Cataloger.</p>');
+    html.push('<h2>Legend</h2>');
+    html.push('<table class="legend"><tbody>');
+    html.push('<tr><td><strong>\u2610</strong></td><td>Not yet checked</td></tr>');
+    html.push('<tr><td><strong>\u2713</strong></td><td>Checked by reviewer</td></tr>');
+    html.push('<tr><td><strong>?</strong></td><td>Field marked speculative in source data</td></tr>');
+    html.push('<tr><td><strong>[N/A]</strong></td><td>Field marked not applicable in source data</td></tr>');
+    html.push('<tr><td><strong>[blank]</strong></td><td>Field not yet addressed in source data</td></tr>');
+    html.push('<tr><td><strong>TitleID</strong></td><td>Permanent title identifier (e.g. GAZETTEX-1895)</td></tr>');
+    html.push('<tr><td><strong>IssueID</strong></td><td>Permanent issue identifier (e.g. GAZETTEX-1895-K7M4Q2)</td></tr>');
+    html.push('</tbody></table>');
+    html.push('<h2>Files &amp; Summary</h2>');
+    html.push('<table class="meta-block"><tbody>');
+    var proofTitle = selectedTitle || (loadedTitles&&loadedTitles[0]) || {};
+    html.push('<tr><td><strong>Library Slug</strong></td><td>' + pesc(slug) + '</td></tr>');
+    html.push('<tr><td><strong>Selected Title</strong></td><td><strong>' + pesc(proofTitle.canonicalTitle||'') + '</strong> &nbsp;<code>' + pesc(proofTitle.titleID||'') + '</code></td></tr>');
+    html.push('<tr><td><strong>Generated</strong></td><td>' + today + '</td></tr>');
+    html.push('<tr><td><strong>Issues loaded</strong></td><td>' + issues.length + '</td></tr>');
+    html.push('<tr><td><strong>Contents items loaded</strong></td><td>' + contents.length + '</td></tr>');
+    if(proofTitle.expectedIssuesFilename)   html.push('<tr><td><strong>Expected Issues file</strong></td><td><code>' + pesc(proofTitle.expectedIssuesFilename) + '</code></td></tr>');
+    if(proofTitle.expectedContentsFilename) html.push('<tr><td><strong>Expected Contents file</strong></td><td><code>' + pesc(proofTitle.expectedContentsFilename) + '</code></td></tr>');
+    html.push('</tbody></table>');
+    html.push('</section>');
+
+    // ── For each title ──
+    var proofTitleRec = selectedTitle || getActiveTitles(issues)[0] || {canonicalTitle:'Unknown Title',titleID:'',specFields:'',naFields:''};
+    var titlesToProof = [proofTitleRec];
+    titlesToProof.forEach(function(titleRec){
+      var titleIssues = issues;
+
+      // ── Title proof sheet ──
+      html.push('<section class="proof-title-page">');
+      html.push('<h1>Title Proof Sheet</h1>');
+      html.push('<div class="id-line">TitleID: ' + pesc(titleRec.titleID||'—') + '</div>');
+      if(titleRec.expectedIssuesFilename)   html.push('<div class="id-line">Expected Issues file: ' + pesc(titleRec.expectedIssuesFilename) + '</div>');
+      if(titleRec.expectedContentsFilename) html.push('<div class="id-line">Expected Contents file: ' + pesc(titleRec.expectedContentsFilename) + '</div>');
+      html.push(pFieldTable(TITLE_FIELDS, titleRec));
+      html.push('<div class="signoff"><strong>Title-level review notes:</strong><br><span class="blank-line"></span><span class="blank-line"></span></div>');
+      html.push('</section>');
+
+      // ── Issues ──
+      titleIssues.forEach(function(iss){
+        var issContents = contentsMap[iss.issueID] || [];
+
+        html.push('<section class="proof-issue">');
+
+        // Issue header
+        html.push('<h2>' + pesc(iss.shortname || (iss.title + ' V' + iss.volume + ' N' + iss.number)) + '</h2>');
+        html.push('<div class="id-line">TitleID: ' + pesc(iss.titleID) + '</div>');
+        html.push('<div class="id-line">IssueID: ' + pesc(iss.issueID) + '</div>');
+        if(iss.datePrinted) html.push('<div class="id-line">Date as Printed: ' + pesc(iss.datePrinted) + '</div>');
+
+        // Issue fields
+        html.push('<h3>Issue Fields</h3>');
+        html.push(pFieldTable(ISSUE_FIELDS, iss));
+
+        // Contents
+        if(issContents.length > 0){
+          html.push('<h3>Contents (' + issContents.length + ' item' + (issContents.length===1?'':'s') + ')</h3>');
+          html.push('<table><thead><tr>');
+          html.push('<th class="pc"></th><th style="width:0.4in;">Seq.</th><th style="width:0.7in;">Page(s)</th>');
+          html.push('<th style="width:0.9in;">Type</th><th>Item Title</th><th style="width:1.5in;">Author / Credit</th>');
+          html.push('<th class="ps">Status</th><th class="pn">Correction / Notes</th></tr></thead><tbody>');
+          issContents.forEach(function(c){
+            var pg = c.startPage||'';
+            if(c.endPage && c.endPage!==c.startPage) pg+='\u2013'+c.endPage;
+            var cStatus = c.speculative||c.specFields ? '?' : (c.itemTitle?'Filled':'blank');
+            var specFlag = (c.specFields&&c.specFields.trim()) ? ' <span style="color:#555;font-size:8pt;">[? ' + pesc(c.specFields) + ']</span>' : '';
+            html.push('<tr><td class="pc">\u2610</td>');
+            html.push('<td>' + pesc(c.sequence||'') + '</td>');
+            html.push('<td>' + pesc(pg) + '</td>');
+            html.push('<td>' + pesc(c.contentType||'') + '</td>');
+            html.push('<td>' + pesc(c.itemTitle) + specFlag + (c.parentItem&&c.parentItem.toLowerCase()!=='n/a'?'<br><span style="font-size:8pt;color:#666;">\u25ba '+pesc(c.parentItem)+'</span>':'') + '</td>');
+            html.push('<td>' + pesc(c.author||'') + '</td>');
+            html.push('<td>' + (cStatus==='?'?'<strong>?</strong>':(cStatus==='blank'?'<span style="color:#aaa;">[blank]</span>':'Filled')) + '</td>');
+            html.push('<td></td></tr>');
+          });
+          html.push('</tbody></table>');
+        } else {
+          html.push('<p style="font-size:9pt;color:#888;margin:4pt 0;">No contents items cataloged for this issue.</p>');
+        }
+
+        // Signoff
+        html.push('<div class="signoff">');
+        html.push('<table><tbody>');
+        html.push('<tr><td style="width:2.5in;"><strong>Reviewer:</strong></td><td><span class="blank-line" style="display:inline-block;width:2in;"></span></td><td style="width:1.5in;"><strong>Date reviewed:</strong></td><td><span class="blank-line" style="display:inline-block;width:1.2in;"></span></td></tr>');
+        html.push('<tr><td><strong>Corrections entered in CSV:</strong></td><td>\u2610 Yes &nbsp; \u2610 No</td><td><strong>Needs follow-up:</strong></td><td>\u2610 Yes &nbsp; \u2610 No</td></tr>');
+        html.push('</tbody></table>');
+        html.push('<strong>General notes:</strong><br><span class="blank-line"></span><span class="blank-line"></span>');
+        html.push('</div>');
+        html.push('</section>');
+      });
+    });
+
+    html.push('<footer style="margin:3em 0 0;padding-top:1em;border-top:1pt solid #ccc;font-size:8pt;color:#999;">' + scAttribution('html').replace(/<footer[^>]*>/,'').replace('</footer>','') + '</footer>');
+    html.push('</body></html>');
+    return html.join('\n');
+  }
+})();
+</script>
+</body>
+</html>

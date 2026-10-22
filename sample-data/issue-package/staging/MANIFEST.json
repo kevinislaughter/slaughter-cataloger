@@ -1,0 +1,209 @@
+{
+  "file_kind": "PROVISIONAL_IMPORT_CANDIDATE_MANIFEST__NOT_NATIVE_IMPORT_APPROVAL",
+  "package_spec_version": "draft-0.1/provisional-consolidation",
+  "package_id": "example-gazette-v4n1-1875-provisional-import-candidate",
+  "issue_designation": "The Example Gazette, Vol. IV, No. 1, May 1, 1875",
+  "prepared_at": "2026-10-01",
+  "state": "PROVISIONAL_IMPORT_CANDIDATE",
+  "title_id": "EXAGAZEX-1872",
+  "title_id_evidence_status": "from the sample library",
+  "issue_id": null,
+  "working_issue_id": "EXAGAZEX-1872-KRNYWA2",
+  "working_issue_id_status": "working identity; live catalog reconciliation pending",
+  "identity_history": [
+    {
+      "id": "EXAGAZEX-1872-KQ7RW4M",
+      "status": "superseded staging-only reference, not active"
+    }
+  ],
+  "content_id_policy": "All 18 ContentIDs remain NULL for importer reconciliation.",
+  "source_files": [
+    {
+      "file": "source/example-gazette-v4n1.pdf",
+      "original_name": "example-gazette-v4n1.pdf",
+      "sha256": "ce7c9afe8592ea68469ff81f237482c00ae9f11a032056479291f8d7dddc1641",
+      "size_bytes": 2704,
+      "ordered_pdf_pages": 8,
+      "provenance": "invented specimen"
+    }
+  ],
+  "pages": [
+    {
+      "source_pdf_page": 1,
+      "printed_page": null,
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "c7ce956f09e77e5c15e19ac6e96dbca74f385cb24d3f767893dab617fde37ae1",
+      "status_note": "no printed folio; catalog page 1 inferred"
+    },
+    {
+      "source_pdf_page": 2,
+      "printed_page": "2",
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "5e3a6c8e2ce4880f5d02456b6f4ac6dcc9fc157092ef896576b06f12a2f103ad",
+      "status_note": "printed folio"
+    },
+    {
+      "source_pdf_page": 3,
+      "printed_page": "3",
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "5d4d25a5a3053df15cbdb96406e94755e462ba6100f052d904577100a6eac721",
+      "status_note": "printed folio"
+    },
+    {
+      "source_pdf_page": 4,
+      "printed_page": "4",
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "aea1377d317515189337c28503db32c97377b3895c7609e280151a7d036fae3c",
+      "status_note": "printed folio"
+    },
+    {
+      "source_pdf_page": 5,
+      "printed_page": "5",
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "dace16b63a5ac507094331f081c4f1e0146e266c87498cc73b3815d86d184149",
+      "status_note": "printed folio"
+    },
+    {
+      "source_pdf_page": 6,
+      "printed_page": "6",
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "f492ac4f2c427ab33563a05483e40f397daa51984b20a4144158c4a08e005c33",
+      "status_note": "printed folio"
+    },
+    {
+      "source_pdf_page": 7,
+      "printed_page": "7",
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "16fa1cd4f2b2d18dee2edd5109ffee1184b6976cb299e52d3dd031c3b50fd59c",
+      "status_note": "printed folio"
+    },
+    {
+      "source_pdf_page": 8,
+      "printed_page": null,
+      "review_status": "REVIEWED_ONCE",
+      "transcribed": true,
+      "segmented": true,
+      "text_sha256": "8711e9e748c6a10c59e715625d03851be9e46dbcef59c1dbc0ca1f608f3ab84a",
+      "status_note": "blank page"
+    }
+  ],
+  "bibliographic_candidates": {
+    "file": "candidate_contents_seq001-018.provisional.json",
+    "count": 18,
+    "mapping_file": "content_id_relationship_crosswalk_seq001-018.csv",
+    "parent_links": 7,
+    "unresolved_permanent_content_ids": 18
+  },
+  "sidecar": {
+    "fulltext": "fulltext.json",
+    "source_transcription": "transcription.md",
+    "item_to_page_mapping": "item_to_page_mapping.json",
+    "pages": 8,
+    "linked_contents_items": 18,
+    "item_segments": 26,
+    "unassigned_spans": 25,
+    "access": "PRIVATE"
+  },
+  "cover": {
+    "file": "cover.jpg",
+    "source_page": 1,
+    "sha256": "546fffac85cd971b675efa81adbf81f00750861b879a49f19f4a0ee9a33426a6",
+    "access": "REVIEW_REQUIRED",
+    "public_release_authorized": false
+  },
+  "deep_index": {
+    "file": "private_index/deep_index.json",
+    "entities": 21,
+    "subjects": 5,
+    "access": "PRIVATE",
+    "public_release_authorized": false
+  },
+  "rights_file": "RIGHTS_AND_ACCESS.json",
+  "review_queue": {
+    "file": "REVIEW_QUEUE.json",
+    "open_gates": 3
+  },
+  "qa": {
+    "fulltext": "validation/QA_FULLTEXT_PAGES001-008.json"
+  },
+  "active_assets": {
+    "REVIEW_QUEUE.json": {
+      "sha256": "9bf24bbe35a783bd64a55e1f2f5e81a54bc6fce88b0a10d801fff2f98d72d7a1",
+      "size_bytes": 2347
+    },
+    "RIGHTS_AND_ACCESS.json": {
+      "sha256": "60f5bae2dd67ffd51e614bc4c937b9d10a08e7afa82f83af0fdf2d7696a1b1a6",
+      "size_bytes": 1205
+    },
+    "candidate_contents_seq001-018.provisional.json": {
+      "sha256": "1f6dd256a203130ca67b5e9af655e87b90b1e1351894a9e4e642fcdcc93db221",
+      "size_bytes": 35563
+    },
+    "candidate_records.json": {
+      "sha256": "bb51247ae6b461b1fadacd4905b5f163d09017be6e8c7f579d45684184d7c910",
+      "size_bytes": 947
+    },
+    "content_id_relationship_crosswalk_seq001-018.csv": {
+      "sha256": "d68a757d3a65e676ed084c4c9b4b62d86f3b7290ffcc1c1d4e29fd5f80b0b766",
+      "size_bytes": 3351
+    },
+    "cover.jpg": {
+      "sha256": "546fffac85cd971b675efa81adbf81f00750861b879a49f19f4a0ee9a33426a6",
+      "size_bytes": 2244
+    },
+    "evidence/extra/UNREFERENCED.txt": {
+      "sha256": "45acede8f6337d4144950ed4c5b3d4ad40495819b80822fdf2d64d660f831f34",
+      "size_bytes": 78
+    },
+    "evidence/segmentation/SEGMENTATION_NOTES.md": {
+      "sha256": "8571e7da6722b67021c70432b90ce62850716e8c919ec8250eb200da51769874",
+      "size_bytes": 188
+    },
+    "fulltext.json": {
+      "sha256": "ddf1c854693f29098666b2ff1f84cd08abbcb29e04ef3171ea3abf5cf0bc8587",
+      "size_bytes": 58369
+    },
+    "item_to_page_mapping.json": {
+      "sha256": "579ada44ef3a1130fa6b37f83df8771f2729da2069a8d78eee7168652a3c9102",
+      "size_bytes": 11510
+    },
+    "private_index/deep_index.json": {
+      "sha256": "715ca266eb823646a80cb6362ce1a516a79fc781a367bd684e4d84d9ff84714c",
+      "size_bytes": 8118
+    },
+    "source/example-gazette-v4n1.pdf": {
+      "sha256": "ce7c9afe8592ea68469ff81f237482c00ae9f11a032056479291f8d7dddc1641",
+      "size_bytes": 2704
+    },
+    "transcription.md": {
+      "sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+      "size_bytes": 5126
+    },
+    "validation/QA_FULLTEXT_PAGES001-008.json": {
+      "sha256": "f81b2226fda1e53e05dc7c7c3862574c9c1bd7aaa74c31139590e1dcb68c2f69",
+      "size_bytes": 270
+    }
+  },
+  "outstanding_issues": [
+    "Q-01",
+    "Q-02",
+    "Q-03"
+  ],
+  "public_release_authorized": false,
+  "canonical_catalog_modified": false,
+  "permanent_content_ids_assigned": 0
+}

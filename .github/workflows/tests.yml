@@ -1,0 +1,35 @@
+name: tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright with Chromium
+        run: |
+          npm install -g playwright@1.56.0
+          playwright install --with-deps chromium
+      - name: Run every check (nothing may be skipped)
+        # 30 checks here. The 31st, the private term scan, needs a list kept outside the repository and
+        # runs only on the maintainer's computer before publishing (SC_PRIVATE_TERMS; see README, Tests).
+        # Performance (search, and the app at scale) is listed at the end of the log and in the job summary:
+        # a time over the 2,000 ms limit fails the run; search's Phase 2 targets are diagnostic only (docs/SEARCH.md §10).
+        # `shell: bash` runs with -eo pipefail, so a failing run-tests.sh fails the step even
+        # though its output goes through tee (the default shell has no pipefail).
+        shell: bash
+        run: sh run-tests.sh 2>&1 | tee run-tests.log
+      - name: Keep the log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-tests-log
+          path: run-tests.log

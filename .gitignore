@@ -1,0 +1,7 @@
+node_modules/
+run-tests.log
+_backups/
+.DS_Store
+# Private material never belongs here (see README, Tests: the term list lives outside the repository)
+PRIVATE-*
+*private-terms*

@@ -1,0 +1,335 @@
+{
+  "schema_version": "1.0",
+  "title_library_slug": "EXAMPLE-LIBRARY",
+  "title_id": "EXAGAZEX-1872",
+  "issue_id": "EXAGAZEX-1872-KRNYWA2",
+  "source_sha256": "ce7c9afe8592ea68469ff81f237482c00ae9f11a032056479291f8d7dddc1641",
+  "entities": [
+    {
+      "type": "periodical",
+      "source_form": "Gazette",
+      "normalized_form": null,
+      "pages": [
+        1
+      ],
+      "content_item_sequence": 1,
+      "context": "the paper names itself",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "person",
+      "source_form": "THE EDITOR",
+      "normalized_form": null,
+      "pages": [
+        2
+      ],
+      "content_item_sequence": 1,
+      "context": "signature",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "organization",
+      "source_form": "Improvement Society",
+      "normalized_form": null,
+      "pages": [
+        1
+      ],
+      "content_item_sequence": 2,
+      "context": "meeting date corrected",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Town Hall",
+      "normalized_form": null,
+      "pages": [
+        1
+      ],
+      "content_item_sequence": 2,
+      "context": "meeting place",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Eastfield",
+      "normalized_form": null,
+      "pages": [
+        1
+      ],
+      "content_item_sequence": 4,
+      "context": "department heading",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "organization",
+      "source_form": "Reading Circle",
+      "normalized_form": null,
+      "pages": [
+        1
+      ],
+      "content_item_sequence": 4,
+      "context": "meeting reported",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "person",
+      "source_form": "JANE DOE",
+      "normalized_form": null,
+      "pages": [
+        1
+      ],
+      "content_item_sequence": 4,
+      "context": "signature",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Riverton",
+      "normalized_form": null,
+      "pages": [
+        2
+      ],
+      "content_item_sequence": 6,
+      "context": "department heading",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Lakeside",
+      "normalized_form": null,
+      "pages": [
+        2
+      ],
+      "content_item_sequence": 7,
+      "context": "department heading",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Mill River",
+      "normalized_form": null,
+      "pages": [
+        2
+      ],
+      "content_item_sequence": 8,
+      "context": "site of the bridge",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Springfield",
+      "normalized_form": null,
+      "pages": [
+        2
+      ],
+      "content_item_sequence": 8,
+      "context": "home of the lowest bidder",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "person",
+      "source_form": "RICHARD ROE",
+      "normalized_form": null,
+      "pages": [
+        6
+      ],
+      "content_item_sequence": 8,
+      "context": "signature; canary-mention-04",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "organization",
+      "source_form": "Anytown Improvement Society",
+      "normalized_form": null,
+      "pages": [
+        3
+      ],
+      "content_item_sequence": 9,
+      "context": "organizer of the exhibition",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "person",
+      "source_form": "Mrs. Jane Doe",
+      "normalized_form": null,
+      "pages": [
+        3
+      ],
+      "content_item_sequence": 9,
+      "context": "prize winner",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Riverton",
+      "normalized_form": null,
+      "pages": [
+        4
+      ],
+      "content_item_sequence": 11,
+      "context": "the old road",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Elm Street",
+      "normalized_form": null,
+      "pages": [
+        4
+      ],
+      "content_item_sequence": 12,
+      "context": "street without lamps",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "person",
+      "source_form": "J.Q.P.",
+      "normalized_form": null,
+      "pages": [
+        4
+      ],
+      "content_item_sequence": 12,
+      "context": "signature",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "person",
+      "source_form": "Mrs. Jane Doe",
+      "normalized_form": null,
+      "pages": [
+        5
+      ],
+      "content_item_sequence": 13,
+      "context": "secretary",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Café Anytown",
+      "normalized_form": null,
+      "pages": [
+        5
+      ],
+      "content_item_sequence": 13,
+      "context": "meeting place",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "organization",
+      "source_form": "Public & Doe",
+      "normalized_form": null,
+      "pages": [
+        5
+      ],
+      "content_item_sequence": 14,
+      "context": "prices corrected by",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    },
+    {
+      "type": "place",
+      "source_form": "Anytown",
+      "normalized_form": null,
+      "pages": [
+        1,
+        5,
+        6,
+        7
+      ],
+      "content_item_sequence": null,
+      "context": "place of publication and of several notices",
+      "status": "Verified",
+      "evidence_note": "Read from the transcription.",
+      "external_evidence": []
+    }
+  ],
+  "subjects": [
+    {
+      "term": "Bridges",
+      "pages": [
+        2,
+        6
+      ],
+      "content_item_sequence": 8,
+      "status": "Verified",
+      "note": "The bids for a new bridge."
+    },
+    {
+      "term": "Street lighting",
+      "pages": [
+        4
+      ],
+      "content_item_sequence": 12,
+      "status": "Verified",
+      "note": "A request for lamps."
+    },
+    {
+      "term": "Exhibitions",
+      "pages": [
+        3
+      ],
+      "content_item_sequence": 9,
+      "status": "Verified",
+      "note": "The spring exhibition."
+    },
+    {
+      "term": "Prices",
+      "pages": [
+        5
+      ],
+      "content_item_sequence": 14,
+      "status": "Verified",
+      "note": "Weekly market prices."
+    },
+    {
+      "term": "Local news",
+      "pages": [
+        1,
+        2
+      ],
+      "content_item_sequence": null,
+      "status": "Verified",
+      "note": "Issue-level subject."
+    }
+  ],
+  "research_log": []
+}

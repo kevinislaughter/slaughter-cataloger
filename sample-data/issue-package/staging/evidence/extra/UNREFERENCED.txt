@@ -1,0 +1,1 @@
+A file the manifest does not name. The converter must keep it, byte for byte.

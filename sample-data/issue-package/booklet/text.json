@@ -1,0 +1,290 @@
+{
+  "format_version": "1.0",
+  "offset_unit": "codepoint",
+  "apparatus": null,
+  "pages": [
+    {
+      "page": 1,
+      "folio": null,
+      "folio_status": "absent",
+      "inferred_folio": "1",
+      "locations": [
+        {
+          "pdf_page": 1,
+          "region": "right",
+          "rotation": 90,
+          "source": "source/specimen-leaflet.pdf",
+          "size": [
+            1080,
+            720
+          ],
+          "box": [
+            540,
+            0,
+            1080,
+            720
+          ]
+        }
+      ],
+      "segmented": true,
+      "length": 329,
+      "sha256": "211ae81b35dc297dccf64c11c2e32782565ee8913d54a8c524d9dbd830ccc88f",
+      "text": "<!-- LOGICAL_PAGE_1_START -->\n[supplied: The right half of the first spread: the front page. A masthead across the top.]\n\n# THE PLACEHOLDER LEAFLET\n\n*No. 3 — Spring*\n\n### WELCOME\n\nThis leaflet is folded from one sheet. Its pages are printed out of order and read in order once folded. — THE EDITORS.\n\n<!-- LOGICAL_PAGE_1_END -->\n"
+    },
+    {
+      "page": 2,
+      "folio": "2",
+      "folio_status": "printed",
+      "locations": [
+        {
+          "pdf_page": 2,
+          "region": "left",
+          "rotation": 90
+        }
+      ],
+      "segmented": true,
+      "length": 271,
+      "sha256": "95248ac2ab3f4739838e71642d725dd149e9838893a0c1ebd1643892e214bf29",
+      "text": "<!-- LOGICAL_PAGE_2_START -->\n### A WALK TO THE LIGHTHOUSE\n\nThe path leaves the harbour wall and climbs past the old rope works. \\[Note: printed in the source, in brackets.\\] From the top the lighthouse is in view.\n\n*(continued on page 3)*\n\n2\n<!-- LOGICAL_PAGE_2_END -->\n"
+    },
+    {
+      "page": 3,
+      "folio": "3",
+      "folio_status": "printed",
+      "locations": [
+        {
+          "pdf_page": 3,
+          "region": "right",
+          "rotation": 90
+        }
+      ],
+      "segmented": true,
+      "length": 177,
+      "sha256": "2eed246f483816fb01abe9fe229cd3e62306e406f7eb817a6d9fb0662b48754c",
+      "text": "<!-- LOGICAL_PAGE_3_START -->\n### THE LIGHTHOUSE (continued from page 2)\n\nThe keeper shows visitors the lamp room on fine afternoons. — JANE DOE.\n\n3\n<!-- LOGICAL_PAGE_3_END -->\n"
+    },
+    {
+      "page": 4,
+      "folio": null,
+      "folio_status": "illegible",
+      "inferred_folio": "4",
+      "locations": [
+        {
+          "pdf_page": 4,
+          "region": "left",
+          "rotation": 90,
+          "size": [
+            1080,
+            720
+          ],
+          "box": [
+            0,
+            0,
+            540,
+            720
+          ]
+        }
+      ],
+      "segmented": true,
+      "length": 249,
+      "sha256": "e500db1224afa16e90c7a60e8507c1b273ef1a8c9da6ec53542c0a226949f254",
+      "text": "<!-- LOGICAL_PAGE_4_START -->\n### NOTES AND QUERIES\n\n#### A Query about Bells\n\nWhen were the church bells last recast? — R. R.\n\n### ACROSS THE CENTRE\n\nThis article begins on the left half of the centre spread [illegible]\n<!-- LOGICAL_PAGE_4_END -->\n"
+    },
+    {
+      "page": 5,
+      "folio": null,
+      "folio_status": "unverified",
+      "inferred_folio": "5",
+      "locations": [
+        {
+          "pdf_page": 4,
+          "region": "right",
+          "rotation": 90,
+          "size": [
+            1080,
+            720
+          ],
+          "box": [
+            540,
+            0,
+            1080,
+            720
+          ]
+        }
+      ],
+      "segmented": false,
+      "length": 133,
+      "sha256": "f785e920fca3a8d0dddd6e2d18246c23fc4189842a3d3697dbc26fc839ff6131",
+      "text": "<!-- LOGICAL_PAGE_5_START -->\nand ends on its right half, on the same sheet of paper. — JOHN Q. PUBLIC.\n\n<!-- LOGICAL_PAGE_5_END -->\n"
+    },
+    {
+      "page": 6,
+      "folio": null,
+      "folio_status": "unverified",
+      "inferred_folio": "6",
+      "locations": [
+        {
+          "pdf_page": 3,
+          "region": "left",
+          "rotation": 90
+        }
+      ],
+      "segmented": false,
+      "length": 198,
+      "sha256": "193285ada600a9519ade26ac491b57beb247b041fbb49c9629520461c2363b23",
+      "text": "<!-- LOGICAL_PAGE_6_START -->\n### EVENING\n\nThe lamps come on along the quay,\nThe boats come in from sea.\n\n— A. N. OTHER\n\n[supplied: A small engraving of a moored boat.]\n\n<!-- LOGICAL_PAGE_6_END -->\n"
+    },
+    {
+      "page": 7,
+      "folio": null,
+      "folio_status": "unverified",
+      "inferred_folio": "7",
+      "locations": [
+        {
+          "pdf_page": 2,
+          "region": "right",
+          "rotation": 90
+        }
+      ],
+      "segmented": false,
+      "length": 155,
+      "sha256": "7c58aaafcfda9e1f7a2e468ddeda5a0a72bd10731153b7d4d183e5f21f58c060",
+      "text": "<!-- LOGICAL_PAGE_7_START -->\n<!-- PDF_PAGE: 2 -->\nSir, — The leaflet arrives folded and is a pleasure to unfold. — A READER.\n\n<!-- LOGICAL_PAGE_7_END -->\n"
+    },
+    {
+      "page": 8,
+      "folio": null,
+      "folio_status": "absent",
+      "inferred_folio": "8",
+      "locations": [
+        {
+          "pdf_page": 1,
+          "region": "left",
+          "rotation": 90,
+          "size": [
+            1080,
+            720
+          ],
+          "box": [
+            0,
+            0,
+            540,
+            720
+          ]
+        }
+      ],
+      "segmented": false,
+      "length": 137,
+      "sha256": "3e32ead042434c5350575554698f3a82f00ba025c9a2aecc38c821cb0b41bbc9",
+      "text": "<!-- LOGICAL_PAGE_8_START -->\n### NOTICES\n\nSubscriptions: four numbers, post free. Write to Box 9, Anytown.\n\n<!-- LOGICAL_PAGE_8_END -->\n"
+    }
+  ],
+  "segments": [
+    {
+      "id": "p001-s001-1",
+      "item": "leaflet-item-001",
+      "page": 1,
+      "start": 167,
+      "end": 301,
+      "order": 1
+    },
+    {
+      "id": "p002-s002-1",
+      "item": "leaflet-item-002",
+      "page": 2,
+      "start": 30,
+      "end": 241,
+      "order": 1
+    },
+    {
+      "id": "p003-s002-2",
+      "item": "leaflet-item-002",
+      "page": 3,
+      "start": 30,
+      "end": 147,
+      "order": 2
+    },
+    {
+      "id": "p004-s003-1",
+      "item": "leaflet-item-003",
+      "page": 4,
+      "start": 30,
+      "end": 53,
+      "order": 1
+    },
+    {
+      "id": "p004-s004-1",
+      "item": "leaflet-item-004",
+      "page": 4,
+      "start": 53,
+      "end": 128,
+      "order": 1
+    },
+    {
+      "id": "p004-s005-1",
+      "item": "leaflet-item-005",
+      "page": 4,
+      "start": 128,
+      "end": 208,
+      "order": 1
+    }
+  ],
+  "unassigned": [
+    {
+      "id": "p001-u1",
+      "page": 1,
+      "start": 0,
+      "end": 167,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p001-u2",
+      "page": 1,
+      "start": 301,
+      "end": 329,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p002-u1",
+      "page": 2,
+      "start": 0,
+      "end": 30,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p002-u2",
+      "page": 2,
+      "start": 241,
+      "end": 271,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p003-u1",
+      "page": 3,
+      "start": 0,
+      "end": 30,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p003-u2",
+      "page": 3,
+      "start": 147,
+      "end": 177,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p004-u1",
+      "page": 4,
+      "start": 0,
+      "end": 30,
+      "reason": "page anchors, masthead and page numbers"
+    },
+    {
+      "id": "p004-u2",
+      "page": 4,
+      "start": 208,
+      "end": 249,
+      "reason": "page anchors, masthead and page numbers"
+    }
+  ]
+}

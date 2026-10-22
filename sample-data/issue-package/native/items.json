@@ -1,0 +1,1665 @@
+{
+  "format_version": "1.0",
+  "schema": "3.0",
+  "headers": [
+    "Slaughter Cataloger Tool",
+    "Schema Version",
+    "Title Library Slug",
+    "TitleID",
+    "Entry Order",
+    "ContentID",
+    "IssueID",
+    "Issue Reference",
+    "Sequence",
+    "Item Title",
+    "Author / Credit",
+    "Content Type",
+    "Parent Item",
+    "Parent ContentID",
+    "Start Page",
+    "End Page",
+    "Notes",
+    "Speculative",
+    "Speculative Fields",
+    "N/A Fields"
+  ],
+  "items": [
+    {
+      "key": "gazette-v4n1-item-0001",
+      "sequence": 1,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "1",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "1",
+        "Item Title": "To Our Readers",
+        "Author / Credit": "The Editor",
+        "Content Type": "editorial",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "1",
+        "End Page": "2",
+        "Notes": "Continued on page 2.",
+        "Speculative": "Yes",
+        "Speculative Fields": "Start Page",
+        "N/A Fields": "Parent Item"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            1,
+            2
+          ],
+          "source_printed_start_page_uncertain": true,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "1",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "1",
+            "Item Title": "To Our Readers",
+            "Author / Credit": "The Editor",
+            "Content Type": "editorial",
+            "Parent Item": "",
+            "Start Page": "1",
+            "End Page": "2",
+            "Notes": "Continued on page 2.",
+            "Speculative": "Yes",
+            "Speculative Fields": "Start Page",
+            "N/A Fields": "Parent Item"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            1,
+            2
+          ],
+          "historical_contents_source_pdf_pages": [
+            1,
+            2
+          ],
+          "item_title_from_existing_crosswalk": "To Our Readers",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "NULL_MULTIPLE_SEGMENTS__USE_SEGMENTS_ARRAY",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Start Page",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": true,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0001",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          },
+          "text": null
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0002",
+      "sequence": 2,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "2",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "2",
+        "Item Title": "A Correction",
+        "Author / Credit": "",
+        "Content Type": "notice",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "1",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "Yes",
+        "Speculative Fields": "Start Page",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            1
+          ],
+          "source_printed_start_page_uncertain": true,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "2",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "2",
+            "Item Title": "A Correction",
+            "Author / Credit": "",
+            "Content Type": "notice",
+            "Parent Item": "",
+            "Start Page": "1",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "Yes",
+            "Speculative Fields": "Start Page",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            1
+          ],
+          "historical_contents_source_pdf_pages": [
+            1
+          ],
+          "item_title_from_existing_crosswalk": "A Correction",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Start Page",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": true,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0002",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0003",
+      "sequence": 3,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "3",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "3",
+        "Item Title": "Around the County",
+        "Author / Credit": "",
+        "Content Type": "department",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "1",
+        "End Page": "2",
+        "Notes": "Department; its notes are separate items.",
+        "Speculative": "Yes",
+        "Speculative Fields": "Start Page",
+        "N/A Fields": "Author / Credit; Parent Item"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            1,
+            2
+          ],
+          "source_printed_start_page_uncertain": true,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "3",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "3",
+            "Item Title": "Around the County",
+            "Author / Credit": "",
+            "Content Type": "department",
+            "Parent Item": "",
+            "Start Page": "1",
+            "End Page": "2",
+            "Notes": "Department; its notes are separate items.",
+            "Speculative": "Yes",
+            "Speculative Fields": "Start Page",
+            "N/A Fields": "Author / Credit; Parent Item"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            1,
+            2
+          ],
+          "historical_contents_source_pdf_pages": [
+            1,
+            2
+          ],
+          "item_title_from_existing_crosswalk": "Around the County",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "NULL_MULTIPLE_SEGMENTS__USE_SEGMENTS_ARRAY",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Start Page",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": true,
+            "boundaries_review_required": true
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0003",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          },
+          "text": null
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0004",
+      "sequence": 4,
+      "parent": "gazette-v4n1-item-0003",
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "4",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "4",
+        "Item Title": "Eastfield",
+        "Author / Credit": "Jane Doe",
+        "Content Type": "report",
+        "Parent Item": "Around the County",
+        "Parent ContentID": "",
+        "Start Page": "1",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "Yes",
+        "Speculative Fields": "Start Page",
+        "N/A Fields": "End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            1
+          ],
+          "source_printed_start_page_uncertain": true,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "4",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "4",
+            "Item Title": "Eastfield",
+            "Author / Credit": "Jane Doe",
+            "Content Type": "report",
+            "Parent Item": "Around the County",
+            "Start Page": "1",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "Yes",
+            "Speculative Fields": "Start Page",
+            "N/A Fields": "End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            1
+          ],
+          "historical_contents_source_pdf_pages": [
+            1
+          ],
+          "item_title_from_existing_crosswalk": "Eastfield",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Start Page",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": true,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0004",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0005",
+      "sequence": 5,
+      "parent": null,
+      "title_origin": "supplied",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "5",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "5",
+        "Item Title": "[A Thought for the Week]",
+        "Author / Credit": "",
+        "Content Type": "quotation",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "1",
+        "End Page": "",
+        "Notes": "Supplied title.",
+        "Speculative": "Yes",
+        "Speculative Fields": "Item Title; Start Page",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            1
+          ],
+          "source_printed_start_page_uncertain": true,
+          "item_title_origin": "EDITORIAL_SUPPLIED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "5",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "5",
+            "Item Title": "[A Thought for the Week]",
+            "Author / Credit": "",
+            "Content Type": "quotation",
+            "Parent Item": "",
+            "Start Page": "1",
+            "End Page": "",
+            "Notes": "Supplied title.",
+            "Speculative": "Yes",
+            "Speculative Fields": "Item Title; Start Page",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            1
+          ],
+          "historical_contents_source_pdf_pages": [
+            1
+          ],
+          "item_title_from_existing_crosswalk": "[A Thought for the Week]",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Item Title; Start Page",
+            "title_origin": "EDITORIAL_SUPPLIED",
+            "page_one_printed_folio_unknown": true,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0005",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": [
+        "Title supplied by the cataloger; not printed."
+      ]
+    },
+    {
+      "key": "gazette-v4n1-item-0006",
+      "sequence": 6,
+      "parent": "gazette-v4n1-item-0003",
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "6",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "6",
+        "Item Title": "Riverton",
+        "Author / Credit": "R. R.",
+        "Content Type": "report",
+        "Parent Item": "Around the County",
+        "Parent ContentID": "",
+        "Start Page": "2",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            2
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "6",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "6",
+            "Item Title": "Riverton",
+            "Author / Credit": "R. R.",
+            "Content Type": "report",
+            "Parent Item": "Around the County",
+            "Start Page": "2",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            2
+          ],
+          "historical_contents_source_pdf_pages": [
+            2
+          ],
+          "item_title_from_existing_crosswalk": "Riverton",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0006",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0007",
+      "sequence": 7,
+      "parent": "gazette-v4n1-item-0003",
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "7",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "7",
+        "Item Title": "Lakeside",
+        "Author / Credit": "A Correspondent",
+        "Content Type": "report",
+        "Parent Item": "Around the County",
+        "Parent ContentID": "",
+        "Start Page": "2",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            2
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "7",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "7",
+            "Item Title": "Lakeside",
+            "Author / Credit": "A Correspondent",
+            "Content Type": "report",
+            "Parent Item": "Around the County",
+            "Start Page": "2",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            2
+          ],
+          "historical_contents_source_pdf_pages": [
+            2
+          ],
+          "item_title_from_existing_crosswalk": "Lakeside",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0007",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0008",
+      "sequence": 8,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "8",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "8",
+        "Item Title": "The New Bridge",
+        "Author / Credit": "Richard Roe",
+        "Content Type": "report",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "2",
+        "End Page": "6",
+        "Notes": "Continued on page 6.",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Parent Item"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            2,
+            6
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "8",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "8",
+            "Item Title": "The New Bridge",
+            "Author / Credit": "Richard Roe",
+            "Content Type": "report",
+            "Parent Item": "",
+            "Start Page": "2",
+            "End Page": "6",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Parent Item"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            2,
+            6
+          ],
+          "historical_contents_source_pdf_pages": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "item_title_from_existing_crosswalk": "The New Bridge",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "NULL_MULTIPLE_SEGMENTS__USE_SEGMENTS_ARRAY",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0008",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          },
+          "continuation_resolution": {
+            "earlier_segment_id": "p002-s0008-01",
+            "continuation_segment_id": "p006-s0008-02",
+            "intervening_pages_not_item_text": [
+              3,
+              4,
+              5
+            ]
+          },
+          "text": null
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0009",
+      "sequence": 9,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "9",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "9",
+        "Item Title": "The Spring Exhibition",
+        "Author / Credit": "",
+        "Content Type": "report",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "3",
+        "End Page": "",
+        "Notes": "With an engraving.",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            3
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "9",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "9",
+            "Item Title": "The Spring Exhibition",
+            "Author / Credit": "",
+            "Content Type": "report",
+            "Parent Item": "",
+            "Start Page": "3",
+            "End Page": "",
+            "Notes": "With an engraving.",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            3
+          ],
+          "historical_contents_source_pdf_pages": [
+            3
+          ],
+          "item_title_from_existing_crosswalk": "The Spring Exhibition",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "NULL_MULTIPLE_SEGMENTS__USE_SEGMENTS_ARRAY",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0009",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          },
+          "text": null
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0010",
+      "sequence": 10,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "10",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "10",
+        "Item Title": "Correspondence",
+        "Author / Credit": "",
+        "Content Type": "department",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "4",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            4
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "10",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "10",
+            "Item Title": "Correspondence",
+            "Author / Credit": "",
+            "Content Type": "department",
+            "Parent Item": "",
+            "Start Page": "4",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            4
+          ],
+          "historical_contents_source_pdf_pages": [
+            4
+          ],
+          "item_title_from_existing_crosswalk": "Correspondence",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0010",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0011",
+      "sequence": 11,
+      "parent": "gazette-v4n1-item-0010",
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "11",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "11",
+        "Item Title": "A Word for the Old Road",
+        "Author / Credit": "A Subscriber",
+        "Content Type": "letter",
+        "Parent Item": "Correspondence",
+        "Parent ContentID": "",
+        "Start Page": "4",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            4
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "11",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "11",
+            "Item Title": "A Word for the Old Road",
+            "Author / Credit": "A Subscriber",
+            "Content Type": "letter",
+            "Parent Item": "Correspondence",
+            "Start Page": "4",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            4
+          ],
+          "historical_contents_source_pdf_pages": [
+            4
+          ],
+          "item_title_from_existing_crosswalk": "A Word for the Old Road",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0011",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0012",
+      "sequence": 12,
+      "parent": "gazette-v4n1-item-0010",
+      "title_origin": "supplied",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "12",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "12",
+        "Item Title": "[On Street Lamps]",
+        "Author / Credit": "J.Q.P.",
+        "Content Type": "letter",
+        "Parent Item": "Correspondence",
+        "Parent ContentID": "",
+        "Start Page": "4",
+        "End Page": "",
+        "Notes": "Supplied title.",
+        "Speculative": "Yes",
+        "Speculative Fields": "Item Title",
+        "N/A Fields": "End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            4
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "EDITORIAL_SUPPLIED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "12",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "12",
+            "Item Title": "[On Street Lamps]",
+            "Author / Credit": "J.Q.P.",
+            "Content Type": "letter",
+            "Parent Item": "Correspondence",
+            "Start Page": "4",
+            "End Page": "",
+            "Notes": "Supplied title.",
+            "Speculative": "Yes",
+            "Speculative Fields": "Item Title",
+            "N/A Fields": "End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            4
+          ],
+          "historical_contents_source_pdf_pages": [
+            4
+          ],
+          "item_title_from_existing_crosswalk": "[On Street Lamps]",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Item Title",
+            "title_origin": "EDITORIAL_SUPPLIED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0012",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": [
+        "Title supplied by the cataloger; not printed."
+      ]
+    },
+    {
+      "key": "gazette-v4n1-item-0013",
+      "sequence": 13,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "13",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "13",
+        "Item Title": "Notice of a Meeting",
+        "Author / Credit": "",
+        "Content Type": "notice",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "5",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            5
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "13",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "13",
+            "Item Title": "Notice of a Meeting",
+            "Author / Credit": "",
+            "Content Type": "notice",
+            "Parent Item": "",
+            "Start Page": "5",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            5
+          ],
+          "historical_contents_source_pdf_pages": [
+            5
+          ],
+          "item_title_from_existing_crosswalk": "Notice of a Meeting",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0013",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0014",
+      "sequence": 14,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "14",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "14",
+        "Item Title": "Market Prices",
+        "Author / Credit": "Public & Doe",
+        "Content Type": "report",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "5",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            5
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "14",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "14",
+            "Item Title": "Market Prices",
+            "Author / Credit": "Public & Doe",
+            "Content Type": "report",
+            "Parent Item": "",
+            "Start Page": "5",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            5
+          ],
+          "historical_contents_source_pdf_pages": [
+            5
+          ],
+          "item_title_from_existing_crosswalk": "Market Prices",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0014",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0015",
+      "sequence": 15,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "15",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "15",
+        "Item Title": "Wants and Offers",
+        "Author / Credit": "",
+        "Content Type": "department",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "6",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            6
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "15",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "15",
+            "Item Title": "Wants and Offers",
+            "Author / Credit": "",
+            "Content Type": "department",
+            "Parent Item": "",
+            "Start Page": "6",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            6
+          ],
+          "historical_contents_source_pdf_pages": [
+            6
+          ],
+          "item_title_from_existing_crosswalk": "Wants and Offers",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0015",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "key": "gazette-v4n1-item-0016",
+      "sequence": 16,
+      "parent": "gazette-v4n1-item-0015",
+      "title_origin": "supplied",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "16",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "16",
+        "Item Title": "[For Sale: A Velocipede]",
+        "Author / Credit": "",
+        "Content Type": "advertisement",
+        "Parent Item": "Wants and Offers",
+        "Parent ContentID": "",
+        "Start Page": "6",
+        "End Page": "",
+        "Notes": "Supplied title.",
+        "Speculative": "Yes",
+        "Speculative Fields": "Item Title",
+        "N/A Fields": "Author / Credit; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            6
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "EDITORIAL_SUPPLIED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "16",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "16",
+            "Item Title": "[For Sale: A Velocipede]",
+            "Author / Credit": "",
+            "Content Type": "advertisement",
+            "Parent Item": "Wants and Offers",
+            "Start Page": "6",
+            "End Page": "",
+            "Notes": "Supplied title.",
+            "Speculative": "Yes",
+            "Speculative Fields": "Item Title",
+            "N/A Fields": "Author / Credit; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            6
+          ],
+          "historical_contents_source_pdf_pages": [
+            6
+          ],
+          "item_title_from_existing_crosswalk": "[For Sale: A Velocipede]",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Item Title",
+            "title_origin": "EDITORIAL_SUPPLIED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0016",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": [
+        "Title supplied by the cataloger; not printed."
+      ]
+    },
+    {
+      "key": "gazette-v4n1-item-0017",
+      "sequence": 17,
+      "parent": "gazette-v4n1-item-0015",
+      "title_origin": "supplied",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "17",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "17",
+        "Item Title": "[Wanted: A Clerk]",
+        "Author / Credit": "",
+        "Content Type": "advertisement",
+        "Parent Item": "Wants and Offers",
+        "Parent ContentID": "",
+        "Start Page": "6",
+        "End Page": "",
+        "Notes": "Supplied title.",
+        "Speculative": "Yes",
+        "Speculative Fields": "Item Title",
+        "N/A Fields": "Author / Credit; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            6
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "EDITORIAL_SUPPLIED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "PENDING_PARENT_RECONCILIATION",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "17",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "17",
+            "Item Title": "[Wanted: A Clerk]",
+            "Author / Credit": "",
+            "Content Type": "advertisement",
+            "Parent Item": "Wants and Offers",
+            "Start Page": "6",
+            "End Page": "",
+            "Notes": "Supplied title.",
+            "Speculative": "Yes",
+            "Speculative Fields": "Item Title",
+            "N/A Fields": "Author / Credit; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            6
+          ],
+          "historical_contents_source_pdf_pages": [
+            6
+          ],
+          "item_title_from_existing_crosswalk": "[Wanted: A Clerk]",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "VERBATIM_SINGLE_SEGMENT",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "Item Title",
+            "title_origin": "EDITORIAL_SUPPLIED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0017",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          }
+        }
+      },
+      "notes": [
+        "Title supplied by the cataloger; not printed."
+      ]
+    },
+    {
+      "key": "gazette-v4n1-item-0018",
+      "sequence": 18,
+      "parent": null,
+      "title_origin": "printed",
+      "row": {
+        "Slaughter Cataloger Tool": "Contents",
+        "Schema Version": "3.0",
+        "Title Library Slug": "EXAMPLE-LIBRARY",
+        "TitleID": "EXAGAZEX-1872",
+        "Entry Order": "18",
+        "ContentID": "",
+        "IssueID": "EXAGAZEX-1872-KRNYWA2",
+        "Issue Reference": "Example Gazette V4 I1 N157",
+        "Sequence": "18",
+        "Item Title": "Subscribe to the Gazette",
+        "Author / Credit": "",
+        "Content Type": "form",
+        "Parent Item": "",
+        "Parent ContentID": "",
+        "Start Page": "7",
+        "End Page": "",
+        "Notes": "",
+        "Speculative": "No",
+        "Speculative Fields": "",
+        "N/A Fields": "Author / Credit; Parent Item; End Page"
+      },
+      "origin": {
+        "candidate_contents_seq001-018.provisional.json": {
+          "source_pdf_pages": [
+            7
+          ],
+          "source_printed_start_page_uncertain": false,
+          "item_title_origin": "PRINTED",
+          "content_id_resolution_status": "PENDING_IMPORTER_CATALOG_RECONCILIATION",
+          "parent_content_id_resolution_status": "NOT_APPLICABLE_NO_PARENT",
+          "legacy_source_fields": {
+            "Slaughter Cataloger Tool": "Contents",
+            "Schema Version": "3.0",
+            "Title Library Slug": "EXAMPLE-LIBRARY",
+            "TitleID": "EXAGAZEX-1872",
+            "Entry Order": "18",
+            "IssueID": "EXAGAZEX-1872-KRNYWA2",
+            "Issue Reference": "Example Gazette V4 I1 N157",
+            "Sequence": "18",
+            "Item Title": "Subscribe to the Gazette",
+            "Author / Credit": "",
+            "Content Type": "form",
+            "Parent Item": "",
+            "Start Page": "7",
+            "End Page": "",
+            "Notes": "",
+            "Speculative": "No",
+            "Speculative Fields": "",
+            "N/A Fields": "Author / Credit; Parent Item; End Page"
+          },
+          "cataloger_3_0_fields": {
+            "ContentID": null,
+            "Parent ContentID": null
+          }
+        },
+        "fulltext.json": {
+          "source_pages": [
+            7
+          ],
+          "historical_contents_source_pdf_pages": [
+            7
+          ],
+          "item_title_from_existing_crosswalk": "Subscribe to the Gazette",
+          "segmentation_status": "SEGMENTED_FROM_REVIEWED_TEXT",
+          "text_field_policy": "NULL_MULTIPLE_SEGMENTS__USE_SEGMENTS_ARRAY",
+          "item_complete_within_pilot": true,
+          "uncertainty": {
+            "cataloger_speculative_fields": "",
+            "title_origin": "PRINTED",
+            "page_one_printed_folio_unknown": false,
+            "boundaries_review_required": false
+          },
+          "provenance": {
+            "crosswalk_local_key": "gazette-v4n1-item-0018",
+            "source_transcription_member": "transcription.md",
+            "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009"
+          },
+          "text": null
+        }
+      },
+      "notes": []
+    }
+  ],
+  "origin": {
+    "candidate_contents_seq001-018.provisional.json": {
+      "file_kind": "PROVISIONAL_CANDIDATE_CONTENTS_ROWS__NOT_CANONICAL",
+      "contract_status": "PROVISIONAL_STAGING_ONLY",
+      "package_id": "example-gazette-v4n1-1875-candidates-s001-s018",
+      "target_schema": "Slaughter Cataloger 3.0 Contents (headers from schema.js)",
+      "scope": {
+        "only_source_sequences": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "other_sequences_excluded_from_this_checkpoint": false
+      },
+      "working_identity": {
+        "title_id": "EXAGAZEX-1872",
+        "issue_id": "EXAGAZEX-1872-KRNYWA2",
+        "issue_id_status": "working identity; live catalog reconciliation pending"
+      },
+      "permanent_content_ids": "NULL pending importer review"
+    }
+  }
+}

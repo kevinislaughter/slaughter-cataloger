@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slaughter Cataloger — Beta 2.5</title>
+  <style>
+    :root{
+      --paper:#ffffff;
+      --ink:#111111;
+      --ink-soft:#4a4a4a;
+      --line:#c9c9c9;
+      --line-strong:#8a8a8a;
+      --panel:#f3f3f1;
+      --entry:#a3410a;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{
+      background:var(--paper);
+      color:var(--ink);
+      font-family:"Courier New", Courier, monospace;
+      font-size:14px;
+      line-height:1.7;
+      max-width:780px;
+      margin:0 auto;
+      padding:48px 32px 80px;
+    }
+
+    header{margin-bottom:16px; padding-bottom:6px;}
+    h1{
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:13px; font-weight:700;
+      letter-spacing:2.5px; text-transform:uppercase;
+      margin-bottom:4px;
+      display:flex; align-items:baseline; justify-content:space-between;
+    }
+    h1 .beta{font-size:9px; letter-spacing:3px; font-weight:400; color:var(--ink-soft); vertical-align:middle;}
+    .subtitle{font-size:11px; color:var(--ink-soft); letter-spacing:.5px; font-style:italic;}
+
+    h2{
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:10px; letter-spacing:2px; text-transform:uppercase;
+      color:var(--ink-soft);
+      background:#fdf0e8;
+      padding:5px 8px;
+      margin:20px 0 16px;
+      border-bottom:1px solid var(--line);
+    }
+
+    p{margin-bottom:1em;}
+    strong{color:var(--ink); font-weight:700;}
+    em{font-style:italic;}
+    code{background:var(--panel); padding:2px 6px; font-size:12px;}
+
+    .tool-link{color:var(--entry); text-decoration:none; border-bottom:1px solid var(--entry); font-size:12px;}
+    .feature{margin-bottom:1.4em;}
+    .feature-title{color:var(--ink); font-weight:700; display:inline;}
+
+    .state-block{margin-bottom:1.2em; padding-left:14px; border-left:2px solid var(--line);}
+    .state-filled   .state-label{color:var(--entry); font-weight:700;}
+    .state-spec     .state-label{color:var(--ink); font-weight:700;}
+    .state-na       .state-label{color:var(--ink-soft); font-weight:700;}
+    .state-unaddr   .state-label{
+      font-weight:700;
+      text-decoration:underline;
+      text-decoration-color:#e8a87c;
+      text-decoration-thickness:2px;
+      text-underline-offset:3px;
+    }
+
+    hr{border:none; border-top:1px solid var(--line); margin:36px 0;}
+
+    footer{
+      margin-top:48px; padding-top:16px;
+      border-top:1px solid var(--line);
+      font-size:11px; color:var(--ink-soft); letter-spacing:.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Slaughter Cataloger <span class="beta">:: Beta 2.5</span></h1>
+    <div class="subtitle">A Suite of Local-First Tools for Documenting Serial Publications</div>
+    <p style="margin-top:8px; font-size:11px; color:var(--ink-soft); line-height:1.5;">This is a beta release — functional and ready for real use, but actively being refined based on feedback and personal use. If you encounter a bug, find a field that doesn't behave as expected, or have a suggestion, please open an issue on the project's page, <a href="https://github.com/kevinislaughter/slaughter-cataloger/issues" style="color:var(--entry); text-decoration:none; border-bottom:1px solid var(--entry);">github.com/kevinislaughter/slaughter-cataloger</a>.</p>
+
+    <nav style="margin-top:14px; font-size:11px; line-height:2; color:var(--ink-soft);">
+      <a href="#the-suite" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">The Suite</a> &nbsp;·&nbsp;
+      <a href="#workflow" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Workflow</a> &nbsp;·&nbsp;
+      <a href="#titles" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Titles</a> &nbsp;·&nbsp;
+      <a href="#issues" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Issues</a> &nbsp;·&nbsp;
+      <a href="#contents" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Contents</a> &nbsp;·&nbsp;
+      <a href="#compiler" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Compiler</a> &nbsp;·&nbsp;
+      <a href="#filenames" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Filenames</a> &nbsp;·&nbsp;
+      <a href="#issueid" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">IssueID</a> &nbsp;·&nbsp;
+      <a href="#field-states" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Field States</a> &nbsp;·&nbsp;
+      <a href="#scope" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Scope</a> &nbsp;·&nbsp;
+      <a href="#release-history" style="color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);">Release History</a>
+    </nav>
+  </header>
+
+  <!-- ═══════════════ THE SUITE ═══════════════ -->
+
+  <h2 id="the-suite">The Suite</h2>
+
+  <p>Slaughter Cataloger is a suite of local-first browser tools for documenting serial publications — newsletters, magazines, journals, newspapers, zines, bulletins, and any other publication issued in numbered installments.</p>
+
+  <p>Everything runs locally in your browser. No account, no server, no data leaves your machine. Each tool is a single HTML file; the suite is a folder. Output is standard CSV — readable by every data tool that has ever existed and every one that will. As AI-assisted conversion becomes routine, a well-structured CSV can be transformed into virtually any target format with minimal effort. The data you enter today is not hostage to any particular piece of software, including this one.</p>
+
+  <p>The suite consists of four tools:</p>
+
+  <p><strong>Titles</strong> — manages title-level metadata: the publication's canonical title, publication history, publisher, editors, frequency, ISSN, city, country, and extended notes (mission statement, editorial statement, bibliographic notes). Creates the TitleID, which is the upstream key for the entire suite. <a href="slaughter-01titles-beta2.5.html" class="tool-link">→ Open Titles</a></p>
+
+  <p><strong>Issues</strong> — the canonical issue list. Records what was published, when, and under what numbering: volume, issue number, whole number, year, month(s), day, date as printed, contributors, edition, printer, printer location, issue designation, price, pages, size, short name, and notes. Requires a Titles CSV. <a href="slaughter-02issues-beta2.5.html" class="tool-link">→ Open Issues</a></p>
+
+  <p><strong>Contents</strong> — records what appears inside each issue: articles, poems, editorials, correspondence, advertisements, authors, page ranges, content types, and notes. Each contents entry links to its parent issue via IssueID. Requires an Issues CSV. <a href="slaughter-03contents-beta2.5.html" class="tool-link">→ Open Contents</a></p>
+
+  <p><strong>Compiler</strong> — produces formatted outputs from your data. Loads the CSVs required for the selected output type: Checklist (Issues only), RIS for Zotero (Titles + Issues + Contents), Proofing Catalog (Titles + Issues + Contents, print-optimised for physical verification), and WordPress Catalog (native Gutenberg block markup). <a href="slaughter-04compiler-beta2.5.html" class="tool-link">→ Open Compiler</a></p>
+
+  <!-- ═══════════════ WORKFLOW ═══════════════ -->
+
+  <h2 id="workflow">Workflow</h2>
+
+  <p>The suite follows a locked dependency chain. Each tool depends on its upstream data and will not accept records until the appropriate CSV is loaded:</p>
+
+  <p><strong>Titles</strong> (no dependencies) → export Titles CSV → <strong>Issues</strong> (load Titles CSV, select a title) → export Issues CSV → <strong>Contents</strong> (load Issues CSV, select an issue) → export Contents CSV → <strong>Compiler</strong> (load Titles CSV, select a title, load the required source CSVs, then generate output)</p>
+
+  <p>This prevents orphaned records and ensures the suite's data hierarchy is always consistent. Each tool validates loaded files by checking the <code>Slaughter Cataloger Tool</code> column in every CSV row. Loading a Contents CSV into the Issues tool, for example, is rejected with an error.</p>
+
+  <p>The <strong>Title Library Slug</strong> — a machine-friendly identifier for your themed collection (e.g. <code>EXAMPLE-LIBRARY</code>) — is set in the Titles app and carried through every CSV in the chain. The Compiler validates that loaded files share the same slug.</p>
+
+  <!-- ═══════════════ TITLES ═══════════════ -->
+
+  <h2 id="titles">Titles — What It Tracks</h2>
+
+  <p>The Titles app manages publication-level metadata — facts about the journal as a whole, not about individual issues. Fields are organized into four tiers:</p>
+
+  <p><strong>Title Library</strong> — Title Library Slug (required, machine-friendly), Title Library Name, Title Library Note. These define the themed collection and are sticky across all records.</p>
+
+  <p><strong>Title Identity</strong> — Canonical Title, Title Code (8 characters, auto-suggested), First Year of Publication (CE), First Year Note, Original/First Published Title, Subtitle. TitleID is computed from Title Code + First Year.</p>
+
+  <p><strong>Title History</strong> — Former Title(s), Later Title(s), Related Title(s).</p>
+
+  <p><strong>Publication Details</strong> — Publisher, Editor(s), City, State/Province, Country, Language, Frequency, ISSN.</p>
+
+  <p><strong>Extended Notes</strong> — Publication History Note, Mission Statement/Prospectus, Introduction/Editorial Statement, Bibliographic Note, General Notes.</p>
+
+  <!-- ═══════════════ ISSUES ═══════════════ -->
+
+  <h2 id="issues">Issues — What It Tracks</h2>
+
+  <p>The Issues app produces a canonical issue list: a record of what was published, when, and under what numbering. It is not a holdings inventory — it does not track which copies you own. It answers the prior question: <em>what issues exist?</em></p>
+
+  <p>Issues are organized into two form tiers, with identification computed at the bottom:</p>
+
+  <p><strong>Title Level</strong> — inherited from the selected Title, editable per-issue: title, subtitle, former/later titles, publisher, editor(s), ISSN, language, series, series number, city, state/province, country, frequency.</p>
+
+  <p><strong>Issue Level</strong> — volume, issue/no. within volume, whole number, year (CE/Alt. calendar), month(s)/season, day, date as printed, contributors, edition, printer, printer location, issue designation (via Special toggle), supplement label, price, pages, size, short name, and notes on issue. Examined/Reported toggle with evidence note.</p>
+
+  <p><strong>Identification</strong> — TitleID (inherited from selected Title), IssueID (generated on first Record, permanent). Both displayed read-only.</p>
+
+  <p>Auto-advance, season mode, duplicate detection, and the full field-state system are described under Key Features below.</p>
+
+  <!-- ═══════════════ CONTENTS ═══════════════ -->
+
+  <h2 id="contents">Contents — What It Tracks</h2>
+
+  <p>The Contents app records what appears inside each issue — essentially a table of contents that can be as detailed as the compiler wants. Each entry links to its parent issue via IssueID.</p>
+
+  <p>Fields per entry: sequence (auto-advancing per issue), item title, author/credit, content type (article, poem, editorial, correspondence, advertisement, etc. — free text with a datalist of common values), parent item (for nested items like poems under a section heading), start page, end page, and notes.</p>
+
+  <p>Contents uses the same field-state system as Issues. A field may be filled normally, marked speculative with ?, marked N/A, or left unaddressed. This is especially useful for uncredited items (Author = N/A), uncertain page ranges (Start Page = ?), supplied titles (Item Title = ? with bracketed text), and top-level items (Parent Item = N/A).</p>
+
+  <p>Item Title is required — it cannot be marked N/A. If no printed title exists, enter a supplied title in brackets and mark it speculative.</p>
+
+  <!-- ═══════════════ COMPILER ═══════════════ -->
+
+  <h2 id="compiler">Compiler</h2>
+
+  <p>The Compiler produces formatted, human-readable outputs from your data. It does not store records — it reads CSVs and generates documents.</p>
+
+  <p>Current output type: <strong>Checklist</strong> — a per-issue list in one of three styles:</p>
+
+  <p><strong>Plain</strong> — <code>☐ Vol. 1, No. 1 — May 1872</code> — quick reference.</p>
+  <p><strong>Bibliographic</strong> — full citation line with optional publisher, printer, pages, size, price.</p>
+  <p><strong>Technical</strong> — IssueID-led: <code>EXAGAZEX-1872-K7M4Q2 — Vol. 1, No. 1 — May 1872</code></p>
+
+  <p>Twelve toggleable options: checkboxes, IssueID, page count, physical size, price, publisher, printer, speculative flags, notes, subtitle, issue designation, evidence basis. Options auto-regenerate the preview.</p>
+
+  <p>Four export formats: Copy (plain text to clipboard), HTML (standalone page), Markdown (with task-list checkboxes), Plain text file.</p>
+
+  <p>Export filenames follow the convention <code>SCATOUT_SLUG_TITLEID_TYPE_DATE.ext</code> when output covers one title, or <code>SCATOUT_SLUG_TYPE_DATE.ext</code> for library-wide output:</p>
+  <table style="font-size:12px; width:100%; border-collapse:collapse; margin-bottom:1em;">
+    <tr style="border-bottom:1px solid var(--line);"><td style="padding:4px 8px; color:var(--ink-soft); font-family:Georgia,serif; font-size:9px; text-transform:uppercase; letter-spacing:1px;">Scope</td><td style="padding:4px 8px; color:var(--ink-soft); font-family:Georgia,serif; font-size:9px; text-transform:uppercase; letter-spacing:1px;">Example</td></tr>
+    <tr><td style="padding:4px 8px; white-space:nowrap;">Checklist, single title</td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_EXAGAZEX-1872_CHECKLIST_20260714.html</code></td></tr>
+    <tr><td style="padding:4px 8px; white-space:nowrap;">RIS, single title</td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_EXAGAZEX-1872_RIS-ZOTERO_20260714.ris</code></td></tr>
+    <tr><td style="padding:4px 8px; white-space:nowrap;">RIS, library-wide</td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_RIS-ZOTERO_20260714.ris</code></td></tr>
+    <tr><td style="padding:4px 8px; white-space:nowrap;">Proofing Catalog</td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_EXAGAZEX-1872_PROOFING-CATALOG_20260714.html</code></td></tr>
+    <tr><td style="padding:4px 8px; white-space:nowrap;">WordPress Catalog</td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_EXAGAZEX-1872_CATALOG-WPBLOCKS_20260714.txt</code></td></tr>
+  </table>
+
+  <p><strong>RIS for Zotero.</strong> Exports each Contents item as one RIS record, enriched with issue and title metadata from the full CSV hierarchy. Requires all three upstream CSVs (Titles + Issues + Contents). Maps to standard RIS fields: TI (item title), AU (author), T2 (journal title), PY/DA (date), VL/IS (volume/issue), SP/EP (pages), SN (ISSN), LA (language). Slaughter Cataloger identifiers (TitleID, IssueID, Title Library Slug) are preserved in KW and N1 fields. Semicolon-separated authors export as multiple AU lines. Speculative and N/A states are noted in N1. Export filename: <code>SCATOUT_SLUG_RIS-ZOTERO_DATE.ris</code>.</p>
+
+  <p>Future output types — bibliography and contents listing — are listed in the format dropdown but not yet active.</p>
+
+  <!-- ═══════════════ FILENAME POLICY ═══════════════ -->
+
+  <h2 id="filenames">Filename Policy</h2>
+
+  <p>Working CSV files use <strong>stable, undated filenames</strong>. Schema version and date do not appear in working filenames — the schema version is stored inside each CSV row (<code>Schema Version</code> column). Apps validate schema from CSV contents, not from filenames.</p>
+
+  <p>Compiler outputs are <strong>generated snapshots</strong> and are date-stamped by default.</p>
+
+  <p>Example filenames:</p>
+
+  <table style="font-size:12px; width:100%; border-collapse:collapse; margin-bottom:1em;">
+    <tr style="border-bottom:1px solid var(--line);"><td style="padding:4px 8px; color:var(--ink-soft); font-family:Georgia,serif; font-size:9px; text-transform:uppercase; letter-spacing:1px;">Type</td><td style="padding:4px 8px; color:var(--ink-soft); font-family:Georgia,serif; font-size:9px; text-transform:uppercase; letter-spacing:1px;">Example</td></tr>
+    <tr><td style="padding:4px 8px;"><code>Titles CSV</code></td><td style="padding:4px 8px;"><code>SCAT_EXAMPLE-LIBRARY_TITLES.csv</code></td></tr>
+    <tr><td style="padding:4px 8px;"><code>Issues CSV</code></td><td style="padding:4px 8px;"><code>SCAT_EXAMPLE-LIBRARY_EXAGAZEX-1872_ISSUES.csv</code></td></tr>
+    <tr><td style="padding:4px 8px;"><code>Contents CSV</code></td><td style="padding:4px 8px;"><code>SCAT_EXAMPLE-LIBRARY_EXAGAZEX-1872_CONTENTS.csv</code></td></tr>
+    <tr><td style="padding:4px 8px;"><code>Checklist (one title)</code></td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_EXAGAZEX-1872_CHECKLIST_20260713.html</code></td></tr>
+    <tr><td style="padding:4px 8px;"><code>RIS (one title)</code></td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_EXAGAZEX-1872_RIS-ZOTERO_20260713.ris</code></td></tr>
+    <tr><td style="padding:4px 8px;"><code>Checklist (library-wide)</code></td><td style="padding:4px 8px;"><code>SCATOUT_EXAMPLE-LIBRARY_CHECKLIST_20260713.html</code></td></tr>
+  </table>
+
+  <!-- ═══════════════ ISSUEID ═══════════════ -->
+
+  <h2 id="issueid">IssueID</h2>
+
+  <p>IssueID is the permanent master key used across the Slaughter Cataloger suite. It connects records between Titles, Issues, Contents, Compiler, and any future related tools. It is not a citation, display label, issue number, or sort order. It exists so that every tool can refer to the same issue without relying on editable text such as Short Name.</p>
+
+  <p>The format is: <code>TITLECOD-FIRSTYEAR-KXXXXXX</code></p>
+
+  <p>Example: <code>EXAGAZEX-1872-K7M4Q2</code></p>
+
+  <p><strong>TITLECOD</strong> (8 characters) identifies the title or run — auto-suggested from the canonical title in the Titles app, editable. <strong>FIRSTYEAR</strong> (4 characters) records the first known publication year of the title, using X for unknown digits (e.g. <code>189X</code>, <code>XXXX</code>). Together these form the <strong>TitleID</strong> (<code>EXAGAZEX-1872</code>). <strong>KXXXXXX</strong> is a generated non-sequential token using a safe alphabet (no I, O, 0, 1, L, X) that makes each issue unique without implying order.</p>
+
+  <p>IssueID is generated when a new issue is first recorded and never changes unless deliberately migrated. Editing a title, renaming a Short Name, reordering rows, or adding newly discovered issues does not affect existing IssueIDs.</p>
+
+  <!-- ═══════════════ FIELD STATES ═══════════════ -->
+
+  <h2 id="field-states">Field States</h2>
+
+  <p>Every field in the Titles, Issues, and Contents apps can be in one of four states, and the interface makes all four visually distinct:</p>
+
+  <div class="state-block state-filled">
+    <p><span class="state-label">Filled — normal confidence.</span> You've entered a value and stand behind it. The text appears in bold dark orange, distinct from labels and placeholder text.</p>
+  </div>
+
+  <div class="state-block state-spec">
+    <p><span class="state-label">Speculative.</span> You've entered a value, but something is uncertain — the masthead is missing, the date was illegible, the information is secondhand, or what's printed is known to be wrong. Check the <strong>?</strong> beside the field. The entry-wide <strong>Speculative</strong> toggle lights up automatically when any field is marked ?; it turns off again when all field-level ? marks are cleared. If you click the Speculative header toggle manually, that choice is preserved until the next Record. N/A and Speculative are mutually exclusive per field — activating one clears the other.</p>
+  </div>
+
+  <div class="state-block state-na">
+    <p><span class="state-label">N/A.</span> This field simply doesn't apply — the publication has no volume numbering, or ISSN was never assigned, or the contents item has no credited author. Clicking <strong>N/A</strong> grays the field out, displays <em>[N/A]</em> as placeholder text, and records it as explicitly addressed. This is meaningfully different from leaving a field blank: it says <em>I considered this and it isn't applicable</em>, not <em>I haven't gotten to this yet</em>.</p>
+  </div>
+
+  <div class="state-block state-unaddr">
+    <p><span class="state-label">Unaddressed.</span> The field has not been touched — no value, no ?, no N/A. These fields show a light orange underline. This is a prompt, not an error. When you hit Record with unaddressed fields, a prompt lists them and asks whether to proceed or go back. After recording, any fields that cleared will show the orange underline again as a gentle nudge.</p>
+  </div>
+
+  <p>Hover over any field label for a tooltip explaining what belongs there and how it differs from adjacent fields.</p>
+
+  <!-- ═══════════════ SCOPE ═══════════════ -->
+
+  <h2 id="scope">A Note on Scope</h2>
+
+  <p>This suite is designed for the full range of serial publishing — from mainstream magazines and newspapers to academic journals, trade publications, literary reviews, newsletters, and small-press periodicals with irregular publication history and idiosyncratic numbering. Fields like <em>Former Title(s)</em>, <em>Later Title(s)</em>, <em>Alt. calendar</em>, <em>Supplement</em>, and <em>Issue Designation</em> are not afterthoughts — they are there because the material demands them.</p>
+
+  <p>The Cataloger does not tell you how to catalog. It gives you a structure flexible enough to meet the material on its own terms.</p>
+
+  <!-- ═══════════════ RELEASE HISTORY ═══════════════ -->
+
+  <h2 id="release-history">Release History</h2>
+
+  <div style="font-size:13px; line-height:1.8;">
+
+    <p><strong>Beta 2.5</strong> &nbsp;—&nbsp; July 2026</p>
+    <p style="color:var(--ink-soft); font-size:12px; margin-top:2px; margin-bottom:1.2em;">
+      <strong>New Compiler output modes.</strong> WordPress Catalog exports native Gutenberg block markup (headings, paragraphs, tables, separators) that pastes directly into the WordPress Code Editor as fully editable blocks. Proofing Catalog generates a print-optimised verification document — one issue per printed page, with checkboxes, correction columns, and reviewer signoff blocks for every field at title, issue, and contents level. Full Catalog HTML produces a standalone downloadable page with embedded CSS.<br><br>
+      <strong>Catalog structure.</strong> Issues are grouped into volume or year subheadings when a catalog contains more than ten issues, giving ToC plugins a two-level navigation structure. A Scope panel lets you filter which volumes or year groups appear in any output — load a title's issues, select Volume 1, and every output type covers only those 26 issues. Outputs only show title-level metadata for titles that actually have issues loaded; loading a library-wide Titles CSV no longer produces ghost title blocks for unloaded journals.<br><br>
+      <strong>Compiler reliability fixes.</strong> Unified <code>updateOutputReadiness()</code> function called after every CSV import. Full RIS cross-validation: slug matching across all three CSVs, orphan IssueID detection, TitleID chain verification, blank key rejection. Escape helpers are string-safe. Titles CSV parsed as a full library manifest. Context-sensitive options panel hides irrelevant controls per output type. Export RIS button hidden unless RIS format is active. Output-format selector excluded from auto-regenerate listener.
+    </p>
+
+    <p><strong>Beta 2.0</strong> &nbsp;—&nbsp; July 2026</p>
+    <p style="color:var(--ink-soft); font-size:12px; margin-top:2px; margin-bottom:1.2em;">
+      <strong>Suite architecture.</strong> Slaughter Cataloger became a suite of four tools: Titles, Issues, Contents, and Compiler. Locked dependency chain: each tool requires its upstream CSV before accepting records.<br><br>
+      <strong>Titles app.</strong> New upstream tool for managing title-level metadata. Title Library Slug, Canonical Title, First Year of Publication, Cataloging Status, publication history, mission statement, editorial statement. Auto-suggested Title Code. TitleID computed from Title Code + First Year. Expected Issues and Contents filenames generated automatically.<br><br>
+      <strong>IssueID.</strong> Permanent master key (<code>TITLECOD-FIRSTYEAR-KXXXXXX</code>) added to Issues. Used by Contents and Compiler as the stable link between tools. Auto-generated on Record, preserved on edit.<br><br>
+      <strong>Contents app.</strong> Records what appears inside each issue. Locked until Issues CSV loaded. Controlled issue selector. Content type datalist. Parent item support. Sequence duplicate warning.<br><br>
+      <strong>Compiler.</strong> Checklist output with three styles (Plain, Bibliographic, Technical), twelve toggleable options, and four export formats. RIS for Zotero with full hierarchy validation.<br><br>
+      <strong>Schema metadata.</strong> Every CSV row includes <code>Slaughter Cataloger Tool</code> and <code>Schema Version</code>. Structured filenames: <code>SCAT_</code> for source data, <code>SCATOUT_</code> for compiled outputs. Formula injection protection.
+    </p>
+
+    <p><strong>Beta 1.1</strong> &nbsp;—&nbsp; July 8, 2026</p>
+    <p style="color:var(--ink-soft); font-size:12px; margin-top:2px; margin-bottom:1.2em;">
+      Added Printer and Printer Location fields. Fixed Supplement and Special handling. N/A and Speculative now mutually exclusive per field. Speculative auto-toggles. Cancel Edit clears form. Import prompts Replace / Append / Cancel. 45-column CSV.
+    </p>
+
+    <p><strong>Beta 1.0</strong> &nbsp;—&nbsp; July 6, 2026</p>
+    <p style="color:var(--ink-soft); font-size:12px; margin-top:2px;">
+      Initial beta release. Single-app cataloger with two-tier form, 43-column CSV, localStorage persistence, duplicate detection, auto-advance, Examined/Reported evidence basis, Issue Designation, and full field-state system.
+    </p>
+
+  </div>
+
+  

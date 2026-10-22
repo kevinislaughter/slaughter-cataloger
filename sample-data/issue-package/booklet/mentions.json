@@ -1,0 +1,47 @@
+{
+  "format_version": "1.0",
+  "entities": [
+    {
+      "id": "e001",
+      "type": "place",
+      "form": "harbour wall",
+      "item": "leaflet-item-002",
+      "pages": [
+        2
+      ],
+      "precision": "item"
+    },
+    {
+      "id": "e002",
+      "type": "person",
+      "form": "JANE DOE",
+      "item": "leaflet-item-002",
+      "pages": [
+        3
+      ],
+      "precision": "item"
+    },
+    {
+      "id": "e003",
+      "type": "place",
+      "form": "Anytown",
+      "item": null,
+      "pages": [
+        8
+      ],
+      "precision": "page"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "s001",
+      "term": "Lighthouses",
+      "item": "leaflet-item-002",
+      "pages": [
+        2,
+        3
+      ],
+      "precision": "item"
+    }
+  ]
+}

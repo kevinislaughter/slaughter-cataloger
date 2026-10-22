@@ -1,0 +1,68 @@
+{
+  "file_kind": "PROVISIONAL_REVIEW_QUEUE",
+  "queue_spec_version": "draft-0.1",
+  "package_id": "example-gazette-v4n1-1875-provisional-import-candidate",
+  "issue_designation": "The Example Gazette, Vol. IV, No. 1, May 1, 1875",
+  "title_id": "EXAGAZEX-1872",
+  "issue_id": null,
+  "working_issue_id": "EXAGAZEX-1872-KRNYWA2",
+  "created_at": "2026-10-01",
+  "status": "NEEDS_REVIEW",
+  "issues": [
+    {
+      "label": "Permanent ContentIDs absent by design",
+      "issue_or_decision_required": "Give each of the 18 items a ContentID after comparing with the live catalog.",
+      "status": "blocking",
+      "category": "expected_importer_identifier_resolution",
+      "blocked_workflows": {
+        "metadata_conversion": false,
+        "local_import": true,
+        "full_text_preparation": false,
+        "public_release": false,
+        "private_archival_storage": false
+      },
+      "responsible_party": "importer",
+      "conservative_treatment": "Leave unresolved in staging.",
+      "notes": [],
+      "existing_identifier": "Q-01"
+    },
+    {
+      "label": "Live catalog not checked",
+      "issue_or_decision_required": "Confirm the TitleID and IssueID against the live catalog files.",
+      "status": "blocking",
+      "category": "identity_reconciliation",
+      "blocked_workflows": {
+        "metadata_conversion": true,
+        "local_import": true,
+        "full_text_preparation": false,
+        "public_release": false,
+        "private_archival_storage": false
+      },
+      "responsible_party": "importer",
+      "conservative_treatment": "Leave unresolved in staging.",
+      "notes": [],
+      "existing_identifier": "Q-02"
+    },
+    {
+      "label": "Publication rights undetermined",
+      "issue_or_decision_required": "Decide publication per resource before any public output.",
+      "status": "deferred",
+      "category": "rights_publication_gate",
+      "blocked_workflows": {
+        "metadata_conversion": false,
+        "local_import": false,
+        "full_text_preparation": false,
+        "public_release": true,
+        "private_archival_storage": false
+      },
+      "responsible_party": "importer",
+      "conservative_treatment": "Leave unresolved in staging.",
+      "notes": [],
+      "existing_identifier": "Q-03"
+    }
+  ],
+  "summary": {
+    "open": 3,
+    "blocking_local_import": 2
+  }
+}

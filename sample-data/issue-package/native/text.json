@@ -1,0 +1,918 @@
+{
+  "format_version": "1.0",
+  "offset_unit": "codepoint",
+  "apparatus": "# Transcription — The Example Gazette, Vol. IV, No. 1, May 1, 1875\n\n## Transcription apparatus (not source text)\n\nSource: `source/example-gazette-v4n1.pdf` (an invented specimen). Each page begins with a page anchor; headings of the form “PDF page N” and text in [supplied: …] are editorial, not source text.\n\n",
+  "pages": [
+    {
+      "page": 1,
+      "folio": null,
+      "folio_status": "absent",
+      "inferred_folio": "1",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 1336,
+      "sha256": "c7ce956f09e77e5c15e19ac6e96dbca74f385cb24d3f767893dab617fde37ae1",
+      "text": "<!-- PDF_PAGE: 1 -->\n## PDF page 1 — no printed page number\n\n[supplied: Masthead across the full width; three columns below. Reading order: masthead, left column, middle column, right column.]\n\n# 𝔗𝔥𝔢 𝔈𝔵𝔞𝔪𝔭𝔩𝔢 𝔊𝔞𝔷𝔢𝔱𝔱𝔢\n\n*A Weekly Record of Town and Country*\n\nVOL. IV. — NO. 1. — WHOLE NO. 157. — ANYTOWN, SATURDAY, MAY 1, 1875. — PRICE TEN CENTS.\n\n### TO OUR READERS\n\nWith this number the *Gazette* enters upon its fourth volume, and upon a new plan: it will appear once a fortnight instead of once a week, in eight pages instead of four. Our motto, 𝔉𝔦𝔡𝔢𝔩𝔦𝔱𝔞𝔰, stands where it stood.\n\nWe thank the many readers who wrote to us during the winter. Their letters are printed, as space allows, on page 4.\n\n*(continued on page 2)*\n\n### A CORRECTION\n\nIn our last number the meeting of the Improvement Society was given as Tuesday. It is to be held on Thursday, at the Town Hall, at eight o’clock.\n\n---\n\n### AROUND THE COUNTY\n\nNotes from our correspondents in the townships. Contributions should reach the office by the Monday before publication.\n\n#### Eastfield\n\nThe Reading Circle met on the 20th at the schoolhouse. Officers were chosen for the year, and the library committee reported forty-two volumes on the shelves. — JANE DOE.\n\n*(Around the County continued on page 2.)*\n\n---\n\n“Let every man be swift to hear.”\n\n— *From an old almanac.*\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "NO_PRINTED_FOLIO__CATALOG_PAGE_1_INFERRED",
+          "original_source_anchor": "<!-- PDF_PAGE: 1 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "no printed folio; catalog page 1 inferred"
+        }
+      }
+    },
+    {
+      "page": 2,
+      "folio": "2",
+      "folio_status": "printed",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 783,
+      "sha256": "5e3a6c8e2ce4880f5d02456b6f4ac6dcc9fc157092ef896576b06f12a2f103ad",
+      "text": "<!-- PDF_PAGE: 2 -->\n## PDF page 2 — printed page 2\n\nTHE EXAMPLE GAZETTE. 2\n\n### TO OUR READERS (continued from page 1)\n\nThe new plan will allow room for longer reports from the townships, and for the market prices, which many have asked for. The subscription remains two dollars a year. — THE EDITOR.\n\n### AROUND THE COUNTY (continued)\n\n#### Riverton\n\nThe ferry resumed its crossings on the 12th, the river having fallen. A new landing is talked of. — R. R.\n\n#### Lakeside\n\nThe ice went out of the lake on April 9, nine days later than last year. — A CORRESPONDENT.\n\n---\n\n### THE NEW BRIDGE\n\nThe county commissioners met on Wednesday to open the bids for the iron bridge over the Mill River. Four bids were received, the lowest from a firm in Springfield.\n\n*(continued on page 6)*\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "PRINTED_FOLIO_CONFIRMED",
+          "original_source_anchor": "<!-- PDF_PAGE: 2 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "printed folio"
+        }
+      }
+    },
+    {
+      "page": 3,
+      "folio": "3",
+      "folio_status": "printed",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 586,
+      "sha256": "5d4d25a5a3053df15cbdb96406e94755e462ba6100f052d904577100a6eac721",
+      "text": "<!-- PDF_PAGE: 3 -->\n## PDF page 3 — printed page 3\n\nTHE EXAMPLE GAZETTE. 3\n\n### THE SPRING EXHIBITION\n\nThe exhibition of the Anytown Improvement Society opened on Thursday in the Town Hall, and will remain open through Saturday.\n\n[supplied: An engraving of the Town Hall, about a third of the column wide, with its caption below. canary-page-text-02]\n\n*The Town Hall, from Main Street.* A notice on the door reads [illegible].\n\nThe prize for the best garden plan went to Mrs. Jane Doe of Eastfield; the judges also commended a model of the new bridge. [unclear: Admission] ten cents.\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "PRINTED_FOLIO_CONFIRMED",
+          "original_source_anchor": "<!-- PDF_PAGE: 3 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "printed folio"
+        }
+      }
+    },
+    {
+      "page": 4,
+      "folio": "4",
+      "folio_status": "printed",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 482,
+      "sha256": "aea1377d317515189337c28503db32c97377b3895c7609e280151a7d036fae3c",
+      "text": "<!-- PDF_PAGE: 4 -->\n## PDF page 4 — printed page 4\n\n4 THE EXAMPLE GAZETTE.\n\n### CORRESPONDENCE\n\n*The Gazette is not responsible for the opinions of its correspondents.*\n\n#### A Word for the Old Road\n\nSir, — I have travelled the old road to Riverton for thirty years and see no need of a new one. Mend the old one, and spare us the \\*improvements\\*.\n\n[Communicated.]\n\n— A SUBSCRIBER.\n\nSir, — When are we to have lamps on Elm Street? The darkness there is a public danger. — J.Q.P.\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "PRINTED_FOLIO_CONFIRMED",
+          "original_source_anchor": "<!-- PDF_PAGE: 4 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "printed folio"
+        }
+      }
+    },
+    {
+      "page": 5,
+      "folio": "5",
+      "folio_status": "printed",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 563,
+      "sha256": "dace16b63a5ac507094331f081c4f1e0146e266c87498cc73b3815d86d184149",
+      "text": "<!-- PDF_PAGE: 5 -->\n## PDF page 5 — printed page 5\n\nTHE EXAMPLE GAZETTE. 5\n\n### NOTICE OF A MEETING\n\nThe Anytown Improvement Society will meet on Thursday, May 13, at eight o’clock, at the Café Anytown, Main Street. Members and friends are invited. Particulars from the secretary, Mrs. Jane Doe, 12 Elm Street, Anytown; telephone 555-0142. canary-contact-03\n\n---\n\n### MARKET PRICES\n\n*Corrected weekly by Public & Doe.*\n\n```text\nWheat, per bushel ....... $1.10\nOats, per bushel ........  0.45\nButter, per pound .......  0.28\nEggs, per dozen .........  0.18\n```\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "PRINTED_FOLIO_CONFIRMED",
+          "original_source_anchor": "<!-- PDF_PAGE: 5 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "printed folio"
+        }
+      }
+    },
+    {
+      "page": 6,
+      "folio": "6",
+      "folio_status": "printed",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 494,
+      "sha256": "f492ac4f2c427ab33563a05483e40f397daa51984b20a4144158c4a08e005c33",
+      "text": "<!-- PDF_PAGE: 6 -->\n## PDF page 6 — printed page 6\n\nTHE EXAMPLE GAZETTE. 6\n\n### WANTS AND OFFERS\n\n*Notices of ten words or fewer are printed free for subscribers.*\n\n- FOR SALE. A velocipede, little used. Apply at this office.\n- WANTED. A clerk who writes a good hand. Address Box 47, Anytown.\n\n---\n\n### THE NEW BRIDGE (continued from page 2)\n\nIt is understood that the commissioners favour an iron bridge of two spans, with a footway on the upstream side. canary-item-text-01\n\n— RICHARD ROE.\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "PRINTED_FOLIO_CONFIRMED",
+          "original_source_anchor": "<!-- PDF_PAGE: 6 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "printed folio"
+        }
+      }
+    },
+    {
+      "page": 7,
+      "folio": "7",
+      "folio_status": "printed",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 277,
+      "sha256": "16fa1cd4f2b2d18dee2edd5109ffee1184b6976cb299e52d3dd031c3b50fd59c",
+      "text": "<!-- PDF_PAGE: 7 -->\n## PDF page 7 — printed page 7\n\nTHE EXAMPLE GAZETTE. 7\n\n### SUBSCRIBE TO THE GAZETTE\n\n---\n\nOne year, two dollars. Six months, one dollar.\n\n---\n\nName: ______________________\n\nTown: ______________________\n\n---\n\nSend to: THE EXAMPLE GAZETTE, Box 1, Anytown.\n\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "PRINTED_FOLIO_CONFIRMED",
+          "original_source_anchor": "<!-- PDF_PAGE: 7 -->"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "printed folio"
+        }
+      }
+    },
+    {
+      "page": 8,
+      "folio": null,
+      "folio_status": "absent",
+      "review_status": "REVIEWED_ONCE",
+      "segmented": true,
+      "length": 156,
+      "sha256": "8711e9e748c6a10c59e715625d03851be9e46dbcef59c1dbc0ca1f608f3ab84a",
+      "text": "<!-- PDF_PAGE: 8 -->\n## PDF page 8 — no printed page number\n\n[supplied: A blank page. Faint show-through from page 7 is visible; there is no printed text.]\n",
+      "origin": {
+        "fulltext.json": {
+          "printed_page_status": "NO_PRINTED_FOLIO__BLANK_SHOW_THROUGH",
+          "original_source_anchor": "<!-- PDF_PAGE: 8 -->",
+          "source_content_status": "NO_LEGIBLE_PRINTED_TEXT__SUPPLIED_DESCRIPTION_RETAINED"
+        },
+        "MANIFEST.json": {
+          "review_status": "REVIEWED_ONCE",
+          "transcribed": true,
+          "status_note": "blank page"
+        }
+      }
+    }
+  ],
+  "segments": [
+    {
+      "id": "p001-s0001-01",
+      "item": "gazette-v4n1-item-0001",
+      "page": 1,
+      "start": 345,
+      "end": 724,
+      "order": 1,
+      "basis": "editorial opening; continuation on page 2 explicit",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 1,
+          "printed_page": null,
+          "page_line_start": 12,
+          "page_line_end": 19,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p001-s0002-01",
+      "item": "gazette-v4n1-item-0002",
+      "page": 1,
+      "start": 724,
+      "end": 889,
+      "order": 1,
+      "basis": "unsigned notice, heading and body",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 2,
+          "printed_page": null,
+          "page_line_start": 20,
+          "page_line_end": 23,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p001-s0003-01",
+      "item": "gazette-v4n1-item-0003",
+      "page": 1,
+      "start": 894,
+      "end": 1038,
+      "order": 1,
+      "basis": "department heading and lead-in, without its children",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 3,
+          "printed_page": null,
+          "page_line_start": 26,
+          "page_line_end": 29,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p001-s0004-01",
+      "item": "gazette-v4n1-item-0004",
+      "page": 1,
+      "start": 1038,
+      "end": 1226,
+      "order": 1,
+      "basis": "child report with printed signature",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 4,
+          "printed_page": null,
+          "page_line_start": 30,
+          "page_line_end": 33,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p001-s0003-02",
+      "item": "gazette-v4n1-item-0003",
+      "page": 1,
+      "start": 1226,
+      "end": 1270,
+      "order": 2,
+      "basis": "department continuation cue",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 3,
+          "printed_page": null,
+          "page_line_start": 34,
+          "page_line_end": 35,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p001-s0005-01",
+      "item": "gazette-v4n1-item-0005",
+      "page": 1,
+      "start": 1275,
+      "end": 1336,
+      "order": 1,
+      "basis": "standalone quotation with printed attribution; title supplied",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 5,
+          "printed_page": null,
+          "page_line_start": 38,
+          "page_line_end": 41,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p002-s0001-02",
+      "item": "gazette-v4n1-item-0001",
+      "page": 2,
+      "start": 77,
+      "end": 303,
+      "order": 2,
+      "basis": "editorial continuation and printed signature",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 1,
+          "printed_page": "2",
+          "page_line_start": 6,
+          "page_line_end": 9,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p002-s0003-03",
+      "item": "gazette-v4n1-item-0003",
+      "page": 2,
+      "start": 303,
+      "end": 338,
+      "order": 3,
+      "basis": "department continuation heading, not a new item",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 3,
+          "printed_page": "2",
+          "page_line_start": 10,
+          "page_line_end": 11,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p002-s0006-01",
+      "item": "gazette-v4n1-item-0006",
+      "page": 2,
+      "start": 338,
+      "end": 460,
+      "order": 1,
+      "basis": "child report with printed initials",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 6,
+          "printed_page": "2",
+          "page_line_start": 12,
+          "page_line_end": 15,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p002-s0007-01",
+      "item": "gazette-v4n1-item-0007",
+      "page": 2,
+      "start": 460,
+      "end": 568,
+      "order": 1,
+      "basis": "child report with printed signature",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 7,
+          "printed_page": "2",
+          "page_line_start": 16,
+          "page_line_end": 19,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p002-s0008-01",
+      "item": "gazette-v4n1-item-0008",
+      "page": 2,
+      "start": 573,
+      "end": 783,
+      "order": 1,
+      "basis": "report opening; continuation on page 6 explicit",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 8,
+          "printed_page": "2",
+          "page_line_start": 22,
+          "page_line_end": 27,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p003-s0009-01",
+      "item": "gazette-v4n1-item-0009",
+      "page": 3,
+      "start": 77,
+      "end": 231,
+      "order": 1,
+      "basis": "report heading and opening",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 9,
+          "printed_page": "3",
+          "page_line_start": 6,
+          "page_line_end": 9,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p003-s0009-02",
+      "item": "gazette-v4n1-item-0009",
+      "page": 3,
+      "start": 353,
+      "end": 586,
+      "order": 2,
+      "basis": "printed caption and the report after the engraving",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 9,
+          "printed_page": "3",
+          "page_line_start": 12,
+          "page_line_end": 15,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p004-s0010-01",
+      "item": "gazette-v4n1-item-0010",
+      "page": 4,
+      "start": 77,
+      "end": 171,
+      "order": 1,
+      "basis": "department heading and policy line only",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 10,
+          "printed_page": "4",
+          "page_line_start": 6,
+          "page_line_end": 9,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p004-s0011-01",
+      "item": "gazette-v4n1-item-0011",
+      "page": 4,
+      "start": 171,
+      "end": 385,
+      "order": 1,
+      "basis": "letter with printed bracketed note and signature",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 11,
+          "printed_page": "4",
+          "page_line_start": 10,
+          "page_line_end": 17,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p004-s0012-01",
+      "item": "gazette-v4n1-item-0012",
+      "page": 4,
+      "start": 385,
+      "end": 482,
+      "order": 1,
+      "basis": "untitled letter; title supplied",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 12,
+          "printed_page": "4",
+          "page_line_start": 18,
+          "page_line_end": 19,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p005-s0013-01",
+      "item": "gazette-v4n1-item-0013",
+      "page": 5,
+      "start": 77,
+      "end": 361,
+      "order": 1,
+      "basis": "notice heading, body and contact line",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 13,
+          "printed_page": "5",
+          "page_line_start": 6,
+          "page_line_end": 9,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p005-s0014-01",
+      "item": "gazette-v4n1-item-0014",
+      "page": 5,
+      "start": 366,
+      "end": 563,
+      "order": 1,
+      "basis": "price table kept as a fenced block",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 14,
+          "printed_page": "5",
+          "page_line_start": 12,
+          "page_line_end": 22,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p006-s0015-01",
+      "item": "gazette-v4n1-item-0015",
+      "page": 6,
+      "start": 77,
+      "end": 166,
+      "order": 1,
+      "basis": "department heading and policy line only",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 15,
+          "printed_page": "6",
+          "page_line_start": 6,
+          "page_line_end": 9,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p006-s0016-01",
+      "item": "gazette-v4n1-item-0016",
+      "page": 6,
+      "start": 166,
+      "end": 227,
+      "order": 1,
+      "basis": "advertisement 1",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 16,
+          "printed_page": "6",
+          "page_line_start": 10,
+          "page_line_end": 10,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p006-s0017-01",
+      "item": "gazette-v4n1-item-0017",
+      "page": 6,
+      "start": 227,
+      "end": 295,
+      "order": 1,
+      "basis": "advertisement 2",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 17,
+          "printed_page": "6",
+          "page_line_start": 11,
+          "page_line_end": 12,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p006-s0008-02",
+      "item": "gazette-v4n1-item-0008",
+      "page": 6,
+      "start": 300,
+      "end": 494,
+      "order": 2,
+      "basis": "report continuation and printed signature",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 8,
+          "printed_page": "6",
+          "page_line_start": 15,
+          "page_line_end": 20,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p007-s0018-01",
+      "item": "gazette-v4n1-item-0018",
+      "page": 7,
+      "start": 77,
+      "end": 107,
+      "order": 1,
+      "basis": "form heading",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 18,
+          "printed_page": "7",
+          "page_line_start": 6,
+          "page_line_end": 7,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p007-s0018-02",
+      "item": "gazette-v4n1-item-0018",
+      "page": 7,
+      "start": 112,
+      "end": 160,
+      "order": 2,
+      "basis": "form rates",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 18,
+          "printed_page": "7",
+          "page_line_start": 10,
+          "page_line_end": 11,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p007-s0018-03",
+      "item": "gazette-v4n1-item-0018",
+      "page": 7,
+      "start": 165,
+      "end": 225,
+      "order": 3,
+      "basis": "form fields",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 18,
+          "printed_page": "7",
+          "page_line_start": 14,
+          "page_line_end": 17,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    },
+    {
+      "id": "p007-s0018-04",
+      "item": "gazette-v4n1-item-0018",
+      "page": 7,
+      "start": 230,
+      "end": 277,
+      "order": 4,
+      "basis": "form address",
+      "origin": {
+        "fulltext.json": {
+          "source_sequence": 18,
+          "printed_page": "7",
+          "page_line_start": 20,
+          "page_line_end": 21,
+          "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+          "text_status": "COPIED_EXACTLY_FROM_REVIEWED_TRANSCRIPTION"
+        }
+      }
+    }
+  ],
+  "unassigned": [
+    {
+      "id": "p001-u01",
+      "page": 1,
+      "start": 0,
+      "end": 61,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p001-u02",
+      "page": 1,
+      "start": 61,
+      "end": 194,
+      "reason": "supplied_layout_description"
+    },
+    {
+      "id": "p001-u03",
+      "page": 1,
+      "start": 194,
+      "end": 345,
+      "reason": "masthead_and_page_apparatus"
+    },
+    {
+      "id": "p001-u04",
+      "page": 1,
+      "start": 889,
+      "end": 894,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p001-u05",
+      "page": 1,
+      "start": 1270,
+      "end": 1275,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p002-u01",
+      "page": 2,
+      "start": 0,
+      "end": 53,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p002-u02",
+      "page": 2,
+      "start": 53,
+      "end": 77,
+      "reason": "running_head"
+    },
+    {
+      "id": "p002-u03",
+      "page": 2,
+      "start": 568,
+      "end": 573,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p003-u01",
+      "page": 3,
+      "start": 0,
+      "end": 53,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p003-u02",
+      "page": 3,
+      "start": 53,
+      "end": 77,
+      "reason": "running_head"
+    },
+    {
+      "id": "p003-u03",
+      "page": 3,
+      "start": 231,
+      "end": 353,
+      "reason": "supplied_visual_description"
+    },
+    {
+      "id": "p004-u01",
+      "page": 4,
+      "start": 0,
+      "end": 53,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p004-u02",
+      "page": 4,
+      "start": 53,
+      "end": 77,
+      "reason": "running_head"
+    },
+    {
+      "id": "p005-u01",
+      "page": 5,
+      "start": 0,
+      "end": 53,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p005-u02",
+      "page": 5,
+      "start": 53,
+      "end": 77,
+      "reason": "running_head"
+    },
+    {
+      "id": "p005-u03",
+      "page": 5,
+      "start": 361,
+      "end": 366,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p006-u01",
+      "page": 6,
+      "start": 0,
+      "end": 53,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p006-u02",
+      "page": 6,
+      "start": 53,
+      "end": 77,
+      "reason": "running_head"
+    },
+    {
+      "id": "p006-u03",
+      "page": 6,
+      "start": 295,
+      "end": 300,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p007-u01",
+      "page": 7,
+      "start": 0,
+      "end": 53,
+      "reason": "page_anchor_and_layout_apparatus"
+    },
+    {
+      "id": "p007-u02",
+      "page": 7,
+      "start": 53,
+      "end": 77,
+      "reason": "running_head"
+    },
+    {
+      "id": "p007-u03",
+      "page": 7,
+      "start": 107,
+      "end": 112,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p007-u04",
+      "page": 7,
+      "start": 160,
+      "end": 165,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p007-u05",
+      "page": 7,
+      "start": 225,
+      "end": 230,
+      "reason": "formatting_separator"
+    },
+    {
+      "id": "p008-u01",
+      "page": 8,
+      "start": 0,
+      "end": 156,
+      "reason": "BLANK_PAGE__EDITORIAL_DESCRIPTION_ONLY"
+    }
+  ],
+  "notes": [
+    {
+      "id": "B01",
+      "page": 1,
+      "item": "gazette-v4n1-item-0003",
+      "status": "HIERARCHICAL_TEXT_BOUNDARY",
+      "note": "The department’s own text is in three pieces; its children’s notes are separate items and are not repeated in it."
+    },
+    {
+      "id": "B02",
+      "page": 6,
+      "item": "gazette-v4n1-item-0008",
+      "status": "SEPARATE_CONTINUATION_SEGMENTED",
+      "note": "The report continues on page 6; pages 3–5 are not part of it."
+    },
+    {
+      "id": "B03",
+      "page": 8,
+      "item": null,
+      "status": "RETAINED_BLANK_PAGE",
+      "note": "Page 8 is blank and is kept as unassigned apparatus."
+    }
+  ],
+  "origin": {
+    "fulltext.json": {
+      "file_kind": "PROVISIONAL_PRIVATE_FULLTEXT_SIDECAR_PAGES001-008",
+      "sidecar_spec_version": "draft-0.1",
+      "contract_status": "PROPOSED_NOT_IMPLEMENTED_OR_APPROVED",
+      "package_id": "example-gazette-v4n1-1875-sidecar-p001-p008",
+      "issue_id": null,
+      "working_issue_id": "EXAGAZEX-1872-KRNYWA2",
+      "title_id": "EXAGAZEX-1872",
+      "contents_crosswalk_package_id": "example-gazette-v4n1-1875-crosswalk-s001-s018",
+      "source_transcription_file": "transcription.md",
+      "source_transcription_sha256": "b3e119fc655807d9c65b5f5fcd7468aff28e5dcf9298810cec94f2ebc9213009",
+      "source_scope": {
+        "segmented_pdf_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "unprocessed_pdf_pages": [],
+        "known_partial_items": [],
+        "source_page_8_interpretation": "Blank page; its whole text block is kept as unassigned apparatus.",
+        "pagination_span_warning": "Sequence 8 has segments on pages 2 and 6. Nothing from pages 3–5 belongs to it."
+      },
+      "rights": {
+        "access": "PRIVATE",
+        "rights_status": "UNDETERMINED",
+        "public_release_authorized": false
+      },
+      "page_text_authority": "REVIEWED_TRANSCRIPTION__EXACT_SLICES",
+      "producer_extension": {
+        "note": "A field no converter knows about. It must survive conversion unchanged.",
+        "values": [
+          1,
+          "two",
+          null,
+          true
+        ]
+      }
+    }
+  }
+}

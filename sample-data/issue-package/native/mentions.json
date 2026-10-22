@@ -1,0 +1,392 @@
+{
+  "format_version": "1.0",
+  "entities": [
+    {
+      "id": "e001",
+      "type": "periodical",
+      "form": "Gazette",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0001",
+      "pages": [
+        1
+      ],
+      "context": "the paper names itself",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e002",
+      "type": "person",
+      "form": "THE EDITOR",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0001",
+      "pages": [
+        2
+      ],
+      "context": "signature",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e003",
+      "type": "organization",
+      "form": "Improvement Society",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0002",
+      "pages": [
+        1
+      ],
+      "context": "meeting date corrected",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e004",
+      "type": "place",
+      "form": "Town Hall",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0002",
+      "pages": [
+        1
+      ],
+      "context": "meeting place",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e005",
+      "type": "place",
+      "form": "Eastfield",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0004",
+      "pages": [
+        1
+      ],
+      "context": "department heading",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e006",
+      "type": "organization",
+      "form": "Reading Circle",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0004",
+      "pages": [
+        1
+      ],
+      "context": "meeting reported",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e007",
+      "type": "person",
+      "form": "JANE DOE",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0004",
+      "pages": [
+        1
+      ],
+      "context": "signature",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e008",
+      "type": "place",
+      "form": "Riverton",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0006",
+      "pages": [
+        2
+      ],
+      "context": "department heading",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e009",
+      "type": "place",
+      "form": "Lakeside",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0007",
+      "pages": [
+        2
+      ],
+      "context": "department heading",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e010",
+      "type": "place",
+      "form": "Mill River",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0008",
+      "pages": [
+        2
+      ],
+      "context": "site of the bridge",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e011",
+      "type": "place",
+      "form": "Springfield",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0008",
+      "pages": [
+        2
+      ],
+      "context": "home of the lowest bidder",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e012",
+      "type": "person",
+      "form": "RICHARD ROE",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0008",
+      "pages": [
+        6
+      ],
+      "context": "signature; canary-mention-04",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e013",
+      "type": "organization",
+      "form": "Anytown Improvement Society",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0009",
+      "pages": [
+        3
+      ],
+      "context": "organizer of the exhibition",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e014",
+      "type": "person",
+      "form": "Mrs. Jane Doe",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0009",
+      "pages": [
+        3
+      ],
+      "context": "prize winner",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e015",
+      "type": "place",
+      "form": "Riverton",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0011",
+      "pages": [
+        4
+      ],
+      "context": "the old road",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e016",
+      "type": "place",
+      "form": "Elm Street",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0012",
+      "pages": [
+        4
+      ],
+      "context": "street without lamps",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e017",
+      "type": "person",
+      "form": "J.Q.P.",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0012",
+      "pages": [
+        4
+      ],
+      "context": "signature",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e018",
+      "type": "person",
+      "form": "Mrs. Jane Doe",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0013",
+      "pages": [
+        5
+      ],
+      "context": "secretary",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e019",
+      "type": "place",
+      "form": "Café Anytown",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0013",
+      "pages": [
+        5
+      ],
+      "context": "meeting place",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e020",
+      "type": "organization",
+      "form": "Public & Doe",
+      "normalized": null,
+      "item": "gazette-v4n1-item-0014",
+      "pages": [
+        5
+      ],
+      "context": "prices corrected by",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "item"
+    },
+    {
+      "id": "e021",
+      "type": "place",
+      "form": "Anytown",
+      "normalized": null,
+      "item": null,
+      "pages": [
+        1,
+        5,
+        6,
+        7
+      ],
+      "context": "place of publication and of several notices",
+      "status": "Verified",
+      "note": "Read from the transcription.",
+      "external_evidence": [],
+      "precision": "page"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "s001",
+      "term": "Bridges",
+      "item": "gazette-v4n1-item-0008",
+      "pages": [
+        2,
+        6
+      ],
+      "status": "Verified",
+      "note": "The bids for a new bridge.",
+      "precision": "item"
+    },
+    {
+      "id": "s002",
+      "term": "Street lighting",
+      "item": "gazette-v4n1-item-0012",
+      "pages": [
+        4
+      ],
+      "status": "Verified",
+      "note": "A request for lamps.",
+      "precision": "item"
+    },
+    {
+      "id": "s003",
+      "term": "Exhibitions",
+      "item": "gazette-v4n1-item-0009",
+      "pages": [
+        3
+      ],
+      "status": "Verified",
+      "note": "The spring exhibition.",
+      "precision": "item"
+    },
+    {
+      "id": "s004",
+      "term": "Prices",
+      "item": "gazette-v4n1-item-0014",
+      "pages": [
+        5
+      ],
+      "status": "Verified",
+      "note": "Weekly market prices.",
+      "precision": "item"
+    },
+    {
+      "id": "s005",
+      "term": "Local news",
+      "item": null,
+      "pages": [
+        1,
+        2
+      ],
+      "status": "Verified",
+      "note": "Issue-level subject.",
+      "precision": "page"
+    }
+  ],
+  "research_log": [],
+  "origin": {
+    "private_index/deep_index.json": {
+      "schema_version": "1.0",
+      "title_library_slug": "EXAMPLE-LIBRARY",
+      "title_id": "EXAGAZEX-1872",
+      "issue_id": "EXAGAZEX-1872-KRNYWA2",
+      "source_sha256": "ce7c9afe8592ea68469ff81f237482c00ae9f11a032056479291f8d7dddc1641"
+    }
+  }
+}
