@@ -133,6 +133,23 @@ async function newPage(ctx, url) {
 const fileURL = 'file://' + app;
 const ready = async page => { await page.waitForFunction(() => window.SC && SC.session && SC.session.whenReady); await page.evaluate(() => SC.session.whenReady()); await page.waitForFunction(() => SC.session.ui.access !== 'checking' && !SC.session.ui.busy); };
 const settled = page => page.evaluate(() => SC.session.flush());
+// Crash a page's renderer, as a browser crash would, and wait until the browser has seen it. First CDP's
+// Page.crash; on GitHub's runners it sometimes did nothing (no crash event, and the page went on holding
+// the library's Web Lock, so the reopened page rightly found the library open elsewhere). Then
+// chrome://kill, a renderer debug URL: the renderer ends at once, without unloading the page.
+// SC_CRASH=kill uses only chrome://kill (to check that way too).
+async function crashPage(ctx, page) {
+  const t0 = Date.now(), crashed = new Promise(r => page.once('crash', () => r(true)));
+  const within = ms => Promise.race([crashed, new Promise(r => setTimeout(() => r(false), ms))]);
+  if (process.env.SC_CRASH !== 'kill') {
+    const cdp = await ctx.newCDPSession(page);
+    cdp.send('Page.crash').catch(() => {});
+    if (await within(3000)) return { how: 'Page.crash', ms: Date.now() - t0 };
+  }
+  page.goto('chrome://kill').catch(() => {});
+  if (await within(5000)) return { how: 'chrome://kill', ms: Date.now() - t0 };
+  return { how: 'no crash', ms: Date.now() - t0 };
+}
 const ev = (page, fn, arg) => page.evaluate(fn, arg);
 const saveState = page => page.locator('.save-state').innerText().catch(() => '');
 const titleOf = page => ev(page, () => Array.from(SC.session.store.state.titles.values())[0]);
@@ -320,10 +337,7 @@ async function partA(browser) {
     await settled(page);
     await editTitle(page, { generalNotes: 'crash ' + wait });
     if (wait) await page.waitForTimeout(wait);
-    const cdp = await ctx.newCDPSession(page);
-    const t0 = Date.now(), crashed = new Promise(r => page.once('crash', () => r(Date.now() - t0)));
-    await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]);
-    const crashMs = await Promise.race([crashed, new Promise(r => setTimeout(() => r('no crash event in 5 s'), 5000))]), reopenMs = Date.now() - t0;
+    const crash = await crashPage(ctx, page);
     if (verbose) console.error('  crashed after ' + wait + ' ms');
     const again = await newPage(ctx, fileURL);
     await ready(again);
@@ -334,7 +348,7 @@ async function partA(browser) {
       if (got !== 'crash ' + wait) {
         const first = await crashState(again);
         await again.waitForTimeout(5000); await again.reload(); await ready(again);
-        seen = { crashMs, reopenMs, first, after5s: await crashState(again), restoredAfter5s: ((await titleOf(again)) || {}).generalNotes === 'crash ' + wait };
+        seen = { crash, first, after5s: await crashState(again), restoredAfter5s: ((await titleOf(again)) || {}).generalNotes === 'crash ' + wait };
       }
       expect(got === 'crash ' + wait, 'crash ' + wait + ' ms after a change: the change is restored', seen);
     }
@@ -468,8 +482,7 @@ async function partA(browser) {
   await editTitle(page, { generalNotes: 'edit on library B' });
   await settled(page);
   expect(await page.locator('.message.error:has-text("not being kept in this browser")').count() === 1, 'the notice stays while the library itself is not stored, though the edit\'s journal entry was');
-  const cdp = await ctx.newCDPSession(page);
-  await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]);
+  await crashPage(ctx, page);
   page = await newPage(ctx, fileURL);
   await ready(page);
   const lib = await ev(page, () => ({ slug: SC.session.store.state.library.slug, titles: Array.from(SC.session.store.state.titles.values()).map(t => t.titleID), files: Array.from(SC.session.store.state.files.keys()) }));
@@ -573,7 +586,7 @@ async function partA(browser) {
   await editTitle(page, { generalNotes: 'later change, stored' });
   await settled(page);
   expect(await page.locator('.message.error:has-text("not being kept in this browser")').count() === 1, 'the notice stays after a later change is stored, because an earlier one was not');
-  { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
+  await crashPage(ctx, page);
   page = await newPage(ctx, fileURL);
   await ready(page);
   expect(((await titleOf(page)) || {}).generalNotes === 'later change, stored', 'after a crash the stored change is back', await crashState(page));
@@ -587,7 +600,7 @@ async function partA(browser) {
   await ready(page); await openFolder(page);
   await editTitle(page, { generalNotes: 'before the crash' });
   await settled(page);
-  { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
+  await crashPage(ctx, page);
   page = await newPage(ctx, fileURL);
   await ready(page);
   expect(await ev(page, () => SC.session.ui.access) === 'owner' && ((await titleOf(page)) || {}).generalNotes === 'before the crash', 'the reopened tab gets the library, with the change');
@@ -617,7 +630,7 @@ async function partA(browser) {
   await ready(page); await openFolder(page); await settled(page);
   await ev(page, () => { const w = SC.storage.working; w.append = w.compact = () => Promise.reject(new Error('QuotaExceededError: the storage quota was exceeded')); });
   for (const n of ['one', 'two', 'three']) { await editTitle(page, { generalNotes: 'unstored ' + n }); await settled(page); }
-  { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
+  await crashPage(ctx, page);
   page = await newPage(ctx, fileURL);
   await ready(page);
   expect(/3 change\(s\) could not be restored/.test(await message(page)), 'reopening says 3 changes could not be restored: ' + (await message(page)).slice(0, 120), await crashState(page));
@@ -684,7 +697,7 @@ async function partA(browser) {
   await openFolder(page);
   await editTitle(page, { generalNotes: 'never stored' }); await settled(page);
   await editTitle(page, { generalNotes: 'never stored either' }); await settled(page);
-  { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
+  await crashPage(ctx, page);
   page = await newPage(ctx, fileURL);
   await ready(page);
   expect(/2 change\(s\) made in this browser could not be stored/.test(await message(page)), 'reopening says so: ' + (await message(page)).slice(0, 120));
