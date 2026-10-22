@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           msg=$(grep -n -A3 -E '^ *FAIL|^FAILED|^[A-Za-z]*Error' run-tests.log | head -60 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
-          echo "::error title=Failed checks::${msg}"
+          echo "::error title=Failed checks (runner image ${ImageOS:-?} ${ImageVersion:-?})::${msg}"
       - name: Keep the log
         if: always()
         uses: actions/upload-artifact@v4

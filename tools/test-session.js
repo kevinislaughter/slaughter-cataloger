@@ -133,21 +133,21 @@ async function newPage(ctx, url) {
 const fileURL = 'file://' + app;
 const ready = async page => { await page.waitForFunction(() => window.SC && SC.session && SC.session.whenReady); await page.evaluate(() => SC.session.whenReady()); await page.waitForFunction(() => SC.session.ui.access !== 'checking' && !SC.session.ui.busy); };
 const settled = page => page.evaluate(() => SC.session.flush());
-// Crash a page's renderer, as a browser crash would, and wait until the browser has seen it. First CDP's
-// Page.crash; on GitHub's runners it sometimes did nothing (no crash event, and the page went on holding
-// the library's Web Lock, so the reopened page rightly found the library open elsewhere). Then
-// chrome://kill, a renderer debug URL: the renderer ends at once, without unloading the page.
-// SC_CRASH=kill uses only chrome://kill (to check that way too).
+// Crash a page's renderer, as a browser crash would, and wait until the browser has seen it. First
+// chrome://kill, a renderer debug URL: the renderer exits at once, without unloading the page (checked)
+// and without writing a crash dump. CDP's Page.crash writes one, and on some GitHub runners it never
+// finished: no crash event, the page went on holding the library's Web Lock (so the reopened page rightly
+// found the library open elsewhere), and a chrome://kill sent after it was not handled either. Page.crash
+// stays as the fallback. SC_CRASH=cdp tries Page.crash first (the earlier order).
 async function crashPage(ctx, page) {
   const t0 = Date.now(), crashed = new Promise(r => page.once('crash', () => r(true)));
   const within = ms => Promise.race([crashed, new Promise(r => setTimeout(() => r(false), ms))]);
-  if (process.env.SC_CRASH !== 'kill') {
-    const cdp = await ctx.newCDPSession(page);
-    cdp.send('Page.crash').catch(() => {});
-    if (await within(3000)) return { how: 'Page.crash', ms: Date.now() - t0 };
+  const ways = process.env.SC_CRASH === 'cdp' ? ['Page.crash', 'chrome://kill'] : ['chrome://kill', 'Page.crash'];
+  for (const how of ways) {
+    if (how === 'Page.crash') (await ctx.newCDPSession(page)).send('Page.crash').catch(() => {});
+    else page.goto('chrome://kill').catch(() => {});
+    if (await within(4000)) return { how, ms: Date.now() - t0 };
   }
-  page.goto('chrome://kill').catch(() => {});
-  if (await within(5000)) return { how: 'chrome://kill', ms: Date.now() - t0 };
   return { how: 'no crash', ms: Date.now() - t0 };
 }
 const ev = (page, fn, arg) => page.evaluate(fn, arg);
