@@ -397,6 +397,8 @@ function fakeFS(seedArg) {
   expect(/^AU-[2-9A-HJKMNP-WYZ]{6}$/.test(headingID), 'a heading with its AuthorityID (' + headingID + ')');
   const formsBefore = await page.locator('.nm-forms > .nm-formlist li').count();
   await page.click('.nm-maybe li:has(.nm-form:text-is("Public")) button');
+  // Wait for the list to be drawn again (the first GitHub runs counted before it was).
+  await page.waitForFunction(n => document.querySelectorAll('.nm-forms > .nm-formlist li').length === n, formsBefore + 1, { timeout: 5000 }).catch(() => {});
   expect((await page.locator('.nm-forms > .nm-formlist li').count()) === formsBefore + 1, 'adding the bare surname "Public" from the possible forms');
   await page.selectOption('#f-a-status', 'Confirmed');
   await page.fill('#f-a-dates', '1840–1910');

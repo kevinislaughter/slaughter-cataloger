@@ -109,7 +109,11 @@ let failures = 0;
 const log = [], errors = [];
 const verbose = !!process.env.SC_VERBOSE;
 const step = s => { log.push('· ' + s); if (verbose) console.error('· ' + s); };
-const expect = (ok, what) => { log.push((ok ? '  ok   ' : '  FAIL ') + what); if (verbose) console.error((ok ? '  ok   ' : '  FAIL ') + what); if (!ok) failures++; };
+// A failed check prints its detail, when one is given, on the line below.
+const expect = (ok, what, detail) => {
+  const line = (ok ? '  ok   ' : '  FAIL ') + what + (!ok && detail !== undefined && detail !== '' ? '\n         ' + (typeof detail === 'string' ? detail : JSON.stringify(detail)).slice(0, 700) : '');
+  log.push(line); if (verbose) console.error(line); if (!ok) failures++;
+};
 
 async function newContext(browser, seed) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 } });
@@ -317,7 +321,9 @@ async function partA(browser) {
     await editTitle(page, { generalNotes: 'crash ' + wait });
     if (wait) await page.waitForTimeout(wait);
     const cdp = await ctx.newCDPSession(page);
+    const t0 = Date.now(), crashed = new Promise(r => page.once('crash', () => r(Date.now() - t0)));
     await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]);
+    const crashMs = await Promise.race([crashed, new Promise(r => setTimeout(() => r('no crash event in 5 s'), 5000))]), reopenMs = Date.now() - t0;
     if (verbose) console.error('  crashed after ' + wait + ' ms');
     const again = await newPage(ctx, fileURL);
     await ready(again);
@@ -328,7 +334,7 @@ async function partA(browser) {
       if (got !== 'crash ' + wait) {
         const first = await crashState(again);
         await again.waitForTimeout(5000); await again.reload(); await ready(again);
-        seen = { first, after5s: await crashState(again), restoredAfter5s: ((await titleOf(again)) || {}).generalNotes === 'crash ' + wait };
+        seen = { crashMs, reopenMs, first, after5s: await crashState(again), restoredAfter5s: ((await titleOf(again)) || {}).generalNotes === 'crash ' + wait };
       }
       expect(got === 'crash ' + wait, 'crash ' + wait + ' ms after a change: the change is restored', seen);
     }
@@ -614,7 +620,7 @@ async function partA(browser) {
   { const cdp = await ctx.newCDPSession(page); await Promise.race([cdp.send('Page.crash').catch(() => {}), new Promise(r => setTimeout(r, 2000))]); }
   page = await newPage(ctx, fileURL);
   await ready(page);
-  expect(/3 change\(s\) could not be restored/.test(await message(page)), 'reopening says 3 changes could not be restored: ' + (await message(page)).slice(0, 120));
+  expect(/3 change\(s\) could not be restored/.test(await message(page)), 'reopening says 3 changes could not be restored: ' + (await message(page)).slice(0, 120), await crashState(page));
   await settled(page);
   await page.reload(); await ready(page);
   expect(!/could not be restored/.test(await message(page)), 'and says it once: after the next stored snapshot it is not repeated');
